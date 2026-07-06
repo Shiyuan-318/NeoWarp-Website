@@ -1,0 +1,231 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>NeoWarp</title>
+  <meta name="description" content="NeoWarp 是一款基于 TurboWarp 二次开发的 Scratch 编辑器，集成 AI 助手、任务管理器、待办清单、加密保存等强大功能。">
+  <link rel="icon" href="assets/Logo.png" type="image/png">
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+  <!-- 导航栏 -->
+  <nav class="navbar" id="navbar">
+    <a href="index.html" class="nav-brand">
+      <img src="assets/Logo.png" alt="NeoWarp Logo">
+      <span class="nav-brand-text">NeoWarp</span>
+    </a>
+    <ul class="nav-links" id="navLinks">
+      <li><a href="index.html" class="nav-link active">主页</a></li>
+      <li><a href="wiki.html" class="nav-link">Wiki</a></li>
+      <li><a href="download.html" class="nav-link">下载</a></li>
+    </ul>
+    <button class="nav-toggle" id="navToggle" aria-label="菜单">
+      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
+        <line x1="3" y1="6" x2="21" y2="6"></line>
+        <line x1="3" y1="12" x2="21" y2="12"></line>
+        <line x1="3" y1="18" x2="21" y2="18"></line>
+      </svg>
+    </button>
+  </nav>
+
+  <!-- 首屏 Hero -->
+  <section class="hero" id="hero">
+    <div class="hero-bg">
+      <div class="hero-glow cyan"></div>
+      <div class="hero-glow purple"></div>
+      <div class="hero-grid"></div>
+    </div>
+    <div class="hero-content" id="heroContent">
+      <div class="hero-badge">
+        <span class="dot"></span>
+        <span>Powered By TurboWarp</span>
+      </div>
+      <h1 class="hero-title" id="heroTitle">NeoWarp</h1>
+      <p class="hero-subtitle" id="heroSubtitle">Scratch编辑器，您的新选择</p>
+    </div>
+    <div class="hero-scroll-hint" id="scrollHint">
+      <span>向下滚动探索</span>
+      <span class="arrow"></span>
+    </div>
+  </section>
+
+  <!-- 功能介绍 -->
+  <section class="features">
+
+    <!-- AI 助手 -->
+    <div class="feature-section" data-feature>
+      <div class="feature-text">
+        <div class="feature-icon cyan">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M12 2a4 4 0 0 1 4 4v1a4 4 0 0 1 4 4v3a4 4 0 0 1-4 4H8a4 4 0 0 1-4-4v-3a4 4 0 0 1 4-4V6a4 4 0 0 1 4-4z"></path>
+            <circle cx="9" cy="13" r="1"></circle>
+            <circle cx="15" cy="13" r="1"></circle>
+            <path d="M9 17h6"></path>
+          </svg>
+        </div>
+        <span class="feature-tag cyan">AI 助手</span>
+        <h2 class="feature-title">智能 AI 辅助创作</h2>
+        <p class="feature-desc">内置独立 AI 助手窗口，支持 OpenAI、DeepSeek、智谱 GLM、Kimi、通义千问等多家服务商，能够读取当前项目结构、应用修改到工程或精灵，让 AI 直接参与你的创作流程。</p>
+        <ul class="feature-list">
+          <li>支持 6+ AI 服务商，含 GPT-4.1、DeepSeek R1、GLM-4 等模型</li>
+          <li>可读取项目 JSON 结构，理解积木与角色组织</li>
+          <li>支持工具调用（Tool Call），直接修改项目或精灵</li>
+          <li>流式输出，实时查看 AI 生成内容</li>
+        </ul>
+      </div>
+      <div class="feature-image">
+        <img src="AI.png" alt="AI 助手截图" class="feature-img">
+      </div>
+    </div>
+
+    <!-- 任务管理器 -->
+    <div class="feature-section reverse" data-feature>
+      <div class="feature-text">
+        <div class="feature-icon purple">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <rect x="2" y="3" width="20" height="14" rx="2" ry="2"></rect>
+            <line x1="8" y1="21" x2="16" y2="21"></line>
+            <line x1="12" y1="17" x2="12" y2="21"></line>
+          </svg>
+        </div>
+        <span class="feature-tag purple">任务管理器</span>
+        <h2 class="feature-title">实时性能监控</h2>
+        <p class="feature-desc">独立的任务管理器窗口，实时显示系统 CPU 与内存占用率，并以折线图展示资源使用趋势。同时统计每个角色的线程数、CPU 占用、内存估算、积木数与造型数，帮助你精准定位性能瓶颈。</p>
+        <ul class="feature-list">
+          <li>系统级 CPU / RAM 实时监控与趋势图</li>
+          <li>逐角色资源统计：线程、CPU、内存、积木、造型</li>
+          <li>支持按名称、线程、CPU、内存等多维度排序</li>
+          <li>深色 / 浅色主题自动跟随编辑器</li>
+        </ul>
+      </div>
+      <div class="feature-image">
+        <img src="TaskManager.png" alt="任务管理器截图" class="feature-img">
+      </div>
+    </div>
+
+    <!-- 待办清单 -->
+    <div class="feature-section" data-feature>
+      <div class="feature-text">
+        <div class="feature-icon cyan">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M9 11l3 3L22 4"></path>
+            <path d="M21 12v7a2 2 0 01-2 2H5a2 2 0 01-2-2V5a2 2 0 012-2h11"></path>
+          </svg>
+        </div>
+        <span class="feature-tag cyan">待办清单</span>
+        <h2 class="feature-title">轻量级任务管理</h2>
+        <p class="feature-desc">内置待办清单窗口，让你在创作过程中随时记录灵感与任务。支持添加、编辑、删除、完成标记，数据自动保存在本地，无需担心丢失。简洁的界面与流畅的交互，让创作更专注。</p>
+        <ul class="feature-list">
+          <li>一键添加 / 编辑 / 删除待办事项</li>
+          <li>圆形复选框标记完成状态，含删除线效果</li>
+          <li>自动统计总数与已完成数，一键清除已完成项</li>
+          <li>localStorage 本地持久化，数据安全不丢失</li>
+        </ul>
+      </div>
+      <div class="feature-image">
+        <img src="ToDoList.png" alt="待办清单截图" class="feature-img">
+      </div>
+    </div>
+
+    <!-- 加密保存 -->
+    <div class="feature-section reverse" data-feature>
+      <div class="feature-text">
+        <div class="feature-icon purple">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect>
+            <path d="M7 11V7a5 5 0 0 1 10 0v4"></path>
+          </svg>
+        </div>
+        <span class="feature-tag purple">加密保存</span>
+        <h2 class="feature-title">密码保护你的作品</h2>
+        <p class="feature-desc">独创 .npnp 加密工程格式，为你的 Scratch 项目加上一层密码保护。保存时设置密码，打开时需要输入正确密码才能解密。无论是未完成的作品还是商业项目，都能安全存储。</p>
+        <ul class="feature-list">
+          <li>独立的 .npnp 加密工程格式</li>
+          <li>保存时需设置标题与密码（含二次确认）</li>
+          <li>打开加密文件时弹出密码输入框</li>
+          <li>密码错误自动重试，保护项目安全</li>
+        </ul>
+      </div>
+      <div class="feature-image">
+        <img src="encryption.png" alt="加密保存截图" class="feature-img">
+      </div>
+    </div>
+
+    <!-- np1 格式 -->
+    <div class="feature-section" data-feature>
+      <div class="feature-text">
+        <div class="feature-icon cyan">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+            <polyline points="14 2 14 8 20 8"></polyline>
+            <line x1="16" y1="13" x2="8" y2="13"></line>
+            <line x1="16" y1="17" x2="8" y2="17"></line>
+            <polyline points="10 9 9 9 8 9"></polyline>
+          </svg>
+        </div>
+        <span class="feature-tag cyan">np1 格式</span>
+        <h2 class="feature-title">原生工程文件格式</h2>
+        <p class="feature-desc">NeoWarp 原生支持 .np1 未压缩工程格式，同时完全兼容 Scratch 3 (.sb3)、Scratch 2 (.sb2) 和 Scratch 1 (.sb) 格式。文件关联已集成到系统，双击即可用 NeoWarp 打开。</p>
+        <ul class="feature-list">
+          <li>.np1 — NeoWarp 未压缩工程格式</li>
+          <li>.npnp — NeoWarp 加密工程格式</li>
+          <li>.sb3 / .sb2 / .sb — 完整兼容 Scratch 全版本</li>
+          <li>系统级文件关联，双击直接打开</li>
+        </ul>
+      </div>
+      <div class="feature-image">
+        <img src=".np1file.png" alt="np1 格式截图" class="feature-img">
+      </div>
+    </div>
+
+    <!-- viewsb3 格式 -->
+    <div class="feature-section reverse" data-feature>
+      <div class="feature-text">
+        <div class="feature-icon purple">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
+            <circle cx="12" cy="12" r="3"></circle>
+          </svg>
+        </div>
+        <span class="feature-tag purple">viewsb3 格式</span>
+        <h2 class="feature-title">只读分享，保护源码</h2>
+        <p class="feature-desc">独创 .viewsb3 只读分享格式，让你在分享作品时隐藏源码。对方打开后只能看到全屏舞台，无法查看或编辑积木代码。适合分享成品作品，同时保护你的创作思路。</p>
+        <ul class="feature-list">
+          <li>保存为 .viewsb3 格式，隐藏所有源码</li>
+          <li>对方打开仅显示全屏舞台，无法编辑</li>
+          <li>需 NeoWarp 1.0.11 及以上版本支持</li>
+          <li>完美保护作品创意与代码逻辑</li>
+        </ul>
+      </div>
+      <div class="feature-image">
+        <div class="feature-image-placeholder">
+          <div class="placeholder-label">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+              <rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect>
+              <circle cx="8.5" cy="8.5" r="1.5"></circle>
+              <polyline points="21 15 16 10 5 21"></polyline>
+            </svg>
+            <span>viewsb3 截图位</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </section>
+
+  <!-- 页脚 -->
+  <footer class="footer">
+    <div class="footer-links">
+      <a href="index.html">主页</a>
+      <a href="wiki.html">Wiki</a>
+      <a href="download.html">下载</a>
+      <a href="https://github.com/Shiyuan-318/Neowarp" target="_blank" rel="noopener">GitHub</a>
+    </div>
+    <p>NeoWarp © 2024 Shiyuan · 基于 GPL-3.0 协议开源 · 基于 TurboWarp 二次开发</p>
+  </footer>
+
+  <script src="js/main.js"></script>
+</body>
+</html>

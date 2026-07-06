@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>下载 - NeoWarp</title>
+  <meta name="description" content="下载 NeoWarp - 支持 Windows、macOS 和 Linux 平台。">
+  <link rel="icon" href="assets/Logo.png" type="image/png">
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+  <!-- 导航栏 -->
+  <nav class="navbar" id="navbar">
+    <a href="index.html" class="nav-brand">
+      <img src="assets/Logo.png" alt="NeoWarp Logo">
+      <span class="nav-brand-text">NeoWarp</span>
+    </a>
+    <ul class="nav-links" id="navLinks">
+      <li><a href="index.html" class="nav-link">主页</a></li>
+      <li><a href="wiki.html" class="nav-link">Wiki</a></li>
+      <li><a href="download.html" class="nav-link active">下载</a></li>
+    </ul>
+    <button class="nav-toggle" id="navToggle" aria-label="菜单">
+      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
+        <line x1="3" y1="6" x2="21" y2="6"></line>
+        <line x1="3" y1="12" x2="21" y2="12"></line>
+        <line x1="3" y1="18" x2="21" y2="18"></line>
+      </svg>
+    </button>
+  </nav>
+
+  <!-- 下载页内容 -->
+  <div class="download-page">
+
+    <!-- 头部 -->
+    <div class="download-header">
+      <h1>下载 NeoWarp</h1>
+      <p>选择适合你操作系统的版本，开始你的 Scratch 创作之旅</p>
+      <div class="download-version">
+        <span class="dot"></span>
+        <span>持续更新中</span>
+      </div>
+    </div>
+
+    <!-- 下载卡片 -->
+    <div class="download-cards">
+
+      <!-- Windows -->
+      <div class="download-card windows">
+        <div class="download-card-icon">
+          <svg viewBox="0 0 24 24" fill="currentColor">
+            <path d="M0 3.449L9.75 2.1v9.451H0m10.949-9.602L24 0v11.4H10.949M0 12.6h9.75v9.451L0 20.699M10.949 12.6H24V24l-12.9-1.801"/>
+          </svg>
+        </div>
+        <h3>Windows</h3>
+        <p class="version">Windows 10 及以上 · 64位</p>
+        <div class="download-options">
+          <a href="https://github.com/Shiyuan-318/Neowarp/releases" class="download-btn primary" target="_blank" rel="noopener">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+              <polyline points="7 10 12 15 17 10"></polyline>
+              <line x1="12" y1="15" x2="12" y2="3"></line>
+            </svg>
+            <span>前往 GitHub Releases</span>
+          </a>
+          <a href="https://github.com/Shiyuan-318/Neowarp/releases" class="download-btn" target="_blank" rel="noopener">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+              <polyline points="7 10 12 15 17 10"></polyline>
+              <line x1="12" y1="15" x2="12" y2="3"></line>
+            </svg>
+            <span>便携版 (Portable)</span>
+          </a>
+        </div>
+        <div class="arch">架构：x64 · 格式：.exe</div>
+      </div>
+
+      <!-- macOS -->
+      <div class="download-card macos pending">
+        <div class="download-card-icon">
+          <svg viewBox="0 0 24 24" fill="currentColor">
+            <path d="M18.71 19.5c-.83 1.24-1.71 2.45-3.05 2.47-1.34.03-1.77-.79-3.29-.79-1.53 0-2 .77-3.27.82-1.31.05-2.3-1.32-3.14-2.53C4.25 17 2.94 12.45 4.7 9.39c.87-1.52 2.43-2.48 4.12-2.51 1.28-.02 2.5.87 3.29.87.78 0 2.26-1.07 3.81-.91.65.03 2.47.26 3.64 1.98-.09.06-2.17 1.28-2.15 3.81.03 3.02 2.65 4.03 2.68 4.04-.03.07-.42 1.44-1.38 2.83M13 3.5c.73-.83 1.94-1.46 2.94-1.5.13 1.17-.34 2.35-1.04 3.19-.69.85-1.83 1.51-2.95 1.42-.15-1.15.41-2.35 1.05-3.11z"/>
+          </svg>
+        </div>
+        <h3>macOS</h3>
+        <p class="version">待适配</p>
+        <div class="download-options">
+          <div class="download-pending">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <circle cx="12" cy="12" r="10"></circle>
+              <polyline points="12 6 12 12 16 14"></polyline>
+            </svg>
+            <span>正在适配中...</span>
+          </div>
+        </div>
+        <div class="arch">敬请期待</div>
+      </div>
+
+      <!-- Linux -->
+      <div class="download-card linux pending">
+        <div class="download-card-icon">
+          <svg viewBox="0 0 24 24" fill="currentColor">
+            <path d="M12.504 0c-.155 0-.315.008-.48.021-4.226.333-3.105 4.807-3.17 6.298-.076 1.092-.3 1.953-1.05 3.02-.885 1.051-2.127 2.75-2.716 4.521-.278.832-.41 1.684-.287 2.489a.424.424 0 00-.11.135c-.26.268-.45.6-.663.839-.199.199-.485.267-.797.4-.313.136-.658.269-.864.68-.09.189-.136.394-.132.602 0 .199.027.4.055.536.058.399.116.728.04.97-.249.68-.28 1.145-.106 1.484.174.334.535.47.94.601.81.2 1.91.135 2.774.6.926.466 1.866.67 2.616.47.526-.116.97-.464 1.208-.946.587-.003 1.23-.269 2.26-.334.699-.058 1.574.267 2.577.2.025.134.063.198.114.333l.003.003c.391.778 1.113 1.132 1.884 1.071.771-.06 1.592-.536 2.257-1.306.631-.765 1.683-1.084 2.378-1.503.348-.199.629-.469.649-.853.023-.4-.2-.811-.714-1.376v-.097l-.003-.003c-.17-.2-.25-.535-.338-.926-.085-.401-.182-.786-.492-1.046h-.003c-.059-.054-.123-.067-.188-.135a.357.357 0 00-.19-.064c.431-1.278.264-2.55-.173-3.694-.533-1.41-1.465-2.638-2.175-3.483-.796-1.005-1.576-1.957-1.56-3.368.026-2.152.236-6.133-3.544-6.139z"/>
+          </svg>
+        </div>
+        <h3>Linux</h3>
+        <p class="version">待适配</p>
+        <div class="download-options">
+          <div class="download-pending">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <circle cx="12" cy="12" r="10"></circle>
+              <polyline points="12 6 12 12 16 14"></polyline>
+            </svg>
+            <span>正在适配中...</span>
+          </div>
+        </div>
+        <div class="arch">敬请期待</div>
+      </div>
+
+    </div>
+
+    <!-- 补充信息 -->
+    <div class="download-info">
+      <h2>安装说明</h2>
+      <div class="download-info-grid">
+        <div class="info-card">
+          <h4>Windows 安装</h4>
+          <p>下载 NSIS 安装包后双击运行，可选择安装路径。便携版解压即可使用，无需安装。</p>
+        </div>
+        <div class="info-card">
+          <h4>MacOS 安装</h4>
+          <p style="color: var(--text-tertiary);">待适配，敬请期待。</p>
+        </div>
+        <div class="info-card">
+          <h4>Linux 安装</h4>
+          <p style="color: var(--text-tertiary);">待适配，敬请期待。</p>
+        </div>
+        <div class="info-card">
+          <h4>文件关联</h4>
+          <p>安装 NeoWarp 后，.np1、.npnp、.viewsb3、.sb3、.sb2、.sb 格式将自动关联到 NeoWarp，双击即可打开。也可在系统中手动修改默认打开方式。</p>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- 页脚 -->
+  <footer class="footer">
+    <div class="footer-links">
+      <a href="index.html">主页</a>
+      <a href="wiki.html">Wiki</a>
+      <a href="download.html">下载</a>
+      <a href="https://github.com/Shiyuan-318/Neowarp" target="_blank" rel="noopener">GitHub</a>
+    </div>
+    <p>NeoWarp © 2026 Shiyuan · 基于 GPL-3.0 协议开源 · 基于 TurboWarp 二次开发</p>
+  </footer>
+
+  <script>
+    // 导航栏滚动状态 + 移动端菜单
+    (function () {
+      var navbar = document.getElementById('navbar');
+      var navToggle = document.getElementById('navToggle');
+      var navLinks = document.getElementById('navLinks');
+
+      window.addEventListener('scroll', function () {
+        if (window.pageYOffset > 50) {
+          navbar.classList.add('scrolled');
+        } else {
+          navbar.classList.remove('scrolled');
+        }
+      }, { passive: true });
+
+      navToggle.addEventListener('click', function () {
+        navLinks.classList.toggle('open');
+      });
+
+      navLinks.querySelectorAll('a').forEach(function (link) {
+        link.addEventListener('click', function () {
+          navLinks.classList.remove('open');
+        });
+      });
+    })();
+  </script>
+</body>
+</html>

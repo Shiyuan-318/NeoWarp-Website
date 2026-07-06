@@ -1,0 +1,521 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Wiki - NeoWarp</title>
+  <meta name="description" content="NeoWarp 使用文档 Wiki，详细介绍如何使用 NeoWarp 编辑器的各项功能。">
+  <link rel="icon" href="assets/Logo.png" type="image/png">
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+  <!-- 移动端目录切换按钮 -->
+  <button class="wiki-mobile-toggle" id="wikiToggle" aria-label="目录">
+    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
+      <line x1="3" y1="6" x2="21" y2="6"></line>
+      <line x1="3" y1="12" x2="21" y2="12"></line>
+      <line x1="3" y1="18" x2="21" y2="18"></line>
+    </svg>
+  </button>
+  <div class="wiki-overlay" id="wikiOverlay"></div>
+
+  <div class="wiki-layout">
+
+    <!-- 左侧目录 -->
+    <aside class="wiki-sidebar" id="wikiSidebar">
+      <div class="wiki-sidebar-header">
+        <a href="index.html">
+          <img src="assets/Logo.png" alt="NeoWarp Logo">
+          <span class="brand-text">NeoWarp Wiki</span>
+        </a>
+      </div>
+      <ul class="wiki-toc" id="wikiToc">
+        <li class="wiki-toc-item" data-section="intro">
+          <div class="wiki-toc-link">
+            <svg class="toggle-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"></polyline></svg>
+            <span>简介</span>
+          </div>
+          <ul class="wiki-toc-sub">
+            <li><div class="wiki-toc-link leaf" data-target="intro-about"><span>关于 NeoWarp</span></div></li>
+            <li><div class="wiki-toc-link leaf" data-target="intro-features"><span>核心特性</span></div></li>
+            <li><div class="wiki-toc-link leaf" data-target="intro-diff"><span>与 TurboWarp 的区别</span></div></li>
+          </ul>
+        </li>
+
+        <li class="wiki-toc-item" data-section="install">
+          <div class="wiki-toc-link">
+            <svg class="toggle-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"></polyline></svg>
+            <span>安装与启动</span>
+          </div>
+          <ul class="wiki-toc-sub">
+            <li><div class="wiki-toc-link leaf" data-target="install-req"><span>系统要求</span></div></li>
+            <li><div class="wiki-toc-link leaf" data-target="install-download"><span>下载与安装</span></div></li>
+            <li><div class="wiki-toc-link leaf" data-target="install-first"><span>首次启动</span></div></li>
+          </ul>
+        </li>
+
+        <li class="wiki-toc-item" data-section="basic">
+          <div class="wiki-toc-link">
+            <svg class="toggle-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"></polyline></svg>
+            <span>基础操作</span>
+          </div>
+          <ul class="wiki-toc-sub">
+            <li><div class="wiki-toc-link leaf" data-target="basic-create"><span>创建新项目</span></div></li>
+            <li><div class="wiki-toc-link leaf" data-target="basic-open"><span>打开项目</span></div></li>
+            <li><div class="wiki-toc-link leaf" data-target="basic-save"><span>保存项目</span></div></li>
+          </ul>
+        </li>
+
+        <li class="wiki-toc-item" data-section="ai">
+          <div class="wiki-toc-link">
+            <svg class="toggle-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"></polyline></svg>
+            <span>AI 助手</span>
+          </div>
+          <ul class="wiki-toc-sub">
+            <li><div class="wiki-toc-link leaf" data-target="ai-chat"><span>使用 AI 对话</span></div></li>
+            <li><div class="wiki-toc-link leaf" data-target="ai-tools"><span>AI 工具调用</span></div></li>
+          </ul>
+        </li>
+
+        <li class="wiki-toc-item" data-section="task">
+          <div class="wiki-toc-link">
+            <svg class="toggle-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"></polyline></svg>
+            <span>任务管理器</span>
+          </div>
+          <ul class="wiki-toc-sub">
+            <li><div class="wiki-toc-link leaf" data-target="task-monitor"><span>系统监控</span></div></li>
+            <li><div class="wiki-toc-link leaf" data-target="task-sprites"><span>角色资源查看</span></div></li>
+          </ul>
+        </li>
+
+        <li class="wiki-toc-item" data-section="todo">
+          <div class="wiki-toc-link">
+            <svg class="toggle-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"></polyline></svg>
+            <span>待办清单</span>
+          </div>
+          <ul class="wiki-toc-sub">
+            <li><div class="wiki-toc-link leaf" data-target="todo-manage"><span>添加与管理待办</span></div></li>
+            <li><div class="wiki-toc-link leaf" data-target="todo-storage"><span>数据存储</span></div></li>
+          </ul>
+        </li>
+
+        <li class="wiki-toc-item" data-section="encrypt">
+          <div class="wiki-toc-link">
+            <svg class="toggle-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"></polyline></svg>
+            <span>加密保存</span>
+          </div>
+          <ul class="wiki-toc-sub">
+            <li><div class="wiki-toc-link leaf" data-target="encrypt-npnp"><span>.npnp 加密格式</span></div></li>
+            <li><div class="wiki-toc-link leaf" data-target="encrypt-save"><span>加密保存项目</span></div></li>
+            <li><div class="wiki-toc-link leaf" data-target="encrypt-open"><span>打开加密文件</span></div></li>
+          </ul>
+        </li>
+
+        <li class="wiki-toc-item" data-section="format">
+          <div class="wiki-toc-link">
+            <svg class="toggle-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"></polyline></svg>
+            <span>文件格式</span>
+          </div>
+          <ul class="wiki-toc-sub">
+            <li><div class="wiki-toc-link leaf" data-target="format-np1"><span>.np1 格式</span></div></li>
+            <li><div class="wiki-toc-link leaf" data-target="format-viewsb3"><span>.viewsb3 格式</span></div></li>
+            <li><div class="wiki-toc-link leaf" data-target="format-compat"><span>兼容格式</span></div></li>
+          </ul>
+        </li>
+
+        <li class="wiki-toc-item" data-section="other">
+          <div class="wiki-toc-link">
+            <svg class="toggle-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"></polyline></svg>
+            <span>其他功能</span>
+          </div>
+          <ul class="wiki-toc-sub">
+            <li><div class="wiki-toc-link leaf" data-target="other-stage"><span>分离舞台</span></div></li>
+            <li><div class="wiki-toc-link leaf" data-target="other-analysis"><span>项目分析</span></div></li>
+            <li><div class="wiki-toc-link leaf" data-target="other-addons"><span>Addons 插件</span></div></li>
+            <li><div class="wiki-toc-link leaf" data-target="other-packager"><span>Packager 打包器</span></div></li>
+          </ul>
+        </li>
+      </ul>
+    </aside>
+
+    <!-- 右侧内容 -->
+    <main class="wiki-content">
+
+      <!-- 简介 -->
+      <section class="wiki-content-section" id="intro-about">
+        <h2>关于 NeoWarp</h2>
+        <p>NeoWarp 是一款使用 Electron 构建的离线 Scratch 3 编辑器，基于 <a href="https://github.com/TurboWarp/desktop" target="_blank" rel="noopener" style="color: var(--accent-cyan);">TurboWarp Desktop</a> 进行二次开发。它继承了 TurboWarp 的高性能 JS / Wasm 编译器、海量扩展、Addon 插件、Packager 打包器、深色模式等核心能力，并在此之上针对视觉体验与工作流进行了多项增强与定制。</p>
+        <div class="wiki-callout">
+          <strong>适用场景：</strong>需要离线编写、运行 Scratch 项目的用户；对编辑器视觉与交互有更高要求的使用者；希望通过 AI 辅助 / 待办清单等工具提升创作效率的开发者。
+        </div>
+      </section>
+
+      <section class="wiki-content-section" id="intro-features">
+        <h3>核心特性</h3>
+        <p>NeoWarp 在 TurboWarp 基础上增加了以下核心功能：</p>
+        <ul>
+          <li><strong>AI 助手</strong>：独立窗口提供 AI 辅助，支持多家服务商，可读取项目结构并应用修改</li>
+          <li><strong>任务管理器</strong>：实时监控 CPU / RAM 占用，统计每个角色的资源使用情况</li>
+          <li><strong>待办清单</strong>：内置轻量级待办事项窗口，本地持久化存储</li>
+          <li><strong>加密保存</strong>：.npnp 加密工程格式，密码保护你的作品</li>
+          <li><strong>np1 格式</strong>：NeoWarp 原生未压缩工程格式</li>
+          <li><strong>分离舞台</strong>：可将舞台弹出为独立窗口，便于多屏幕演示</li>
+          <li><strong>项目分析</strong>：提供对项目结构的分析视图</li>
+          <li><strong>毛玻璃效果</strong>：编辑器多处界面加入 Acrylic / Frosted Glass 风格</li>
+          <li><strong>圆角绘制</strong>：积木、角色面板、按钮等采用统一圆角设计</li>
+        </ul>
+      </section>
+
+      <section class="wiki-content-section" id="intro-diff">
+        <h3>与 TurboWarp 的区别</h3>
+        <table class="wiki-table">
+          <thead>
+            <tr><th>特性</th><th>TurboWarp</th><th>NeoWarp</th></tr>
+          </thead>
+          <tbody>
+            <tr><td>AI 助手</td><td>无</td><td>支持 6+ 服务商</td></tr>
+            <tr><td>任务管理器</td><td>无</td><td>系统级 CPU/RAM 监控</td></tr>
+            <tr><td>待办清单</td><td>无</td><td>内置本地待办</td></tr>
+            <tr><td>加密保存</td><td>无</td><td>.npnp 加密格式</td></tr>
+            <tr><td>工程格式</td><td>.sb3</td><td>.np1 / .npnp / .sb3</td></tr>
+            <tr><td>分离舞台</td><td>有</td><td>有（增强）</td></tr>
+            <tr><td>视觉风格</td><td>标准</td><td>毛玻璃 + 圆角 + 过渡动画</td></tr>
+          </tbody>
+        </table>
+      </section>
+
+      <!-- 安装与启动 -->
+      <section class="wiki-content-section" id="install-req">
+        <h2>系统要求</h2>
+        <p>NeoWarp 基于 Electron 41 构建，支持以下操作系统：</p>
+        <table class="wiki-table">
+          <thead>
+            <tr><th>平台</th><th>最低版本</th><th>架构</th></tr>
+          </thead>
+          <tbody>
+            <tr><td>Windows</td><td>Windows 10 (64位)</td><td>x64</td></tr>
+            <tr><td>macOS</td><td>macOS 10.15+</td><td>Universal (x64 + arm64)</td></tr>
+            <tr><td>Linux</td><td>Ubuntu 18.04+ / Debian / Fedora</td><td>x64</td></tr>
+          </tbody>
+        </table>
+        <div class="wiki-callout">
+          <strong>开发环境要求：</strong>Node.js >= 18（与 Electron 41 兼容的 LTS 版本）、npm、Git。
+        </div>
+      </section>
+
+      <section class="wiki-content-section" id="install-download">
+        <h3>下载与安装</h3>
+        <p>请前往 <a href="download.html" style="color: var(--accent-cyan);">下载页</a> 或 <a href="https://github.com/Shiyuan-318/Neowarp/releases" target="_blank" rel="noopener" style="color: var(--accent-cyan);">GitHub Releases</a> 下载与系统匹配的安装包：</p>
+        <table class="wiki-table">
+          <thead>
+            <tr><th>平台</th><th>安装包类型</th><th>说明</th></tr>
+          </thead>
+          <tbody>
+            <tr><td>Windows</td><td>NSIS (.exe)</td><td>标准安装包，可选安装路径</td></tr>
+            <tr><td>Windows</td><td>Portable (.exe)</td><td>便携版，解压即用</td></tr>
+            <tr><td>Windows</td><td>MS-Store (.appx)</td><td>Microsoft Store 包</td></tr>
+            <tr><td>macOS</td><td>DMG</td><td>通用二进制 (x64 + arm64)</td></tr>
+            <tr><td>Linux</td><td>.deb</td><td>Debian / Ubuntu</td></tr>
+            <tr><td>Linux</td><td>.AppImage</td><td>便携运行</td></tr>
+            <tr><td>Linux</td><td>.tar.gz</td><td>通用压缩包</td></tr>
+          </tbody>
+        </table>
+      </section>
+
+      <section class="wiki-content-section" id="install-first">
+        <h3>首次启动</h3>
+        <p>安装完成后，启动 NeoWarp 即可看到编辑器主界面。编辑器界面基于 Scratch 3 的 GUI，包含舞台区、角色区、积木编辑区和菜单栏。</p>
+        <p>NeoWarp 在菜单栏中新增了以下入口：</p>
+        <ul>
+          <li><strong>AI 助手</strong>：打开 AI 对话窗口</li>
+          <li><strong>任务管理器</strong>：打开性能监控窗口</li>
+          <li><strong>待办清单</strong>：打开待办事项窗口</li>
+          <li><strong>项目分析</strong>：打开项目结构分析</li>
+          <li><strong>加密保存</strong>：在保存时选择加密格式</li>
+        </ul>
+      </section>
+
+      <!-- 基础操作 -->
+      <section class="wiki-content-section" id="basic-create">
+        <h2>创建新项目</h2>
+        <p>启动 NeoWarp 后，默认会创建一个空白项目。你也可以通过菜单栏的「文件 → 新建项目」来创建新项目。</p>
+        <p>新项目包含一个默认的舞台和一个猫角色，你可以直接开始拖拽积木进行编程。</p>
+      </section>
+
+      <section class="wiki-content-section" id="basic-open">
+        <h3>打开项目</h3>
+        <p>NeoWarp 支持打开以下格式的工程文件：</p>
+        <ul>
+          <li><code>.np1</code> — NeoWarp 未压缩工程</li>
+          <li><code>.npnp</code> — NeoWarp 加密工程（需输入密码）</li>
+          <li><code>.sb3</code> — Scratch 3 工程</li>
+          <li><code>.sb2</code> — Scratch 2 工程</li>
+          <li><code>.sb</code> — Scratch 1 工程</li>
+        </ul>
+        <p>打开方式：</p>
+        <ol>
+          <li>通过菜单栏「文件 → 打开」选择文件</li>
+          <li>直接将文件拖拽到 NeoWarp 窗口</li>
+          <li>在文件管理器中双击关联的工程文件（需安装时勾选文件关联）</li>
+        </ol>
+        <div class="wiki-callout warning">
+          <strong>注意：</strong>打开 <code>.npnp</code> 加密文件时，会弹出密码输入框，需输入正确的密码才能解密并打开项目。
+        </div>
+      </section>
+
+      <section class="wiki-content-section" id="basic-save">
+        <h3>保存项目</h3>
+        <p>NeoWarp 提供多种保存方式：</p>
+        <h4>普通保存（.sb3）</h4>
+        <p>通过菜单栏「文件 → 保存」或快捷键 <code>Ctrl+S</code> / <code>Cmd+S</code>，将项目保存为标准的 Scratch 3 (.sb3) 压缩格式。</p>
+        <h4>另存为</h4>
+        <p>通过「文件 → 另存为」可以选择保存位置和文件名。</p>
+        <h4>加密保存（.npnp）</h4>
+        <p>通过「文件 → 加密保存」可以将项目保存为加密的 .npnp 格式，详见<a href="#encrypt-save" style="color: var(--accent-cyan);">加密保存</a>章节。</p>
+        <h4>保存为 .np1</h4>
+        <p>通过「文件 → 另存为 .np1」可以将项目保存为 NeoWarp 原生的未压缩工程格式。</p>
+      </section>
+
+      <!-- AI 助手 -->
+      <section class="wiki-content-section" id="ai-chat">
+        <h3>使用 AI 对话</h3>
+        <p>配置完成后，即可在 AI 助手窗口中进行对话：</p>
+        <ul>
+          <li>在底部输入框输入你的问题或需求</li>
+          <li>按 <code>Enter</code> 发送消息，<code>Shift+Enter</code> 换行</li>
+          <li>AI 会以<strong>流式输出</strong>的方式实时返回回答</li>
+          <li>对话支持多轮上下文，AI 会记住之前的对话内容</li>
+          <li>可点击「清除对话」按钮重置聊天记录</li>
+        </ul>
+        <p>AI 助手窗口顶部会显示当前使用的模型名称，点击可快速切换模型。状态点（绿色）表示 API Key 已配置。</p>
+      </section>
+
+      <section class="wiki-content-section" id="ai-tools">
+        <h3>AI 工具调用</h3>
+        <p>NeoWarp 的 AI 助手不仅是对话，还支持<strong>工具调用（Tool Call）</strong>，可以直接操作你的 Scratch 项目：</p>
+        <h4>读取项目代码</h4>
+        <p>AI 可以读取当前编辑器中项目的完整 JSON 结构，包括所有角色、积木、变量和列表。这让 AI 能够理解你的项目组织方式，给出针对性的建议。</p>
+        <h4>应用项目修改</h4>
+        <p>AI 可以将修改后的项目 JSON 直接应用到编辑器中，实现「AI 帮你写代码」的效果。</p>
+        <h4>应用精灵修改</h4>
+        <p>AI 可以针对单个角色（精灵）进行修改，通过指定 <code>targetId</code> 精确定位要修改的角色。</p>
+        <h4>获取角色库</h4>
+        <p>AI 可以获取当前项目中所有角色的列表信息，便于在对话中引用特定角色。</p>
+        <div class="wiki-callout warning">
+          <strong>注意：</strong>工具调用的超时时间为 30 秒。如果操作涉及大量数据，可能需要等待。AI 修改项目后，建议先检查再保存。
+        </div>
+      </section>
+
+      <!-- 任务管理器 -->
+      <section class="wiki-content-section" id="task-monitor">
+        <h2>系统监控</h2>
+        <p>通过菜单栏打开「任务管理器」窗口，可以实时监控系统和编辑器的资源使用情况。</p>
+        <h4>CPU 监控</h4>
+        <p>任务管理器通过读取系统 CPU 时间计算实时 CPU 占用率，每 1.5 秒更新一次。顶部卡片显示当前 CPU 百分比和核心数。</p>
+        <h4>RAM 监控</h4>
+        <p>显示已使用内存和总内存（MB），帮助你了解系统内存压力。</p>
+        <h4>资源趋势图</h4>
+        <p>任务管理器以折线图展示最近 60 个数据点（约 90 秒）的 CPU 和 RAM 使用趋势：</p>
+        <ul>
+          <li><strong style="color: var(--accent-cyan);">青色线条</strong>：CPU 占用率</li>
+          <li><strong style="color: var(--accent-purple);">紫色线条</strong>：RAM 占用率</li>
+        </ul>
+        <p>图表支持高 DPI 显示，深色 / 浅色主题自动切换。</p>
+      </section>
+
+      <section class="wiki-content-section" id="task-sprites">
+        <h3>角色资源查看</h3>
+        <p>任务管理器底部显示当前项目中每个角色的资源统计：</p>
+        <table class="wiki-table">
+          <thead>
+            <tr><th>列名</th><th>说明</th></tr>
+          </thead>
+          <tbody>
+            <tr><td>名称</td><td>角色名称（舞台以图标标识）</td></tr>
+            <tr><td>线程</td><td>该角色当前运行的线程数</td></tr>
+            <tr><td>CPU</td><td>该角色估算的 CPU 占用率（含进度条）</td></tr>
+            <tr><td>内存</td><td>该角色估算的内存占用（KB / MB）</td></tr>
+            <tr><td>积木</td><td>该角色的积木总数</td></tr>
+            <tr><td>造型</td><td>该角色的造型数量</td></tr>
+          </tbody>
+        </table>
+        <p>点击列标题可排序（升序 / 降序切换），CPU 进度条颜色根据占用率变化：</p>
+        <ul>
+          <li><span style="color: var(--accent-cyan);">青色</span>：正常（0-20%）</li>
+          <li><span style="color: #ffd93d;">黄色</span>：中等（20-50%）</li>
+          <li><span style="color: #ff6b6b;">红色</span>：较高（>50%）</li>
+        </ul>
+      </section>
+
+      <!-- 待办清单 -->
+      <section class="wiki-content-section" id="todo-manage">
+        <h2>添加与管理待办</h2>
+        <p>通过菜单栏打开「待办清单」窗口，可以在创作过程中随时记录任务和灵感。</p>
+        <h4>添加待办</h4>
+        <p>在顶部输入框中输入待办内容，点击「添加」按钮或按 <code>Enter</code> 即可添加。新待办会出现在列表顶部。</p>
+        <h4>编辑待办</h4>
+        <p>双击待办文字进入编辑模式，或点击右侧的编辑按钮。编辑完成后按 <code>Enter</code> 保存，按 <code>Esc</code> 取消。清空内容后保存会自动删除该待办。</p>
+        <h4>完成标记</h4>
+        <p>点击待办左侧的圆形复选框可标记为已完成 / 未完成。已完成的待办会显示删除线效果。</p>
+        <h4>删除待办</h4>
+        <p>点击待办右侧的删除按钮即可删除。</p>
+        <h4>清除已完成</h4>
+        <p>当有已完成的待办时，底部会显示「清除已完成项」按钮，点击可一键清除所有已完成的待办。</p>
+        <h4>统计信息</h4>
+        <p>顶部状态栏显示总数和已完成数，帮助你掌握进度。</p>
+      </section>
+
+      <section class="wiki-content-section" id="todo-storage">
+        <h3>数据存储</h3>
+        <p>待办清单的数据使用浏览器的 <code>localStorage</code> 进行本地持久化存储，存储键名为 <code>neowarp_todo_list</code>。</p>
+        <p>每个待办项的数据结构如下：</p>
+        <pre><code>{
+  "id": "todo_1234567890_abc123",   // 唯一 ID
+  "text": "待办内容",                // 文本内容
+  "completed": false,               // 是否完成
+  "createdAt": "2024-01-01T00:00:00.000Z",  // 创建时间
+  "completedAt": null               // 完成时间（未完成时不存在）
+}</code></pre>
+        <div class="wiki-callout">
+          <strong>提示：</strong>待办数据存储在本地，不会同步到云端。清除应用数据会导致待办丢失。
+        </div>
+      </section>
+
+      <!-- 加密保存 -->
+      <section class="wiki-content-section" id="encrypt-npnp">
+        <h2>.npnp 加密格式</h2>
+        <p>NeoWarp 独创了 <code>.npnp</code> 加密工程格式，为你的 Scratch 项目提供密码保护。加密后的文件在打开时需要输入正确密码才能解密。</p>
+        <p>文件关联信息：</p>
+        <ul>
+          <li>扩展名：<code>.npnp</code></li>
+          <li>名称：NeoWarp Encrypted Project</li>
+          <li>MIME 类型：<code>application/x.neowarp.npnp</code></li>
+        </ul>
+      </section>
+
+      <section class="wiki-content-section" id="encrypt-save">
+        <h3>加密保存项目</h3>
+        <p>通过菜单栏「文件 → 加密保存」可以将当前项目保存为加密的 .npnp 文件。保存时会弹出加密对话框，需要填写：</p>
+        <ol>
+          <li><strong>标题</strong>：项目的标题名称（不能为空）</li>
+          <li><strong>密码</strong>：用于加密的密码（不能为空）</li>
+          <li><strong>确认密码</strong>：再次输入密码以确认（两次密码必须一致）</li>
+        </ol>
+        <p>填写完成后点击「Encrypt & Save」按钮即可保存。按 <code>Esc</code> 或点击遮罩层可取消。</p>
+        <div class="wiki-callout warning">
+          <strong>重要：</strong>请务必记住你设置的密码。如果忘记密码，加密的项目将无法恢复。建议将密码保存在安全的地方。
+        </div>
+      </section>
+
+      <section class="wiki-content-section" id="encrypt-open">
+        <h3>打开加密文件</h3>
+        <p>打开 .npnp 加密文件时，NeoWarp 会自动弹出密码输入框：</p>
+        <ol>
+          <li>输入密码后点击「OK」或按 <code>Enter</code></li>
+          <li>如果密码正确，项目将正常打开</li>
+          <li>如果密码错误，会重新弹出密码输入框让你重试</li>
+          <li>点击「Cancel」或按 <code>Esc</code> 可取消打开</li>
+        </ol>
+        <p>解密过程通过主进程的 <code>decryptNpnpFile</code> 接口完成，密码不会明文存储在内存中。</p>
+      </section>
+
+      <!-- 文件格式 -->
+      <section class="wiki-content-section" id="format-np1">
+        <h2>.np1 格式</h2>
+        <p><code>.np1</code> 是 NeoWarp 的原生未压缩工程格式。与 .sb3 的 ZIP 压缩格式不同，.np1 以未压缩的方式存储项目数据，便于版本控制和差异比较。</p>
+        <p>文件关联信息：</p>
+        <ul>
+          <li>扩展名：<code>.np1</code></li>
+          <li>名称：NeoWarp Project (Uncompressed)</li>
+          <li>MIME 类型：<code>application/x.scratch.np1</code></li>
+          <li>角色：Editor（编辑器）</li>
+        </ul>
+      </section>
+
+      <section class="wiki-content-section" id="format-viewsb3">
+        <h2>.viewsb3 格式</h2>
+        <p><code>.viewsb3</code> 是 NeoWarp 的只读分享格式，专为保护源码而设计。当你想分享作品给朋友但不想让对方看到积木代码时，可以使用此格式。</p>
+        <h4>主要特性</h4>
+        <ul>
+          <li><strong>隐藏源码</strong>：对方打开后只能看到全屏舞台，无法查看或编辑任何积木代码</li>
+          <li><strong>只读模式</strong>：所有编辑功能被禁用，只能观看项目运行</li>
+          <li><strong>版本要求</strong>：需 NeoWarp 1.0.11 及以上版本才能正确打开</li>
+          <li><strong>保护创意</strong>：适合分享成品作品，同时保护你的创作思路和代码逻辑</li>
+        </ul>
+        <h4>使用方法</h4>
+        <ol>
+          <li>在 NeoWarp 中打开你的项目</li>
+          <li>通过菜单选择「保存为 .viewsb3」或使用相应导出功能</li>
+          <li>将生成的 .viewsb3 文件分享给朋友</li>
+          <li>对方使用 NeoWarp 1.0.11+ 打开后，只能看到全屏舞台</li>
+        </ol>
+        <div class="wiki-callout">
+          <strong>提示：</strong>如果对方使用旧版本 NeoWarp 或其他 Scratch 编辑器打开 .viewsb3 文件，可能无法正确显示或会暴露源码。请确保对方使用 NeoWarp 1.0.11 或更新版本。
+        </div>
+      </section>
+
+      <section class="wiki-content-section" id="format-compat">
+        <h3>兼容格式</h3>
+        <p>NeoWarp 完全兼容 Scratch 全版本的工程文件格式：</p>
+        <table class="wiki-table">
+          <thead>
+            <tr><th>扩展名</th><th>说明</th><th>MIME 类型</th></tr>
+          </thead>
+          <tbody>
+            <tr><td><code>.np1</code></td><td>NeoWarp 未压缩工程</td><td>application/x.scratch.np1</td></tr>
+            <tr><td><code>.npnp</code></td><td>NeoWarp 加密工程</td><td>application/x.neowarp.npnp</td></tr>
+            <tr><td><code>.viewsb3</code></td><td>NeoWarp 只读分享格式</td><td>application/x.neowarp.viewsb3</td></tr>
+            <tr><td><code>.sb3</code></td><td>Scratch 3 工程（ZIP 压缩）</td><td>application/x.scratch.sb3</td></tr>
+            <tr><td><code>.sb2</code></td><td>Scratch 2 工程</td><td>application/x.scratch.sb2</td></tr>
+            <tr><td><code>.sb</code></td><td>Scratch 1 工程</td><td>application/x.scratch.sb</td></tr>
+          </tbody>
+        </table>
+        <p>安装 NeoWarp 后，这些格式会自动关联到 NeoWarp，双击即可用 NeoWarp 打开。</p>
+      </section>
+
+      <!-- 其他功能 -->
+      <section class="wiki-content-section" id="other-stage">
+        <h2>分离舞台</h2>
+        <p>NeoWarp 支持将舞台弹出为独立窗口（Detached Stage），便于在多屏幕场景下进行演示或调试。</p>
+        <p>使用方法：通过菜单栏或舞台区域的按钮将舞台分离。分离后的舞台窗口可以独立移动和调整大小，与编辑器主窗口同步显示项目运行状态。</p>
+        <p>分离舞台通过自定义协议 <code>tw-detached-stage</code> 加载，与主进程解耦，确保安全性。</p>
+      </section>
+
+      <section class="wiki-content-section" id="other-analysis">
+        <h3>项目分析</h3>
+        <p>NeoWarp 提供项目结构分析功能，可以查看项目的整体构成，包括角色数量、积木统计、资源占用等信息。通过菜单栏打开「项目分析」窗口即可使用。</p>
+        <p>项目分析使用 <code>html2canvas</code> 库进行截图渲染，支持将分析结果导出为图片。</p>
+      </section>
+
+      <section class="wiki-content-section" id="other-addons">
+        <h3>Addons 插件</h3>
+        <p>NeoWarp 完整支持 TurboWarp 的 Addon 插件系统。通过菜单栏的「Addons」入口可以管理插件：</p>
+        <ul>
+          <li>启用 / 禁用插件</li>
+          <li>调整插件设置</li>
+          <li>浏览可用插件列表</li>
+        </ul>
+        <p>Addon 插件通过 <code>tw-editor</code> 协议加载，与编辑器主体隔离运行。</p>
+      </section>
+
+      <section class="wiki-content-section" id="other-packager">
+        <h3>Packager 打包器</h3>
+        <p>NeoWarp 内置 TurboWarp Packager 打包器，可以将你的 Scratch 项目打包为可分发的格式：</p>
+        <ul>
+          <li>离线 HTML 文件（单文件包含所有资源）</li>
+          <li>ZIP 压缩包</li>
+          <li>Windows / macOS / Linux 可执行文件</li>
+        </ul>
+        <p>通过菜单栏打开「Packager」窗口，选择项目文件和打包选项即可生成可分发的作品。</p>
+        <div class="wiki-callout">
+          <strong>提示：</strong>Packager 打包后的项目可以脱离 NeoWarp 独立运行，适合分享给没有安装 NeoWarp 的用户。
+        </div>
+      </section>
+
+    </main>
+  </div>
+
+  <script src="js/wiki.js"></script>
+</body>
+</html>
