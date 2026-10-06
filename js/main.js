@@ -11,6 +11,7 @@
   var scrollHint = document.getElementById('scrollHint');
   var navToggle = document.getElementById('navToggle');
   var navLinks = document.getElementById('navLinks');
+  var heroCta = document.getElementById('heroCta');
 
   // ---------- 移动端菜单 ----------
   navToggle.addEventListener('click', function () {
@@ -57,8 +58,9 @@
     heroTitle.style.transform = 'translate(' + deltaX + 'px, ' + deltaY + 'px) scale(' + scale + ')';
     heroTitle.style.opacity = opacity;
 
-    // 副标题与提示在滚动开始时淡出
+    // 副标题、CTA 与提示在滚动开始时淡出
     heroSubtitle.style.opacity = 1 - progress * 1.5;
+    if (heroCta) heroCta.style.opacity = 1 - progress * 1.5;
     scrollHint.style.opacity = 1 - progress * 2;
 
     // hero-content 整体在动画完成后不再拦截事件
@@ -144,3 +146,4 @@
   });
 
 })();
+
