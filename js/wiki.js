@@ -1,118 +1,102 @@
-/* ============================================
-   NeoWarp Wiki 交互
-   ============================================ */
+/* ==========================================================================
+   NeoWarp — documentation page
+   Collapsible table of contents, scroll-spy for the active section, and the
+   mobile drawer. The TOC markup is authored inline on the page, so this file
+   only wires up behaviour.
+   ========================================================================== */
 (function () {
   'use strict';
 
-  var tocItems = document.querySelectorAll('.wiki-toc-item');
-  var leafLinks = document.querySelectorAll('.wiki-toc-link.leaf');
-  var sections = document.querySelectorAll('.wiki-content-section');
   var sidebar = document.getElementById('wikiSidebar');
   var toggle = document.getElementById('wikiToggle');
-  var overlay = document.getElementById('wikiOverlay');
+  var scrim = document.getElementById('wikiScrim');
+  var groups = Array.prototype.slice.call(document.querySelectorAll('.toc__group'));
+  var sections = Array.prototype.slice.call(document.querySelectorAll('.doc > section'));
 
-  // ---------- 展开 / 折叠目录 ----------
-  tocItems.forEach(function (item) {
-    var link = item.querySelector('.wiki-toc-link');
-    var sub = item.querySelector('.wiki-toc-sub');
-
-    if (sub) {
-      link.addEventListener('click', function (e) {
-        // 如果点击的是叶子链接则不切换展开
-        if (e.target.closest('.leaf')) return;
-        item.classList.toggle('expanded');
-      });
-    }
-  });
-
-  // 默认展开第一个目录
-  if (tocItems.length > 0) {
-    tocItems[0].classList.add('expanded');
+  /* ---------- Mobile drawer --------------------------------------------- */
+  function setDrawer(open) {
+    if (!sidebar) return;
+    sidebar.classList.toggle('is-open', open);
+    if (scrim) scrim.classList.toggle('is-open', open);
+    if (toggle) toggle.setAttribute('aria-expanded', open ? 'true' : 'false');
+    document.body.style.overflow = open ? 'hidden' : '';
   }
 
-  // ---------- 点击叶子链接滚动到内容 ----------
-  leafLinks.forEach(function (link) {
+  if (toggle) {
+    toggle.addEventListener('click', function () {
+      setDrawer(!sidebar.classList.contains('is-open'));
+    });
+  }
+  if (scrim) {
+    scrim.addEventListener('click', function () {
+      setDrawer(false);
+    });
+  }
+  document.addEventListener('keydown', function (e) {
+    if (e.key === 'Escape') setDrawer(false);
+  });
+
+  /* ---------- Collapsible groups ---------------------------------------- */
+  groups.forEach(function (group) {
+    var link = group.querySelector('.toc__link');
+    if (!link) return;
+
+    // Open the group that owns the section currently in view.
+    var owns = sections.some(function (section) {
+      return !!group.querySelector('[href="#' + section.id + '"]');
+    });
+    if (owns) group.dataset.open = 'true';
+    link.setAttribute('aria-expanded', group.dataset.open === 'true' ? 'true' : 'false');
+
     link.addEventListener('click', function () {
-      var targetId = link.getAttribute('data-target');
-      var target = document.getElementById(targetId);
-      if (target) {
-        target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      var open = group.dataset.open !== 'true';
+      group.dataset.open = open ? 'true' : 'false';
+      link.setAttribute('aria-expanded', open ? 'true' : 'false');
+    });
+  });
 
-        // 高亮当前选中
-        leafLinks.forEach(function (l) { l.classList.remove('active'); });
-        link.classList.add('active');
+  /* ---------- Scroll spy ------------------------------------------------- */
+  var links = Array.prototype.slice.call(document.querySelectorAll('.toc__sub a'));
 
-        // 移动端关闭侧栏
-        if (window.innerWidth <= 900) {
-          sidebar.classList.remove('open');
-          overlay.classList.remove('open');
-        }
+  function setActive(id) {
+    links.forEach(function (a) {
+      var on = a.getAttribute('href') === '#' + id;
+      a.classList.toggle('is-active', on);
+      if (on) {
+        var group = a.closest('.toc__group');
+        if (group) group.dataset.open = 'true';
       }
     });
-  });
+  }
 
-  // ---------- 滚动高亮当前目录 ----------
-  if ('IntersectionObserver' in window) {
-    var sectionObserver = new IntersectionObserver(function (entries) {
-      entries.forEach(function (entry) {
-        if (entry.isIntersecting) {
-          var id = entry.target.id;
-          entry.target.classList.add('visible');
-          leafLinks.forEach(function (link) {
-            if (link.getAttribute('data-target') === id) {
-              link.classList.add('active');
-              // 展开父级目录
-              var parentItem = link.closest('.wiki-toc-item');
-              if (parentItem) {
-                parentItem.classList.add('expanded');
-              }
-            } else {
-              link.classList.remove('active');
-            }
-          });
-        }
-      });
-    }, {
-      rootMargin: '-20% 0px -60% 0px',
-      threshold: 0
-    });
+  if ('IntersectionObserver' in window && sections.length) {
+    var visible = new Map();
+
+    var spy = new IntersectionObserver(
+      function (entries) {
+        entries.forEach(function (entry) {
+          if (entry.isIntersecting) visible.set(entry.target.id, entry.boundingClientRect.top);
+          else visible.delete(entry.target.id);
+        });
+        if (!visible.size) return;
+        var best = null;
+        visible.forEach(function (top, id) {
+          if (best === null || top < best.top) best = { id: id, top: top };
+        });
+        if (best) setActive(best.id);
+      },
+      { rootMargin: '-20% 0px -60% 0px', threshold: 0 }
+    );
 
     sections.forEach(function (section) {
-      sectionObserver.observe(section);
-    });
-
-    // 内容渐入观察器
-    var revealObserver = new IntersectionObserver(function (entries) {
-      entries.forEach(function (entry) {
-        if (entry.isIntersecting) {
-          entry.target.classList.add('visible');
-          revealObserver.unobserve(entry.target);
-        }
-      });
-    }, {
-      threshold: 0.1,
-      rootMargin: '0px 0px -50px 0px'
-    });
-
-    sections.forEach(function (section) {
-      revealObserver.observe(section);
-    });
-  } else {
-    // 回退：直接显示
-    sections.forEach(function (section) {
-      section.classList.add('visible');
+      spy.observe(section);
     });
   }
 
-  // ---------- 移动端侧栏切换 ----------
-  toggle.addEventListener('click', function () {
-    sidebar.classList.toggle('open');
-    overlay.classList.toggle('open');
-  });
-
-  overlay.addEventListener('click', function () {
-    sidebar.classList.remove('open');
-    overlay.classList.remove('open');
-  });
-
+  /* Close the drawer when a link inside it is followed. */
+  if (sidebar) {
+    sidebar.addEventListener('click', function (e) {
+      if (e.target.closest('a')) setDrawer(false);
+    });
+  }
 })();

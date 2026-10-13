@@ -1,242 +1,546 @@
 <!DOCTYPE html>
 <html lang="zh-CN">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>NeoWarp</title>
-  <meta name="description" content="NeoWarp 是一款基于 TurboWarp 二次开发的 Scratch 编辑器，集成 AI 助手、任务管理器、待办清单、加密保存等强大功能。">
-  <link rel="icon" href="assets/Logo.png" type="image/png">
-  <link rel="stylesheet" href="css/style.css">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>NeoWarp — 带 AI 助手的 Scratch 编辑器</title>
+<meta name="description" content="NeoWarp 是基于 TurboWarp Desktop 二次开发的离线 Scratch 编辑器：44 项工具的 AI 编程助手、多人协作、手机扫码编程、Monaco 扩展编辑器、Photoshop 风格图像编辑器，以及完整的编译与打包能力。">
+<meta name="theme-color" content="#0a0c12" media="(prefers-color-scheme: dark)">
+<meta name="theme-color" content="#f6f7fb" media="(prefers-color-scheme: light)">
+<meta property="og:title" content="NeoWarp — 带 AI 助手的 Scratch 编辑器">
+<meta property="og:description" content="AI 编程助手、多人协作、手机编程、内置工作室，以及 TurboWarp 全部编译与打包能力。">
+<meta property="og:type" content="website">
+<link rel="icon" href="assets/Logo.png" type="image/png">
+<link rel="preload" href="font/HarmonyOS_Sans_SC_Medium.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="font/HarmonyOS_Sans_SC_Black.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="stylesheet" href="css/style.css">
+<script>
+  // Apply the stored theme before first paint so there is no flash.
+  try {
+    var t = localStorage.getItem('neowarp-theme');
+    if (t === 'light' || t === 'dark') document.documentElement.dataset.theme = t;
+  } catch (e) {}
+</script>
 </head>
 <body>
 
-  <!-- 导航栏 -->
-  <nav class="navbar" id="navbar">
-    <a href="index.html" class="nav-brand">
-      <img src="assets/Logo.png" alt="NeoWarp Logo">
-      <span class="nav-brand-text">NeoWarp</span>
-    </a>
-    <ul class="nav-links" id="navLinks">
-      <li><a href="index.html" class="nav-link active">主页</a></li>
-      <li><a href="wiki.html" class="nav-link">Wiki</a></li>
-      <li><a href="download.html" class="nav-link">下载</a></li>
-    </ul>
-    <button class="nav-toggle" id="navToggle" aria-label="菜单">
-      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
-        <line x1="3" y1="6" x2="21" y2="6"></line>
-        <line x1="3" y1="12" x2="21" y2="12"></line>
-        <line x1="3" y1="18" x2="21" y2="18"></line>
-      </svg>
-    </button>
-  </nav>
+<a class="skip-link" href="#main">跳到主要内容</a>
+<div class="progress" aria-hidden="true"></div>
 
-  <!-- 首屏 Hero -->
-  <section class="hero" id="hero">
-    <div class="hero-bg">
-      <div class="hero-glow cyan"></div>
-      <div class="hero-glow purple"></div>
-      <div class="hero-grid"></div>
-    </div>
-    <div class="hero-content" id="heroContent">
-      <div class="hero-badge">
-        <span class="dot"></span>
-        <span>Powered By TurboWarp</span>
+<header class="site-header" id="header">
+  <div class="wrap">
+    <nav class="nav" aria-label="主导航">
+      <a class="brand" href="index.html">
+        <img class="brand__mark" src="assets/Logo.png" alt="" width="30" height="30">
+        <span class="brand__name grad">NeoWarp</span>
+      </a>
+      <ul class="nav__links" id="navLinks">
+        <li><a class="nav__link" href="#ai">AI 助手</a></li>
+        <li><a class="nav__link" href="#collab">协作与移动</a></li>
+        <li><a class="nav__link" href="#studio">内置工作室</a></li>
+        <li><a class="nav__link" href="#formats">文件格式</a></li>
+        <li><a class="nav__link" href="wiki.html">文档</a></li>
+      </ul>
+      <div class="nav__actions">
+        <button class="icon-btn" id="themeToggle" type="button" aria-label="切换深浅色主题" title="切换深浅色主题">
+          <svg class="i-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z"/></svg>
+          <svg class="i-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="4"/><path d="M12 2v2m0 16v2M4.9 4.9l1.4 1.4m11.4 11.4 1.4 1.4M2 12h2m16 0h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/></svg>
+        </button>
+        <a class="btn btn--primary btn--sm" href="download.html">下载</a>
+        <button class="icon-btn nav__toggle" id="navToggle" type="button" aria-label="打开菜单" aria-expanded="false" aria-controls="navLinks">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" aria-hidden="true"><path d="M4 7h16M4 12h16M4 17h16"/></svg>
+        </button>
       </div>
-      <h1 class="hero-title" id="heroTitle">NeoWarp</h1>
-      <p class="hero-subtitle" id="heroSubtitle">Scratch编辑器，您的新选择</p>
-      <div class="hero-cta" id="heroCta">
-        <a href="download.html" class="btn btn-primary">
-          立即下载
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-            <path d="M12 5v14"></path>
-            <polyline points="19 12 12 19 5 12"></polyline>
-          </svg>
-        </a>
-        <a href="wiki.html" class="btn btn-ghost">查看文档</a>
-      </div>
-    </div>
-    <div class="hero-scroll-hint" id="scrollHint">
-      <span>向下滚动探索</span>
-      <span class="arrow"></span>
-    </div>
-  </section>
+    </nav>
+  </div>
+</header>
 
-  <!-- 功能介绍 -->
-  <section class="features">
+<main id="main">
 
-    <!-- AI 助手 -->
-    <div class="feature-section" data-feature>
-      <div class="feature-text">
-        <div class="feature-icon cyan">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-            <path d="M12 2a4 4 0 0 1 4 4v1a4 4 0 0 1 4 4v3a4 4 0 0 1-4 4H8a4 4 0 0 1-4-4v-3a4 4 0 0 1 4-4V6a4 4 0 0 1 4-4z"></path>
-            <circle cx="9" cy="13" r="1"></circle>
-            <circle cx="15" cy="13" r="1"></circle>
-            <path d="M9 17h6"></path>
-          </svg>
+  <!-- ================= Hero ================= -->
+  <section class="hero">
+    <div class="hero__glow hero__glow--a" aria-hidden="true"></div>
+    <div class="hero__glow hero__glow--b" aria-hidden="true"></div>
+    <div class="hero__grid" aria-hidden="true"></div>
+    <div class="wrap">
+      <div class="hero__inner">
+        <div>
+          <p class="hero__badge"><b>基于</b> TurboWarp Desktop 二次开发</p>
+          <h1 class="hero__title grad">NeoWarp</h1>
+          <p class="hero__tagline">一个会写积木的 Scratch 编辑器</p>
+          <p class="lead hero__lead">保留 TurboWarp 的高速编译器与全部扩展生态，在此之上加入 AI 编程助手、多人协作、手机扫码编程和一整套内置创作工具。离线可用，密钥不出本机。</p>
+          <div class="hero__cta">
+            <a class="btn btn--primary" href="download.html">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3v12m0 0 4-4m-4 4-4-4"/><path d="M5 19h14"/></svg>
+              下载 NeoWarp
+            </a>
+            <a class="btn btn--ghost" href="wiki.html">阅读使用文档</a>
+          </div>
+          <ul class="hero__meta">
+            <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m4 12 5 5L20 6"/></svg>Windows · macOS · Linux · Android</li>
+            <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m4 12 5 5L20 6"/></svg>GPL-3.0 开源</li>
+            <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m4 12 5 5L20 6"/></svg>完全离线运行</li>
+          </ul>
         </div>
-        <span class="feature-tag cyan">AI 助手</span>
-        <h2 class="feature-title">智能 AI 辅助创作</h2>
-        <p class="feature-desc">内置独立 AI 助手窗口，支持 OpenAI、DeepSeek、智谱 GLM、Kimi、通义千问等多家服务商，能够读取当前项目结构、应用修改到工程或精灵，让 AI 直接参与你的创作流程。</p>
-        <ul class="feature-list">
-          <li>支持 6+ AI 服务商，含 GPT-4.1、DeepSeek R1、GLM-4 等模型</li>
-          <li>可读取项目 JSON 结构，理解积木与角色组织</li>
-          <li>支持工具调用（Tool Call），直接修改项目或精灵</li>
-          <li>流式输出，实时查看 AI 生成内容</li>
-        </ul>
-      </div>
-      <div class="feature-image">
-        <img src="AI.png" alt="AI 助手截图" class="feature-img">
-      </div>
-    </div>
 
-    <!-- 任务管理器 -->
-    <div class="feature-section reverse" data-feature>
-      <div class="feature-text">
-        <div class="feature-icon purple">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-            <rect x="2" y="3" width="20" height="14" rx="2" ry="2"></rect>
-            <line x1="8" y1="21" x2="16" y2="21"></line>
-            <line x1="12" y1="17" x2="12" y2="21"></line>
-          </svg>
-        </div>
-        <span class="feature-tag purple">任务管理器</span>
-        <h2 class="feature-title">实时性能监控</h2>
-        <p class="feature-desc">独立的任务管理器窗口，实时显示系统 CPU 与内存占用率，并以折线图展示资源使用趋势。同时统计每个角色的线程数、CPU 占用、内存估算、积木数与造型数，帮助你精准定位性能瓶颈。</p>
-        <ul class="feature-list">
-          <li>系统级 CPU / RAM 实时监控与趋势图</li>
-          <li>逐角色资源统计：线程、CPU、内存、积木、造型</li>
-          <li>支持按名称、线程、CPU、内存等多维度排序</li>
-          <li>深色 / 浅色主题自动跟随编辑器</li>
-        </ul>
-      </div>
-      <div class="feature-image">
-        <img src="TaskManager.png" alt="任务管理器截图" class="feature-img">
-      </div>
-    </div>
-
-    <!-- 待办清单 -->
-    <div class="feature-section" data-feature>
-      <div class="feature-text">
-        <div class="feature-icon cyan">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-            <path d="M9 11l3 3L22 4"></path>
-            <path d="M21 12v7a2 2 0 01-2 2H5a2 2 0 01-2-2V5a2 2 0 012-2h11"></path>
-          </svg>
-        </div>
-        <span class="feature-tag cyan">待办清单</span>
-        <h2 class="feature-title">轻量级任务管理</h2>
-        <p class="feature-desc">内置待办清单窗口，让你在创作过程中随时记录灵感与任务。支持添加、编辑、删除、完成标记，数据自动保存在本地，无需担心丢失。简洁的界面与流畅的交互，让创作更专注。</p>
-        <ul class="feature-list">
-          <li>一键添加 / 编辑 / 删除待办事项</li>
-          <li>圆形复选框标记完成状态，含删除线效果</li>
-          <li>自动统计总数与已完成数，一键清除已完成项</li>
-          <li>localStorage 本地持久化，数据安全不丢失</li>
-        </ul>
-      </div>
-      <div class="feature-image">
-        <img src="ToDoList.png" alt="待办清单截图" class="feature-img">
-      </div>
-    </div>
-
-    <!-- 加密保存 -->
-    <div class="feature-section reverse" data-feature>
-      <div class="feature-text">
-        <div class="feature-icon purple">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-            <rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect>
-            <path d="M7 11V7a5 5 0 0 1 10 0v4"></path>
-          </svg>
-        </div>
-        <span class="feature-tag purple">加密保存</span>
-        <h2 class="feature-title">密码保护你的作品</h2>
-        <p class="feature-desc">独创 .npnp 加密工程格式，为你的 Scratch 项目加上一层密码保护。保存时设置密码，打开时需要输入正确密码才能解密。无论是未完成的作品还是商业项目，都能安全存储。</p>
-        <ul class="feature-list">
-          <li>独立的 .npnp 加密工程格式</li>
-          <li>保存时需设置标题与密码（含二次确认）</li>
-          <li>打开加密文件时弹出密码输入框</li>
-          <li>密码错误自动重试，保护项目安全</li>
-        </ul>
-      </div>
-      <div class="feature-image">
-        <img src="encryption.png" alt="加密保存截图" class="feature-img">
-      </div>
-    </div>
-
-    <!-- np1 格式 -->
-    <div class="feature-section" data-feature>
-      <div class="feature-text">
-        <div class="feature-icon cyan">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-            <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
-            <polyline points="14 2 14 8 20 8"></polyline>
-            <line x1="16" y1="13" x2="8" y2="13"></line>
-            <line x1="16" y1="17" x2="8" y2="17"></line>
-            <polyline points="10 9 9 9 8 9"></polyline>
-          </svg>
-        </div>
-        <span class="feature-tag cyan">np1 格式</span>
-        <h2 class="feature-title">原生工程文件格式</h2>
-        <p class="feature-desc">NeoWarp 原生支持 .np1 未压缩工程格式，同时完全兼容 Scratch 3 (.sb3)、Scratch 2 (.sb2) 和 Scratch 1 (.sb) 格式。文件关联已集成到系统，双击即可用 NeoWarp 打开。</p>
-        <ul class="feature-list">
-          <li>.np1 — NeoWarp 未压缩工程格式</li>
-          <li>.npnp — NeoWarp 加密工程格式</li>
-          <li>.sb3 / .sb2 / .sb — 完整兼容 Scratch 全版本</li>
-          <li>系统级文件关联，双击直接打开</li>
-        </ul>
-      </div>
-      <div class="feature-image">
-        <img src=".np1file.png" alt="np1 格式截图" class="feature-img">
-      </div>
-    </div>
-
-    <!-- viewsb3 格式 -->
-    <div class="feature-section reverse" data-feature>
-      <div class="feature-text">
-        <div class="feature-icon purple">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-            <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
-            <circle cx="12" cy="12" r="3"></circle>
-          </svg>
-        </div>
-        <span class="feature-tag purple">viewsb3 格式</span>
-        <h2 class="feature-title">只读分享，保护源码</h2>
-        <p class="feature-desc">独创 .viewsb3 只读分享格式，让你在分享作品时隐藏源码。对方打开后只能看到全屏舞台，无法查看或编辑积木代码。适合分享成品作品，同时保护你的创作思路。</p>
-        <ul class="feature-list">
-          <li>保存为 .viewsb3 格式，隐藏所有源码</li>
-          <li>对方打开仅显示全屏舞台，无法编辑</li>
-          <li>需 NeoWarp 1.0.11 及以上版本支持</li>
-          <li>完美保护作品创意与代码逻辑</li>
-        </ul>
-      </div>
-      <div class="feature-image">
-        <div class="feature-image-placeholder">
-          <div class="placeholder-label">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
-              <rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect>
-              <circle cx="8.5" cy="8.5" r="1.5"></circle>
-              <polyline points="21 15 16 10 5 21"></polyline>
-            </svg>
-            <span>viewsb3 截图位</span>
+        <!-- Signature visual: a real block stack, drawn in CSS -->
+        <div class="stack" aria-hidden="true">
+          <div class="stack__bar">
+            <span class="stack__dot"></span><span class="stack__dot"></span><span class="stack__dot"></span>
+            <span class="stack__file">demo.np1</span>
+          </div>
+          <div class="blocks">
+            <span class="blk blk--events blk--hat">
+              <svg viewBox="0 0 24 24" fill="currentColor"><path d="M8 5h8l-2.2 3H10.2z"/></svg>
+              当 <span class="blk__arg">绿旗</span> 被点击
+            </span>
+            <span class="blk blk--motion">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M5 12h14m0 0-5-5m5 5-5 5"/></svg>
+              移动 <span class="blk__arg">10</span> 步
+            </span>
+            <span class="blk blk--looks">
+              <svg viewBox="0 0 24 24" fill="currentColor"><path d="M4 6h16v9H9l-5 4z"/></svg>
+              说 <span class="blk__arg">你好，NeoWarp！</span>
+            </span>
+            <span class="blk blk--control">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M4 9h16M4 15h16"/></svg>
+              重复执行 <span class="blk__arg blk__arg--round">10</span> 次
+            </span>
+            <span class="blk blk--control blk--indent">
+              等待 <span class="blk__arg blk__arg--round">1</span> 秒
+            </span>
+            <span class="blk blk--sensing blk--indent blk--last">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><circle cx="12" cy="12" r="9"/><path d="M12 8v.01M11 12h1v4h1"/></svg>
+              询问 <span class="blk__arg">下一步做什么？</span> 并等待
+            </span>
           </div>
         </div>
       </div>
     </div>
-
   </section>
 
-  <!-- 页脚 -->
-  <footer class="footer">
-    <div class="footer-links">
-      <a href="index.html">主页</a>
-      <a href="wiki.html">Wiki</a>
-      <a href="download.html">下载</a>
-      <a href="https://github.com/Shiyuan-318/Neowarp" target="_blank" rel="noopener">GitHub</a>
+  <!-- ================= Screenshot strip ================= -->
+  <section class="section section--alt" aria-labelledby="tour-title">
+    <div class="wrap">
+      <div class="section__head">
+        <h2 id="tour-title">先看看它长什么样</h2>
+        <p class="lead">全部窗口都是原生界面，跟随系统深浅色，支持毛玻璃与自定义背景。</p>
+      </div>
     </div>
-    <p>NeoWarp © 2024 Shiyuan · 基于 GPL-3.0 协议开源 · 基于 TurboWarp 二次开发</p>
-  </footer>
+    <div class="wrap">
+      <div class="strip">
+        <figure>
+          <img src="AI.png" alt="NeoWarp AI 助手窗口：左侧为对话列表，右侧为对话区与 DeepSeek 模型选择器。" loading="lazy" decoding="async">
+          <figcaption>AI 助手 · 多会话与模型切换</figcaption>
+        </figure>
+        <figure>
+          <img src="TaskManager.png" alt="任务管理器窗口：系统 CPU 与内存趋势曲线，下方为各角色的资源占用排行。" loading="lazy" decoding="async">
+          <figcaption>任务管理器 · CPU 与内存趋势</figcaption>
+        </figure>
+        <figure>
+          <img src="ToDoList.png" alt="待办清单窗口：顶部输入框，列表项带圆形复选框与删除按钮。" loading="lazy" decoding="async">
+          <figcaption>待办清单 · 本地持久化</figcaption>
+        </figure>
+        <figure>
+          <img src="encryption.png" alt="加密保存对话框：填写标题、密码与确认密码后保存为 .npnp 文件。" loading="lazy" decoding="async">
+          <figcaption>加密保存 · .npnp 工程</figcaption>
+        </figure>
+      </div>
+    </div>
+  </section>
 
-  <script src="js/main.js"></script>
+  <!-- ================= AI ================= -->
+  <section class="section" id="ai" aria-labelledby="ai-title">
+    <div class="wrap">
+      <div class="section__head">
+        <p class="chip chip--ai">AI 创作</p>
+        <h2 id="ai-title">让 AI 直接改积木，而不只是陪你聊天</h2>
+        <p class="lead">助手通过 44 项内置工具读写你的项目：读结构、增删改脚本、管理造型与声音、装扩展、点绿旗、截图看运行效果。</p>
+      </div>
+
+      <div class="split">
+        <div class="split__body">
+          <h3>NeoWarp AI 助手</h3>
+          <p>AI 用一套自研的积木 DSL 描述脚本，经编辑器的 opcode schema 校验后才写入工作区。修改会精确落到具体积木，而不是覆盖整个项目。</p>
+          <ul class="ticks">
+            <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m4 12 5 5L20 6"/></svg><span><strong>44 项工具</strong>覆盖积木、造型、声音、变量、列表与扩展管理</span></li>
+            <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m4 12 5 5L20 6"/></svg><span><strong>增量修改</strong>支持新增、插入、改输入、删除，粒度到单个积木</span></li>
+            <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m4 12 5 5L20 6"/></svg><span><strong>一键撤销</strong>每次改动前自动存快照，随时回到对话前的状态</span></li>
+            <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m4 12 5 5L20 6"/></svg><span><strong>看得见结果</strong>把舞台截图发给模型，让它自己检查运行效果</span></li>
+          </ul>
+        </div>
+        <div class="split__media">
+          <figure class="media">
+            <div class="media__bar"><span class="media__dot"></span><span class="media__dot"></span><span class="media__dot"></span><span class="media__name">AI Assistant</span></div>
+            <img src="AI.png" alt="NeoWarp AI 助手窗口，底部可选择模型并输入消息。" loading="lazy" decoding="async">
+            <figcaption class="media__note">多会话管理、思维链展示、流式输出、用量统计与思考强度调节。</figcaption>
+          </figure>
+        </div>
+      </div>
+
+      <div class="cards" style="margin-top: clamp(2rem, 1rem + 3vw, 3.5rem)">
+        <article class="card card--ai">
+          <span class="card__icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 4h6v3l4 7v4a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2v-4l4-7z"/><path d="M9 4V3h6v1"/></svg></span>
+          <h3>多模态输入</h3>
+          <p>可发送舞台截图，也能附加 <code>.md</code>、<code>.txt</code>、<code>.pdf</code>、<code>.csv</code> 文件，让模型带着上下文作答。</p>
+        </article>
+        <article class="card card--ai">
+          <span class="card__icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg></span>
+          <h3>内置联网搜索</h3>
+          <p>聚合 DuckDuckGo、Bing 与 Wikipedia，需要查资料时不必切出编辑器。</p>
+        </article>
+        <article class="card card--ai">
+          <span class="card__icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="4" width="18" height="16" rx="2"/><circle cx="8.5" cy="9.5" r="1.6"/><path d="m4 18 5-5 4 4 3-2 4 3"/></svg></span>
+          <h3>从 URL 加素材</h3>
+          <p>粘贴图片地址即可添加造型或精灵，支持本地路径、全角标点纠正与魔数格式识别。</p>
+        </article>
+        <article class="card card--ai">
+          <span class="card__icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 6h16M4 12h16M4 18h10"/><circle cx="19" cy="18" r="2.4"/></svg></span>
+          <h3>待办联动</h3>
+          <p>复杂任务自动拆成步骤卡片，执行进度实时更新，长任务不再半途失联。</p>
+        </article>
+      </div>
+
+      <div class="split split--flip" style="margin-top: clamp(2.5rem, 1.5rem + 4vw, 5rem)">
+        <div class="split__body">
+          <h3>NeoWarp SOLO</h3>
+          <p>一个纯 AI 工作台，没有传统编辑器界面。直接对 <code>.sb3</code> 或 JavaScript 扩展项目下达指令，后台的隐藏编辑器负责提供 VM 与工具支持，改完直接写回原文件。</p>
+          <ul class="ticks">
+            <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m4 12 5 5L20 6"/></svg><span>独立舞台弹窗：绿旗、暂停、停止与变量监视器</span></li>
+            <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m4 12 5 5L20 6"/></svg><span>支持项目里的「询问并等待」，可以在弹窗里直接作答</span></li>
+            <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m4 12 5 5L20 6"/></svg><span>改动结果保存回原文件，适合批量改写与维护旧工程</span></li>
+          </ul>
+        </div>
+        <div class="split__media">
+          <div class="media">
+            <div class="media__bar"><span class="media__dot"></span><span class="media__dot"></span><span class="media__dot"></span><span class="media__name">模型接入</span></div>
+            <div style="padding: 1.5rem">
+              <p style="color: var(--text-2); font-size: var(--fs-sm)">兼容 OpenAI、Anthropic、Ollama 与自定义 API 格式，内置主流厂商预设。密钥只保存在本机 <code>tw_config.json</code>，请求经主进程代理转发，不经过第三方服务器。</p>
+              <ul class="models" style="margin-top: 1.1rem">
+                <li><b>DeepSeek</b></li>
+                <li><b>智谱 GLM</b></li>
+                <li><b>Kimi</b></li>
+                <li><b>小米 MiMo</b></li>
+                <li><b>华为盘古</b></li>
+                <li><b>通义千问</b></li>
+                <li><b>SenseNova</b></li>
+                <li>Ollama 本地模型</li>
+                <li>自定义接口</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================= Collaboration & mobile ================= -->
+  <section class="section section--alt" id="collab" aria-labelledby="collab-title">
+    <div class="wrap">
+      <div class="section__head">
+        <p class="chip chip--collab">协作与移动</p>
+        <h2 id="collab-title">同一个工程，多台设备一起写</h2>
+        <p class="lead">一端开房间，其他设备扫码或输入地址加入，改动实时同步。手机也能给项目下发积木指令。</p>
+      </div>
+
+      <div class="split">
+        <div class="split__body">
+          <h3>多人协作</h3>
+          <p>主机开启房间（默认端口 8080，需设置房间密码），其他设备加入即可共同编辑。同一局域网内的房间可以被自动扫描发现，不用手动抄地址。</p>
+          <ul class="ticks">
+            <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m4 12 5 5L20 6"/></svg><span><strong>权限控制</strong>可分别为访客开关「添加扩展 / 删除扩展 / 删除精灵」</span></li>
+            <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m4 12 5 5L20 6"/></svg><span><strong>实时聊天</strong>内置 iOS 风格聊天区，沟通不必离开编辑器</span></li>
+            <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m4 12 5 5L20 6"/></svg><span><strong>稳定连接</strong>SHA-256 密码校验、心跳检测、认证超时与超大帧防护</span></li>
+          </ul>
+        </div>
+        <div class="split__media">
+          <div class="media">
+            <div class="media__bar"><span class="media__dot"></span><span class="media__dot"></span><span class="media__dot"></span><span class="media__name">协作房间</span></div>
+            <div style="padding: 1.5rem; display: grid; gap: 0.75rem">
+              <div style="display:flex; align-items:center; gap:0.6rem; font-size:var(--fs-sm)"><span style="width:9px;height:9px;border-radius:50%;background:var(--c-eco);box-shadow:0 0 10px var(--c-eco)"></span>主机 · 房间已开启 · 端口 8080</div>
+              <div style="display:flex; align-items:center; gap:0.6rem; font-size:var(--fs-sm); color:var(--text-2)"><span style="width:9px;height:9px;border-radius:50%;background:var(--brand-1)"></span>访客 A · 正在编辑「角色 2」</div>
+              <div style="display:flex; align-items:center; gap:0.6rem; font-size:var(--fs-sm); color:var(--text-2)"><span style="width:9px;height:9px;border-radius:50%;background:var(--brand-3)"></span>访客 B · 正在编辑「舞台背景」</div>
+              <p style="margin-top:0.4rem; font-size:var(--fs-xs); color:var(--text-3)">任何一端的修改都会即时同步给房间内所有人。</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="split split--flip" style="margin-top: clamp(2.5rem, 1.5rem + 4vw, 5rem)">
+        <div class="split__body">
+          <h3>手机编程</h3>
+          <p>AI 助手一键生成二维码，手机扫码后在浏览器里得到与桌面完全一致的对话界面。手机端不存数据，桌面是唯一数据源，对话与执行结果全部实时同步回编辑器。</p>
+          <ul class="ticks">
+            <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m4 12 5 5L20 6"/></svg><span>扫码即连，无需安装任何 App</span></li>
+            <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m4 12 5 5L20 6"/></svg><span>手机预览：通过局域网（默认端口 8601）导出独立播放器，扫码即可试玩</span></li>
+          </ul>
+        </div>
+        <div class="split__media">
+          <div class="media">
+            <div class="media__bar"><span class="media__dot"></span><span class="media__dot"></span><span class="media__dot"></span><span class="media__name">手机端</span></div>
+            <div style="padding: 1.5rem; display:flex; gap:1.25rem; align-items:center">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true" style="width:74px;height:74px;color:var(--text-3);flex:none"><rect x="5" y="2" width="14" height="20" rx="3"/><path d="M10 5h4M11 19h2"/></svg>
+              <p style="font-size:var(--fs-sm); color:var(--text-2)">躺着也能写项目：手机上发出指令，桌面编辑器里积木跟着变。适合临时改一处、课堂上多人轮流操作。</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================= Studio ================= -->
+  <section class="section" id="studio" aria-labelledby="studio-title">
+    <div class="wrap">
+      <div class="section__head">
+        <p class="chip chip--studio">内置工作室</p>
+        <h2 id="studio-title">编辑器之外，工具也已经装好了</h2>
+        <p class="lead">写扩展、改图片、盯性能、记待办，都不用再去找第三方软件。</p>
+      </div>
+
+      <div class="split">
+        <div class="split__body">
+          <h3>扩展编辑器</h3>
+          <p>基于 Monaco（VS Code 同款内核）的多标签 JavaScript 编辑器，内置 NeoWarp 扩展模板。写完可一键注入到任意打开的编辑器窗口，或存进「我的扩展」库。</p>
+          <ul class="ticks">
+            <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m4 12 5 5L20 6"/></svg><span>多标签编辑、语法高亮与内置模板</span></li>
+            <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m4 12 5 5L20 6"/></svg><span>右侧 AI 面板可弹出或停靠，帮你编写与调试 TurboWarp 扩展</span></li>
+            <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m4 12 5 5L20 6"/></svg><span><code>.js</code> 文件已关联到 NeoWarp，双击即用扩展编辑器打开</span></li>
+          </ul>
+        </div>
+        <div class="split__media">
+          <div class="media">
+            <div class="media__bar"><span class="media__dot"></span><span class="media__dot"></span><span class="media__dot"></span><span class="media__name">Extension Editor</span></div>
+            <div style="padding:1.4rem 1.5rem; font-family:'Cascadia Code','JetBrains Mono',Consolas,monospace; font-size:0.82rem; line-height:1.75; color:var(--text-2); overflow-x:auto">
+              <div><span style="color:var(--c-studio)">class</span> <span style="color:var(--brand-1)">NeoWarpDemo</span> {</div>
+              <div>&nbsp;&nbsp;getInfo() {</div>
+              <div>&nbsp;&nbsp;&nbsp;&nbsp;<span style="color:var(--c-studio)">return</span> { id: <span style="color:var(--c-eco)">'neowarpDemo'</span>, name: <span style="color:var(--c-eco)">'示例扩展'</span> };</div>
+              <div>&nbsp;&nbsp;}</div>
+              <div>&nbsp;&nbsp;hello(args, util) {</div>
+              <div>&nbsp;&nbsp;&nbsp;&nbsp;util.runtime.emit(<span style="color:var(--c-eco)">'SAY'</span>, <span style="color:var(--c-eco)">'Hello'</span>);</div>
+              <div>&nbsp;&nbsp;}</div>
+              <div>}</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="split split--flip" style="margin-top: clamp(2.5rem, 1.5rem + 4vw, 5rem)">
+        <div class="split__body">
+          <h3>图像编辑器</h3>
+          <p>一个 Photoshop 风格的分层图像编辑器，独立窗口运行：菜单栏、工具选项栏与状态栏三段式布局，左侧 14 种工具，右侧是颜色、图层、历史、调整、滤镜与属性面板。</p>
+          <ul class="ticks">
+            <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m4 12 5 5L20 6"/></svg><span><strong>图层</strong>栅格 / 形状 / 文字 / 调整图层，16 种混合模式与不透明度</span></li>
+            <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m4 12 5 5L20 6"/></svg><span><strong>选区与变换</strong>矩形选框、套索、魔棒，支持加选减选反选与羽化</span></li>
+            <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m4 12 5 5L20 6"/></svg><span><strong>调整与滤镜</strong>非破坏性调整叠加高斯模糊、锐化、马赛克等破坏性滤镜</span></li>
+            <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m4 12 5 5L20 6"/></svg><span>可撤销到任意步骤的历史记录，导入导出 PNG / JPG / WebP</span></li>
+          </ul>
+        </div>
+        <div class="split__media">
+          <div class="media">
+            <div class="media__bar"><span class="media__dot"></span><span class="media__dot"></span><span class="media__dot"></span><span class="media__name">Image Editor</span></div>
+            <div style="display:grid; grid-template-columns: 46px 1fr 128px; min-height: 240px">
+              <div style="border-right:1px solid var(--line); display:grid; align-content:start; gap:0.55rem; padding:0.75rem 0; justify-items:center; color:var(--text-3)">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true" style="width:19px;height:19px"><path d="M4 3l16 8-7 2-2 7z"/></svg>
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true" style="width:19px;height:19px"><rect x="4" y="4" width="16" height="16" rx="1" stroke-dasharray="3 3"/></svg>
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true" style="width:19px;height:19px"><path d="M4 20c4-10 12-10 16-16"/></svg>
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true" style="width:19px;height:19px"><path d="M6 6l12 12M18 6L6 18"/></svg>
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true" style="width:19px;height:19px"><circle cx="12" cy="12" r="8"/><path d="M12 4v16"/></svg>
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true" style="width:19px;height:19px"><path d="M12 3v18M3 12h18"/></svg>
+              </div>
+              <div style="display:grid; place-items:center; background-image: repeating-conic-gradient(color-mix(in oklab, var(--text) 7%, transparent) 0 25%, transparent 0 50%); background-size: 18px 18px">
+                <div style="width:150px; aspect-ratio:1; border-radius:18px; background: var(--brand); box-shadow: var(--shadow-1)"></div>
+              </div>
+              <div style="border-left:1px solid var(--line); padding:0.85rem; display:grid; align-content:start; gap:0.5rem; font-size:var(--fs-xs); color:var(--text-3)">
+                <span style="color:var(--text)">图层</span>
+                <span>▢ 调整 · 亮度</span>
+                <span>▣ 形状 · 圆角矩形</span>
+                <span>▣ 文字 · 标题</span>
+                <span>▣ 背景</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="cards cards--5" style="margin-top: clamp(2rem, 1rem + 3vw, 3.5rem)">
+        <article class="card card--studio">
+          <span class="card__icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 11l3 3 8-8"/><path d="M20 12v6a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h9"/></svg></span>
+          <h3>待办清单</h3>
+          <p>轻量待办事项，支持到点系统通知提醒，数据保存在本地。</p>
+        </article>
+        <article class="card card--studio">
+          <span class="card__icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3a9 9 0 1 0 9 9h-9z"/></svg></span>
+          <h3>项目分析</h3>
+          <p>积木分类占比环形图，给出复杂度、代码质量与健康度评估，可导出为图片。</p>
+        </article>
+        <article class="card card--studio">
+          <span class="card__icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="4" width="18" height="13" rx="2"/><path d="M8 21h8M12 17v4"/></svg></span>
+          <h3>任务管理器</h3>
+          <p>系统 CPU 与内存实时曲线，以及每个精灵的 CPU 占用排行。</p>
+        </article>
+        <article class="card card--studio">
+          <span class="card__icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="4" width="18" height="14" rx="2"/><path d="M15 8h4v4"/><path d="m19 8-5 5"/></svg></span>
+          <h3>分离舞台</h3>
+          <p>把舞台弹成独立窗口，2 倍缩放并回传输入，适合双屏演示与调试。</p>
+        </article>
+        <article class="card card--studio">
+          <span class="card__icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 7V5h16v2M12 5v14M9 19h6"/></svg></span>
+          <h3>数据预览</h3>
+          <p>以小窗口预览项目产生的 <code>data:</code> URL 内容，排查数据类积木更方便。</p>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================= Ecosystem ================= -->
+  <section class="section section--alt" id="eco" aria-labelledby="eco-title">
+    <div class="wrap">
+      <div class="section__head">
+        <p class="chip chip--eco">生态与兼容</p>
+        <h2 id="eco-title">TurboWarp 的能力一个没少</h2>
+        <p class="lead">编译器、Addon、打包器与全部官方扩展完整保留，素材库、扩展文档与打包器已本地化，断网也能用。</p>
+      </div>
+
+      <div class="cards cards--6">
+        <article class="card card--eco">
+          <span class="card__icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 8-4 4 4 4M18 8l4 4-4 4M14 5l-4 14"/></svg></span>
+          <h3>JS / Wasm 编译器</h3>
+          <p>继承 TurboWarp 的高性能编译器，复杂项目也能流畅运行，支持深色模式与全部官方扩展。</p>
+        </article>
+        <article class="card card--eco">
+          <span class="card__icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="3" width="8" height="8" rx="2"/><rect x="13" y="3" width="8" height="8" rx="2"/><rect x="3" y="13" width="8" height="8" rx="2"/><path d="M17 13v8m-4-4h8"/></svg></span>
+          <h3>Addon 插件系统</h3>
+          <p>完整的 TurboWarp Addon 支持，可启用、禁用并逐项调整插件设置。</p>
+        </article>
+        <article class="card card--eco">
+          <span class="card__icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m21 8-9-5-9 5 9 5z"/><path d="m3 8v8l9 5 9-5V8"/><path d="M12 13v8"/></svg></span>
+          <h3>Packager 打包器</h3>
+          <p>离线内置，可把项目打包为 HTML、ZIP 或 Windows / macOS / Linux 可执行文件。</p>
+        </article>
+        <article class="card card--eco">
+          <span class="card__icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 19V5a2 2 0 0 1 2-2h9l5 5v11a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2z"/><path d="M8 12h8M8 16h5"/></svg></span>
+          <h3>本地扩展库</h3>
+          <p><code>Expands/</code> 目录下的扩展通过 <code>nw-expands://</code> 协议加载，出现在扩展库的「NeoWarp」标签页。</p>
+        </article>
+        <article class="card card--eco">
+          <span class="card__icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 20h16M6 20V9l6-5 6 5v11"/><path d="M10 20v-5h4v5"/></svg></span>
+          <h3>视觉个性化</h3>
+          <p>积木圆角半径可调、代码区与舞台区自定义背景、「无限画布绘制」，以及全套液态玻璃界面。</p>
+        </article>
+        <article class="card card--eco">
+          <span class="card__icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg></span>
+          <h3>桌面集成</h3>
+          <p>每日更新检查、Discord Rich Presence、最近项目记录，以及主题、设备与硬件加速等桌面设置。</p>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================= Formats & security ================= -->
+  <section class="section" id="formats" aria-labelledby="formats-title">
+    <div class="wrap">
+      <div class="section__head">
+        <p class="chip chip--file">文件与安全</p>
+        <h2 id="formats-title">三种自家格式，加上完整的 Scratch 兼容</h2>
+        <p class="lead">安装后这些扩展名会自动关联到 NeoWarp，双击即可打开；也可以在系统里手动改回其他编辑器。</p>
+      </div>
+
+      <div>
+        <table class="formats">
+          <caption>工程文件格式</caption>
+          <thead>
+            <tr><th scope="col">扩展名</th><th scope="col">说明</th><th scope="col">用途</th></tr>
+          </thead>
+          <tbody>
+            <tr><td><span class="ext">.np1</span></td><td>NeoWarp 未压缩工程</td><td>默认保存格式，便于版本控制与差异比较</td></tr>
+            <tr><td><span class="ext ext--enc">.npnp</span></td><td>NeoWarp 加密工程</td><td>AES-256-GCM + PBKDF2 密码加密，打开需输入密码</td></tr>
+            <tr><td><span class="ext ext--view">.viewsb3</span></td><td>NeoWarp 只读分享格式</td><td>对方只能看到全屏舞台，无法查看或编辑源码</td></tr>
+            <tr><td><span class="ext">.sb3</span></td><td>Scratch 3 工程</td><td>标准压缩格式，可与 Scratch 生态互通</td></tr>
+            <tr><td><span class="ext">.sb2</span> <span class="ext">.sb</span></td><td>Scratch 2 / 1 工程</td><td>打开旧工程，自动迁移到当前格式</td></tr>
+            <tr><td><span class="ext">.js</span></td><td>NeoWarp 扩展</td><td>双击由扩展编辑器打开</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="cards" style="margin-top: clamp(2rem, 1rem + 3vw, 3rem)">
+        <article class="card card--file">
+          <span class="card__icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="4" y="10" width="16" height="10" rx="2"/><path d="M8 10V7a4 4 0 0 1 8 0v3"/></svg></span>
+          <h3>密码保护作品</h3>
+          <p>保存时设置标题与密码（含二次确认），打开时校验后解密；密码错误会重新提示。忘记密码无法找回，请妥善保管。</p>
+        </article>
+        <article class="card card--file">
+          <span class="card__icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M2 12s3.6-7 10-7 10 7 10 7-3.6 7-10 7-10-7-10-7z"/><circle cx="12" cy="12" r="3"/></svg></span>
+          <h3>只读分享</h3>
+          <p>导出 <code>.viewsb3</code> 后，对方打开只看到全屏舞台，源码与积木全部隐藏。建议对方使用 NeoWarp 1.0.11 及以上版本。</p>
+        </article>
+        <article class="card card--file">
+          <span class="card__icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3l8 4v6c0 4.5-3.2 7.6-8 8.6C7.2 20.6 4 17.5 4 13V7z"/><path d="m9 12 2 2 4-4"/></svg></span>
+          <h3>架构与安全</h3>
+          <p>二十余种窗口全部经 <code>tw-*</code> 自定义协议加载，与主进程解耦；全进程启用沙箱、禁用 webview，剪贴板与通知等权限逐窗口审批。</p>
+        </article>
+        <article class="card card--file">
+          <span class="card__icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="M3 10h18M7 15h4"/></svg></span>
+          <h3>密钥不出本机</h3>
+          <p>API Key 只写入本地 <code>tw_config.json</code>；AI 请求由主进程代理转发以绕过跨域限制，不经过任何第三方中转服务器。</p>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================= CTA ================= -->
+  <section class="cta" aria-labelledby="cta-title">
+    <div class="wrap">
+      <div class="cta__inner">
+        <div>
+          <h2 id="cta-title">把这个编辑器装到电脑上</h2>
+          <p>Windows、macOS、Linux 与 Android 安装包均已发布，全部由 GitHub Releases 直接提供。</p>
+        </div>
+        <div class="cta__actions">
+          <a class="btn btn--primary" href="download.html">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3v12m0 0 4-4m-4 4-4-4"/><path d="M5 19h14"/></svg>
+            下载 NeoWarp
+          </a>
+          <a class="btn btn--ghost" href="https://github.com/Shiyuan-318/NeoWarp" target="_blank" rel="noopener">在 GitHub 查看源码</a>
+        </div>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer class="site-footer">
+  <div class="wrap">
+    <div class="footer__top">
+      <div class="footer__brand">
+        <a class="brand" href="index.html">
+          <img class="brand__mark" src="assets/Logo.png" alt="" width="30" height="30">
+          <span class="brand__name grad">NeoWarp</span>
+        </a>
+        <p>基于 TurboWarp Desktop 二次开发的离线 Scratch 编辑器，以 GPL-3.0 协议开源。</p>
+      </div>
+      <div class="footer__col">
+        <h3>站内</h3>
+        <ul>
+          <li><a href="index.html">主页</a></li>
+          <li><a href="wiki.html">使用文档</a></li>
+          <li><a href="download.html">下载</a></li>
+        </ul>
+      </div>
+      <div class="footer__col">
+        <h3>相关</h3>
+        <ul>
+          <li><a href="https://github.com/Shiyuan-318/NeoWarp" target="_blank" rel="noopener">GitHub 仓库</a></li>
+          <li><a href="https://github.com/Shiyuan-318/NeoWarp/releases" target="_blank" rel="noopener">版本发布</a></li>
+          <li><a href="https://github.com/TurboWarp/desktop" target="_blank" rel="noopener">TurboWarp Desktop</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer__bottom">
+      <span>NeoWarp © 2026 Shiyuan · GPL-3.0</span>
+      <span>基于 TurboWarp Desktop 二次开发 · 与 Scratch 团队无隶属关系</span>
+    </div>
+  </div>
+</footer>
+
+<script src="js/main.js"></script>
 </body>
 </html>
-

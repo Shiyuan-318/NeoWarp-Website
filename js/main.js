@@ -1,149 +1,118 @@
-/* ============================================
-   NeoWarp 主页交互
-   ============================================ */
+/* ==========================================================================
+   NeoWarp — site behaviour
+   Kept deliberately small: theme, navigation, and the fallback paths for the
+   two modern CSS features the pages lean on (scroll-driven animations and
+   view-timeline reveals). Where the browser supports the CSS, no JS runs.
+   ========================================================================== */
 (function () {
   'use strict';
 
-  var navbar = document.getElementById('navbar');
-  var heroTitle = document.getElementById('heroTitle');
-  var heroSubtitle = document.getElementById('heroSubtitle');
-  var heroContent = document.getElementById('heroContent');
-  var scrollHint = document.getElementById('scrollHint');
+  var root = document.documentElement;
+
+  /* ---------- Theme ------------------------------------------------------ */
+  var THEME_KEY = 'neowarp-theme';
+
+  function storedTheme() {
+    try {
+      var v = localStorage.getItem(THEME_KEY);
+      return v === 'light' || v === 'dark' ? v : null;
+    } catch (e) {
+      return null;
+    }
+  }
+
+  function systemTheme() {
+    return window.matchMedia && window.matchMedia('(prefers-color-scheme: light)').matches
+      ? 'light'
+      : 'dark';
+  }
+
+  function applyTheme(theme) {
+    root.dataset.theme = theme;
+    var btn = document.getElementById('themeToggle');
+    if (btn) {
+      var next = theme === 'light' ? '深色' : '浅色';
+      btn.setAttribute('aria-label', '切换到' + next + '主题');
+      btn.title = '切换到' + next + '主题';
+    }
+  }
+
+  applyTheme(storedTheme() || systemTheme());
+
+  var themeToggle = document.getElementById('themeToggle');
+  if (themeToggle) {
+    themeToggle.addEventListener('click', function () {
+      var next = root.dataset.theme === 'light' ? 'dark' : 'light';
+      applyTheme(next);
+      try {
+        localStorage.setItem(THEME_KEY, next);
+      } catch (e) {}
+    });
+  }
+
+  /* ---------- Header + mobile navigation --------------------------------- */
+  var header = document.getElementById('header');
   var navToggle = document.getElementById('navToggle');
   var navLinks = document.getElementById('navLinks');
-  var heroCta = document.getElementById('heroCta');
 
-  // ---------- 移动端菜单 ----------
-  navToggle.addEventListener('click', function () {
-    navLinks.classList.toggle('open');
-  });
+  function closeMenu() {
+    if (!navLinks || !navToggle) return;
+    navLinks.classList.remove('is-open');
+    navToggle.setAttribute('aria-expanded', 'false');
+  }
 
-  // 点击链接后关闭菜单
-  navLinks.querySelectorAll('a').forEach(function (link) {
-    link.addEventListener('click', function () {
-      navLinks.classList.remove('open');
+  if (navToggle && navLinks) {
+    navToggle.addEventListener('click', function () {
+      var open = navLinks.classList.toggle('is-open');
+      navToggle.setAttribute('aria-expanded', open ? 'true' : 'false');
     });
-  });
 
-  // ---------- 首屏滚动联动动画 ----------
-  // 滚动时 NeoWarp 文字从屏幕中心移动到导航栏位置
-  var ANIMATION_RANGE = 400; // 滚动 0~400px 区间完成动画
+    navLinks.addEventListener('click', function (e) {
+      if (e.target.closest('a')) closeMenu();
+    });
 
-  function updateHeroAnimation(scrollY) {
-    var progress = Math.min(scrollY / ANIMATION_RANGE, 1);
+    document.addEventListener('keydown', function (e) {
+      if (e.key === 'Escape') closeMenu();
+    });
 
-    // 计算导航栏品牌文字位置（相对于视口中心）
-    var navBrand = navbar.querySelector('.nav-brand');
-    var navRect = navBrand.getBoundingClientRect();
-    var titleRect = heroTitle.getBoundingClientRect();
-
-    // 起始位置：标题中心
-    var startX = titleRect.left + titleRect.width / 2;
-    var startY = titleRect.top + titleRect.height / 2;
-
-    // 目标位置：导航栏品牌文字中心
-    var endX = navRect.left + navRect.width / 2;
-    var endY = navRect.top + navRect.height / 2;
-
-    // 计算位移
-    var deltaX = (endX - startX) * progress;
-    var deltaY = (endY - startY) * progress;
-
-    // 缩放：从 1 缩小到导航栏文字大小比例
-    var scale = 1 - progress * 0.85;
-
-    // 透明度：前 70% 保持可见，后 30% 淡出
-    var opacity = progress < 0.7 ? 1 : 1 - (progress - 0.7) / 0.3;
-
-    heroTitle.style.transform = 'translate(' + deltaX + 'px, ' + deltaY + 'px) scale(' + scale + ')';
-    heroTitle.style.opacity = opacity;
-
-    // 副标题、CTA 与提示在滚动开始时淡出
-    heroSubtitle.style.opacity = 1 - progress * 1.5;
-    if (heroCta) heroCta.style.opacity = 1 - progress * 1.5;
-    scrollHint.style.opacity = 1 - progress * 2;
-
-    // hero-content 整体在动画完成后不再拦截事件
-    if (progress >= 1) {
-      heroContent.style.pointerEvents = 'none';
-    } else {
-      heroContent.style.pointerEvents = '';
-    }
+    document.addEventListener('click', function (e) {
+      if (!navLinks.classList.contains('is-open')) return;
+      if (e.target.closest('.nav')) return;
+      closeMenu();
+    });
   }
 
-  // ---------- 导航栏滚动状态 ----------
-  function updateNavbar(scrollY) {
-    if (scrollY > 50) {
-      navbar.classList.add('scrolled');
-    } else {
-      navbar.classList.remove('scrolled');
-    }
+  /* ---------- Scroll progress bar (fallback) ----------------------------- */
+  var progress = document.querySelector('.progress');
+  var supportsScrollTimeline =
+    window.CSS && CSS.supports && CSS.supports('animation-timeline', 'scroll()');
+
+  function paintProgress() {
+    if (!progress) return;
+    var max = document.documentElement.scrollHeight - window.innerHeight;
+    var ratio = max > 0 ? Math.min(window.scrollY / max, 1) : 0;
+    progress.style.scale = ratio + ' 1';
   }
 
-  // ---------- 滚动事件 ----------
+  /* ---------- Scroll loop ------------------------------------------------- */
   var ticking = false;
 
   function onScroll() {
-    var scrollY = window.pageYOffset || document.documentElement.scrollTop;
-    if (!ticking) {
-      window.requestAnimationFrame(function () {
-        updateHeroAnimation(scrollY);
-        updateNavbar(scrollY);
-        ticking = false;
-      });
-      ticking = true;
-    }
+    if (ticking) return;
+    ticking = true;
+    window.requestAnimationFrame(function () {
+      var y = window.scrollY || document.documentElement.scrollTop;
+      if (header) header.classList.toggle('is-stuck', y > 12);
+      if (!supportsScrollTimeline) paintProgress();
+      ticking = false;
+    });
   }
 
   window.addEventListener('scroll', onScroll, { passive: true });
-
-  // 初始化
-  updateHeroAnimation(0);
-  updateNavbar(0);
-
-  // ---------- 功能介绍滚动渐入 ----------
-  var features = document.querySelectorAll('[data-feature]');
-
-  if ('IntersectionObserver' in window) {
-    var observer = new IntersectionObserver(function (entries) {
-      entries.forEach(function (entry) {
-        if (entry.isIntersecting) {
-          var text = entry.target.querySelector('.feature-text');
-          var image = entry.target.querySelector('.feature-image');
-          if (text) text.classList.add('visible');
-          if (image) image.classList.add('visible');
-          observer.unobserve(entry.target);
-        }
-      });
-    }, {
-      threshold: 0.15,
-      rootMargin: '0px 0px -80px 0px'
-    });
-
-    features.forEach(function (feature) {
-      observer.observe(feature);
-    });
-  } else {
-    // 回退：直接显示
-    features.forEach(function (feature) {
-      var text = feature.querySelector('.feature-text');
-      var image = feature.querySelector('.feature-image');
-      if (text) text.classList.add('visible');
-      if (image) image.classList.add('visible');
-    });
-  }
-
-  // ---------- 下载卡片鼠标追踪光晕 ----------
-  var downloadCards = document.querySelectorAll('.download-card');
-  downloadCards.forEach(function (card) {
-    card.addEventListener('mousemove', function (e) {
-      var rect = card.getBoundingClientRect();
-      var x = ((e.clientX - rect.left) / rect.width) * 100;
-      var y = ((e.clientY - rect.top) / rect.height) * 100;
-      card.style.setProperty('--mouse-x', x + '%');
-      card.style.setProperty('--mouse-y', y + '%');
-    });
+  window.addEventListener('resize', function () {
+    if (!supportsScrollTimeline) paintProgress();
   });
 
+  onScroll();
+  if (!supportsScrollTimeline) paintProgress();
 })();
-
