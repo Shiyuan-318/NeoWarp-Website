@@ -5,7 +5,7 @@
         "moduleResolution": "bundler",
         "strict": true,
         "noUnusedLocals": true,
-        "outDir": "../assets/js",
+        "outDir": "../js",
         "rootDir": "ts",
         "lib": ["ES2020", "DOM", "DOM.Iterable"],
         "skipLibCheck": true

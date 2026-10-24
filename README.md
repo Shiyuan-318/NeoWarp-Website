@@ -40,7 +40,7 @@ NeoWarp（<https://github.com/Shiyuan-318/NeoWarp>）的静态多页官网，使
 ## 构建与预览
 
 ```bash
-# 编译 TypeScript（输出到 assets/js/）
+# 编译 TypeScript（输出到 js/）
 tsc -p src/tsconfig.json
 
 # 本地预览（任选一种静态服务器）
