@@ -1,70 +1,56 @@
 # NeoWarp 官网
 
-NeoWarp 的静态官网。三个页面，没有构建步骤，没有第三方依赖。
+NeoWarp（<https://github.com/Shiyuan-318/NeoWarp>）的静态多页官网，使用 **HTML + CSS + TypeScript** 编写。
+
+顶部导航栏完全复刻 [SyServer 官网](https://github.com/Shiyuan-318/SyServer)的"液态玻璃"效果：贴顶全宽直角条，滚动后形变为居中悬浮圆角胶囊，含毛玻璃 + 边缘折射（SVG feDisplacementMap）+ 方向性高光，以及移动端汉堡菜单与错位淡入动画。
 
 ## 页面
 
-| 文件 | 内容 |
+| 文件 | 说明 |
 | --- | --- |
-| `index.html` | 主页：AI 助手、协作与移动端、内置工作室、生态兼容、文件格式与安全 |
-| `download.html` | 下载：各平台安装包、安装与升级说明 |
-| `wiki.html` | 使用文档：15 个章节的目录 + 正文 |
+| `index.html` | 主页：Hero、数据统计、功能特色卡片、**NeoWarp SOLO 与待办清单的 UI 操作演示**、CTA |
+| `download.html` | 下载页：最新版本横幅、Windows / macOS / Linux 平台卡片、文件格式表格 |
+| `wiki.html` | Wiki 页：侧边目录（滚动高亮）、快速上手 / 界面导览 / 文件格式 / AI 模型配置 / 协作 / 手机编程 / 扩展开发 / FAQ |
+
+## 界面演示说明
+
+- **NeoWarp SOLO**（主页）：纯 AI 工作台界面演示，与实际一致——左侧项目与会话栏、AI 对话（流式打字机输出、待办联动步骤卡片）、模型选择；可点击「打开独立舞台」体验绿旗 / 暂停 / 停止控制、变量监视器与项目"询问并等待"问答框。**按要求不含任何设置界面**。
+- **待办清单**（主页）：液态玻璃风格界面，可交互——新增待办（可设提醒时间）、勾选完成、删除、筛选（全部 / 待完成 / 已完成）、进度统计，以及模拟的"到点系统通知"Toast。
+
+两个演示仅供观看 UI，不具备真实的项目修改能力。
 
 ## 目录结构
 
 ```
-index.html  download.html  wiki.html   三个页面
-css/style.css                          全部样式（设计令牌 + 组件 + 响应式）
-js/main.js                             导航、主题切换、滚动进度条回退
-js/wiki.js                             文档目录折叠、滚动高亮、移动端抽屉
-font/                                  HarmonyOS Sans SC（子集化 woff2 + 原始 ttf）
-assets/Logo.png                        站点图标与导航标识
-*.png                                  应用截图
-CNAME                                  GitHub Pages 域名
+├── index.html / download.html / wiki.html
+├── assets/
+│   ├── css/style.css        # 全部样式（设计系统复刻 SyServer）
+│   ├── img/logo.png         # NeoWarp 官方 Logo
+│   └── js/                  # tsc 编译产物（ESM）
+└── src/
+    ├── tsconfig.json
+    └── ts/
+        ├── nav.ts           # 液态玻璃导航栏（复刻 SyServer 逻辑）
+        ├── main.ts          # 滚动入场动画、统计数字、当前页高亮
+        ├── solo-demo.ts     # SOLO 界面演示交互
+        ├── todo-demo.ts     # 待办清单演示交互
+        └── wiki.ts          # Wiki 目录 scroll-spy
 ```
 
-## 设计
-
-深色「积木工作台」基调——产品本身是深色优先的代码编辑器，Logo 也压在黑底上，所以深色是品牌自洽的选择，而不是为了深色而深色。
-
-配色直接取自 Logo：一条从蓝经紫过渡到橙、琥珀的渐变，用于字标与关键强调。各功能区块用 Scratch 积木的配色做分类标识（AI 蓝、协作橙、工作室紫、生态绿、文件粉），颜色在这里承担信息，而不是装饰。
-
-浅色主题跟随系统，也可以在导航栏切换并记住选择；首屏内联脚本在首次绘制前应用主题，不会闪白。
-
-## 性能
-
-- 字体用 `fonttools` 子集化：只保留页面实际用到的 866 个字形，两个字重从 **16 MB 降到约 190 KB**（woff2），并 `preload` 关键权重。
-- 图片按实际显示尺寸重新压缩（导航 Logo 从 539 KB 降到 16 KB）。
-- 无框架、无构建、无第三方脚本；`main.js` 约 4 KB。
-
-## 用到的现代 Web 能力
-
-- **滚动进度条**：`animation-timeline: scroll()` 驱动，`@supports` 检测，不支持时用 `scroll` 监听回退。
-- **跨文档视图过渡**：`@view-transition { navigation: auto }`，三个页面之间切换更连贯。
-- **响应式**：容器查询、`clamp()` 流式字号（`rem + vw`）、`auto-fit` 网格、`dvh`。
-- **颜色**：`color-mix(in oklab, …)` 做半透明叠色，深浅主题共用一套令牌。
-- **偏好尊重**：`prefers-reduced-motion`、`prefers-color-scheme`、`prefers-contrast`。
-
-页面刻意**没有**逐区块的滚动淡入：一个编排好的首屏动效（积木块依次吸附到位）加上进度条，比到处淡入更克制，也避免内容因动画而不可见。
-
-## 无障碍
-
-跳转链接、语义化 landmark（`header` / `nav` / `main` / `footer`）、每页唯一 `h1`、顺序标题层级、`focus-visible` 焦点环、装饰元素 `aria-hidden`、触控目标不小于 44px、正文行宽控制在 80 字符内。
-
-## 本地预览
+## 构建与预览
 
 ```bash
-python -m http.server 8123
-# 然后打开 http://127.0.0.1:8123/index.html
+# 编译 TypeScript（输出到 assets/js/）
+tsc -p src/tsconfig.json
+
+# 本地预览（任选一种静态服务器）
+python3 -m http.server 8765
 ```
 
-## 设计技能
+浏览器直接打开 `index.html` 亦可运行（脚本为标准 ESM，需通过 http:// 访问而非 file://）。
 
-本站在重写过程中使用了两个设计技能，已一并收录在 `.zcode/skills/` 下，便于后续会话复用：
+## 设计参考
 
-- `frontend-design`（Anthropic）—— 视觉方向、字体与排版取舍、避免模板化设计。
-- `modern-web-guidance`（Google Chrome）—— 现代 Web 最佳实践检索（动效、响应式、无障碍、视觉特效）。
-
-## 部署
-
-`CNAME` 指向 `e.np.sy1.top`，按 GitHub Pages 的静态站点方式发布：把仓库根目录作为站点根即可。
+- 导航栏 / 设计语言：SyServer 官网（Apple 风格深色 + 液态玻璃）
+- 液态玻璃观感复刻 [Kyant0/AndroidLiquidGlass](https://github.com/Kyant0/AndroidLiquidGlass)（Apache-2.0）
+- 产品信息与界面描述：NeoWarp README
