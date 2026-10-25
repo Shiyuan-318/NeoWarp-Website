@@ -2347,16 +2347,55 @@ img {
     align-items: start;
 }
 
+.wiki-toc {
+    position: sticky;
+    top: 96px;
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+    padding: 1rem;
+    background: var(--color-background-secondary);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-lg);
+}
+
+.wiki-toc .toc-title {
+    font-size: 0.75rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: var(--color-text-secondary);
+    padding: 0 0.75rem 0.5rem;
+}
+
+.wiki-toc a {
+    font-size: 0.875rem;
+    color: var(--color-text-secondary);
+    padding: 0.5rem 0.75rem;
+    border-radius: var(--radius-sm);
+    transition: var(--transition-fast);
+}
+
+.wiki-toc a:hover {
+    color: var(--color-text);
+    background: rgba(255, 255, 255, 0.06);
+}
+
+.wiki-toc a.active {
+    color: var(--color-accent);
+    background: rgba(10, 132, 255, 0.12);
+}
+
 @media (max-width: 900px) {
     .wiki-layout { grid-template-columns: 1fr; }
 
     /* 移动端：目录收进底部圆角悬浮液态玻璃面板，可展开 / 折叠 */
-    .wiki-toc {
-        position: fixed;
-        left: 12px;
-        right: 12px;
-        bottom: 12px;
-        top: auto;
+    .wiki-layout .wiki-toc {
+        position: fixed !important;
+        left: 12px !important;
+        right: 12px !important;
+        bottom: calc(12px + env(safe-area-inset-bottom, 0px)) !important;
+        top: auto !important;
         z-index: 900;
         padding: 6px;
         border-radius: 22px;
@@ -2420,45 +2459,6 @@ img {
 
     /* 内容底部留出悬浮目录的空间 */
     .wiki-layout { padding-bottom: 140px; }
-}
-
-.wiki-toc {
-    position: sticky;
-    top: 96px;
-    display: flex;
-    flex-direction: column;
-    gap: 2px;
-    padding: 1rem;
-    background: var(--color-background-secondary);
-    border: 1px solid var(--color-border);
-    border-radius: var(--radius-lg);
-}
-
-.wiki-toc .toc-title {
-    font-size: 0.75rem;
-    font-weight: 700;
-    text-transform: uppercase;
-    letter-spacing: 0.08em;
-    color: var(--color-text-secondary);
-    padding: 0 0.75rem 0.5rem;
-}
-
-.wiki-toc a {
-    font-size: 0.875rem;
-    color: var(--color-text-secondary);
-    padding: 0.5rem 0.75rem;
-    border-radius: var(--radius-sm);
-    transition: var(--transition-fast);
-}
-
-.wiki-toc a:hover {
-    color: var(--color-text);
-    background: rgba(255, 255, 255, 0.06);
-}
-
-.wiki-toc a.active {
-    color: var(--color-accent);
-    background: rgba(10, 132, 255, 0.12);
 }
 
 .wiki-content {
