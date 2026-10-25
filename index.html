@@ -7,11 +7,25 @@
     <meta name="description" content="NeoWarp 是基于 TurboWarp Desktop 二次开发的全功能 Scratch 编辑器，内置 AI 编程助手、NeoWarp SOLO、多人协作、手机编程与全套效率工具。">
     <link rel="icon" type="image/png" href="assets/Logo.png">
     <link rel="stylesheet" href="css/style.css?v=20261025b">
+    <link rel="stylesheet" href="css/home.css?v=20261025">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 </head>
 <body>
+    <svg class="svg-sprite" aria-hidden="true">
+        <symbol id="icon-arrow" viewBox="0 0 24 24"><path d="M5 12h14M13 6l6 6-6 6"/></symbol>
+        <symbol id="icon-ai" viewBox="0 0 24 24"><rect x="5" y="6" width="14" height="13" rx="4"/><path d="M12 2v4M8.5 11h.01M15.5 11h.01M9 15h6"/></symbol>
+        <symbol id="icon-solo" viewBox="0 0 24 24"><path d="M12 3l1.7 5.3L19 10l-5.3 1.7L12 17l-1.7-5.3L5 10l5.3-1.7L12 3Z"/><path d="M18.5 16l.8 2.2 2.2.8-2.2.8-.8 2.2-.8-2.2-2.2-.8 2.2-.8.8-2.2Z"/></symbol>
+        <symbol id="icon-users" viewBox="0 0 24 24"><circle cx="9" cy="8" r="3"/><path d="M3 20v-2a6 6 0 0 1 12 0v2M16 5.5a3 3 0 0 1 0 5.8M17 14a5 5 0 0 1 4 4.9V20"/></symbol>
+        <symbol id="icon-phone" viewBox="0 0 24 24"><rect x="6" y="2" width="12" height="20" rx="3"/><path d="M10 5h4M11 18h2"/></symbol>
+        <symbol id="icon-pen" viewBox="0 0 24 24"><path d="m14 5 5 5M4 20l3.5-.8L20 6.7a2.1 2.1 0 0 0-3-3L4.8 16.2 4 20Z"/><path d="m13 20 3-3 4 1-2 3-5 1Z"/></symbol>
+        <symbol id="icon-grid" viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7" rx="2"/><rect x="14" y="3" width="7" height="7" rx="2"/><rect x="3" y="14" width="7" height="7" rx="2"/><rect x="14" y="14" width="7" height="7" rx="2"/></symbol>
+        <symbol id="icon-check" viewBox="0 0 24 24"><path d="m5 12 4 4L19 6"/></symbol>
+        <symbol id="icon-code" viewBox="0 0 24 24"><path d="m8 8-4 4 4 4M16 8l4 4-4 4M14 4l-4 16"/></symbol>
+        <symbol id="icon-play" viewBox="0 0 24 24"><path d="m9 6 9 6-9 6V6Z"/></symbol>
+    </svg>
+
     <!-- Navigation（复刻 SyServer 液态玻璃导航栏） -->
     <nav class="nav">
         <div class="nav-container">
@@ -31,92 +45,114 @@
     </nav>
 
     <!-- Hero -->
-    <section id="home" class="hero">
-        <div class="hero-bg-grid"></div>
-        <div class="hero-orb hero-orb-1"></div>
-        <div class="hero-orb hero-orb-2"></div>
-        <div class="hero-orb hero-orb-3"></div>
-        <div class="hero-content">
-            <img src="assets/Logo.png" alt="NeoWarp Logo" class="hero-logo">
-            <h1 class="hero-title">NeoWarp</h1>
-            <p class="hero-tagline">
-                基于 <strong>TurboWarp Desktop</strong> 二次开发的全功能 Scratch 编辑器，AI 编程助手 · NeoWarp SOLO · 多人协作 · 手机编程 · 全套效率工具
-            </p>
-            <div class="hero-actions">
-                <a href="download.html" class="btn btn-primary btn-large">立即下载</a>
-                <a href="#demo" class="btn btn-secondary btn-large">界面演示</a>
+    <section id="home" class="home-hero">
+        <div class="home-hero-grid" aria-hidden="true"></div>
+        <div class="home-hero-glow home-hero-glow-blue" aria-hidden="true"></div>
+        <div class="home-hero-glow home-hero-glow-orange" aria-hidden="true"></div>
+        <div class="home-hero-inner">
+            <div class="home-hero-copy">
+                <div class="home-eyebrow"><span class="home-live-dot"></span>TURBOWARP, REIMAGINED</div>
+                <h1 class="home-hero-title"><span>NeoWarp</span>让创作，<br>超越边界。</h1>
+                <p class="home-hero-tagline">不只是 Scratch 编辑器。将 <strong>AI 编程、实时协作与专业创作工具</strong> 融入同一个高性能工作空间，让每一个想法更快成为作品。</p>
+                <div class="hero-actions">
+                    <a href="download.html" class="btn btn-primary btn-large">立即下载<svg class="home-button-icon"><use href="#icon-arrow"/></svg></a>
+                    <a href="#features" class="btn home-btn-ghost btn-large">探索功能<svg class="home-button-icon"><use href="#icon-play"/></svg></a>
+                </div>
+                <div class="home-hero-badges" aria-label="产品特性">
+                    <span><svg><use href="#icon-check"/></svg>跨三大桌面平台</span>
+                    <span><svg><use href="#icon-check"/></svg>JS / Wasm 加速</span>
+                    <span><svg><use href="#icon-check"/></svg>GPL-3.0 开源</span>
+                </div>
             </div>
-            <div class="hero-badges">
-                <span class="hero-badge">Windows / macOS / Linux</span>
-                <span class="hero-badge">JS / Wasm 编译器</span>
-                <span class="hero-badge">GPL-3.0 开源</span>
-                <span class="hero-badge">v2.2.0</span>
+            <div class="home-hero-visual" id="heroVisual" aria-label="NeoWarp 三维创作核心">
+                <canvas id="heroCanvas" aria-hidden="true"></canvas>
+                <div class="hero-visual-fallback" aria-hidden="true"><img src="assets/Logo.png" alt=""></div>
+                <div class="hero-hud hero-hud-ai"><span class="hero-hud-label">AI ENGINE</span><strong>44 种创作工具</strong><i></i></div>
+                <div class="hero-hud hero-hud-speed"><span class="hero-hud-label">RUNTIME</span><strong>JS / Wasm</strong><i></i></div>
+                <div class="hero-hud hero-hud-version"><span>NEOWARP CORE</span><strong>v2.2.0</strong></div>
+                <div class="hero-visual-caption"><span>一个工作空间</span><span>连接每种创作方式</span></div>
             </div>
         </div>
+        <a class="home-scroll-cue" href="#homeStats" aria-label="向下浏览"><span></span>SCROLL TO EXPLORE</a>
     </section>
 
     <!-- Stats -->
-    <section class="stats" data-animate>
-        <div class="stats-container">
-            <div class="stat-card">
-                <span class="stat-number">20+</span>
-                <span class="stat-label">功能窗口</span>
-            </div>
-            <div class="stat-divider"></div>
-            <div class="stat-card">
-                <span class="stat-number">44+</span>
-                <span class="stat-label">AI 内置工具</span>
-            </div>
-            <div class="stat-divider"></div>
-            <div class="stat-card">
-                <span class="stat-number">3</span>
-                <span class="stat-label">支持平台</span>
-            </div>
-            <div class="stat-divider"></div>
-            <div class="stat-card">
-                <span class="stat-number">7</span>
-                <span class="stat-label">项目文件格式</span>
-            </div>
+    <section class="home-stats" id="homeStats" data-animate>
+        <div class="home-stats-container">
+            <div class="home-stat-card"><span class="stat-number">20+</span><span class="home-stat-label">功能窗口</span></div>
+            <div class="home-stat-card"><span class="stat-number">44+</span><span class="home-stat-label">AI 内置工具</span></div>
+            <div class="home-stat-card"><span class="stat-number">3</span><span class="home-stat-label">桌面平台</span></div>
+            <div class="home-stat-card"><span class="stat-number">7</span><span class="home-stat-label">项目文件格式</span></div>
         </div>
     </section>
 
     <!-- Features -->
-    <section id="features" class="features" data-animate>
-        <div class="section-header">
-            <h2 class="section-title">功能特色</h2>
-            <p class="section-subtitle">在 TurboWarp 全部能力之上，为创作而增强</p>
+    <section id="features" class="home-features" data-animate>
+        <div class="home-section-header">
+            <div class="home-eyebrow">BUILT FOR EVERY IDEA</div>
+            <h2 class="home-section-title">不只是编辑器。<br><span>是你的创作系统。</span></h2>
+            <p class="home-section-subtitle">保留 TurboWarp 的全部能力，再把创作流程中的每一步重新设计。</p>
         </div>
-        <div class="features-grid">
-            <div class="feature-card">
-                <div class="feature-icon">🤖</div>
-                <h3 class="feature-title">AI 编程助手</h3>
-                <p class="feature-description">44 个内置工具直连编辑器：增删改积木脚本、管理造型声音、运行项目、舞台截图。自研积木 DSL 精确到每一块积木，改动前自动快照，随时一键撤销。</p>
-            </div>
-            <div class="feature-card">
-                <div class="feature-icon">✨</div>
-                <h3 class="feature-title">NeoWarp SOLO</h3>
-                <p class="feature-description">"纯 AI"工作台，没有传统编辑器界面。直接对 .sb3 项目下达指令，由后台隐藏编辑器提供 VM 支持，独立舞台弹窗实时预览运行效果。</p>
-            </div>
-            <div class="feature-card">
-                <div class="feature-icon">👥</div>
-                <h3 class="feature-title">多人协作</h3>
-                <p class="feature-description">局域网自动扫描发现房间，实时同步每一位协作者的修改。内置 iOS 风格聊天区，权限精细可控，SHA-256 密码校验安全连接。</p>
-            </div>
-            <div class="feature-card">
-                <div class="feature-icon">📱</div>
-                <h3 class="feature-title">手机编程</h3>
-                <p class="feature-description">AI 助手一键生成二维码，手机扫码即获得与桌面完全一致的 AI 聊天界面，躺着也能给项目下发积木指令。</p>
-            </div>
-            <div class="feature-card">
-                <div class="feature-icon">🎨</div>
-                <h3 class="feature-title">Photoshop 风格图像编辑器</h3>
-                <p class="feature-description">14 种工具、图层与混合模式、非破坏性调整、选区与变换，一键将作品导出为项目中角色的造型或新角色。</p>
-            </div>
-            <div class="feature-card">
-                <div class="feature-icon">🧰</div>
-                <h3 class="feature-title">全套效率工具</h3>
-                <p class="feature-description">待办清单（到点系统通知）、项目分析、任务管理器、独立舞台、数据预览，全套"液态玻璃"界面质感。</p>
-            </div>
+        <div class="home-features-grid">
+            <article class="home-feature-card home-feature-ai" data-tilt>
+                <div class="home-feature-content">
+                    <div class="home-feature-top"><span class="home-feature-icon"><svg><use href="#icon-ai"/></svg></span><span class="home-feature-index">01 / INTELLIGENCE</span></div>
+                    <h3>AI 编程助手</h3>
+                    <p>用自然语言直接操作项目。44 个内置工具连接积木、角色、声音与舞台，改动前自动快照，每一步都可撤销。</p>
+                    <div class="home-feature-tags"><span>积木 DSL</span><span>项目上下文</span><span>自动快照</span></div>
+                </div>
+                <div class="ai-console" aria-hidden="true">
+                    <div class="ai-console-bar"><span></span><span></span><span></span><small>NEOWARP AI / PROJECT</small></div>
+                    <div class="ai-command"><span>给角色添加空格跳跃，并显示速度变量</span><i></i></div>
+                    <div class="ai-blocks"><div class="code-block block-yellow">当 <b>绿旗</b> 被点击</div><div class="code-block block-blue">如果 <b>按下空格键？</b> 那么</div><div class="code-block block-violet">将 y 速度设为 <b>12</b></div></div>
+                    <div class="ai-console-status"><span><i></i>已完成 3 项修改</span><small>快照已保存</small></div>
+                </div>
+            </article>
+
+            <article class="home-feature-card home-feature-solo" data-tilt>
+                <div class="home-feature-content">
+                    <div class="home-feature-top"><span class="home-feature-icon"><svg><use href="#icon-solo"/></svg></span><span class="home-feature-index">02 / SOLO</span></div>
+                    <h3>NeoWarp SOLO</h3>
+                    <p>移除复杂面板，只保留你与想法。直接对 .sb3 项目下达指令，后台 VM 执行，独立舞台实时呈现结果。</p>
+                </div>
+                <div class="solo-flow" aria-hidden="true"><div><span>你的想法</span><small>自然语言</small></div><i></i><div class="solo-flow-core"><img src="assets/Logo.png" alt=""><span>SOLO</span></div><i></i><div><span>实时作品</span><small>独立舞台</small></div></div>
+            </article>
+
+            <article class="home-feature-card home-feature-collab" data-tilt>
+                <div class="home-feature-content">
+                    <div class="home-feature-top"><span class="home-feature-icon"><svg><use href="#icon-users"/></svg></span><span class="home-feature-index">03 / TOGETHER</span></div>
+                    <h3>多人实时协作</h3>
+                    <p>局域网自动发现房间，修改实时同步。精细权限与 SHA-256 校验，让协作自由且可靠。</p>
+                </div>
+                <div class="collab-visual" aria-hidden="true"><svg viewBox="0 0 320 150"><path d="M58 89 146 40 252 82M58 89l102 38 92-45"/><circle cx="58" cy="89" r="21"/><circle cx="146" cy="40" r="21"/><circle cx="252" cy="82" r="21"/><circle class="collab-core" cx="160" cy="127" r="16"/></svg><span class="collab-label label-one">DESIGN</span><span class="collab-label label-two">CODE</span><span class="collab-label label-three">SOUND</span></div>
+            </article>
+
+            <article class="home-feature-card home-feature-mobile" data-tilt>
+                <div class="home-feature-content">
+                    <div class="home-feature-top"><span class="home-feature-icon"><svg><use href="#icon-phone"/></svg></span><span class="home-feature-index">04 / ANYWHERE</span></div>
+                    <h3>手机编程</h3>
+                    <p>扫码即可把 AI 助手装进口袋。桌面与手机共享一致的对话体验，灵感不必等到回到电脑前。</p>
+                </div>
+                <div class="mobile-visual" aria-hidden="true"><div class="mobile-phone"><div class="mobile-phone-bar"></div><div class="mobile-message">让角色跟随鼠标移动</div><div class="mobile-message mobile-message-ai">已添加跟随脚本，并为你运行项目。</div><div class="mobile-input"><span></span><i></i></div></div><div class="mobile-signal"><i></i><i></i><i></i></div></div>
+            </article>
+
+            <article class="home-feature-card home-feature-editor" data-tilt>
+                <div class="home-feature-content">
+                    <div class="home-feature-top"><span class="home-feature-icon"><svg><use href="#icon-pen"/></svg></span><span class="home-feature-index">05 / DESIGN</span></div>
+                    <h3>专业图像编辑器</h3>
+                    <p>14 种工具、图层与混合模式、非破坏性调整。完成设计后，一键导入角色造型。</p>
+                </div>
+                <div class="editor-visual" aria-hidden="true"><div class="editor-canvas"><div class="editor-shape"></div><span></span><span></span><span></span><span></span></div><div class="editor-layers"><small>LAYERS</small><div><i class="layer-blue"></i><span>Character</span><b>100%</b></div><div><i class="layer-orange"></i><span>Lighting</span><b>72%</b></div><div><i class="layer-violet"></i><span>Background</span><b>100%</b></div></div></div>
+            </article>
+
+            <article class="home-feature-card home-feature-tools" data-tilt>
+                <div class="home-feature-content">
+                    <div class="home-feature-top"><span class="home-feature-icon"><svg><use href="#icon-grid"/></svg></span><span class="home-feature-index">06 / PRODUCTIVITY</span></div>
+                    <h3>20+ 效率工具，一个工作空间</h3>
+                    <p>待办清单、项目分析、任务管理器、独立舞台与数据预览，让创作流程保持专注、清晰、连贯。</p>
+                </div>
+                <div class="tools-visual" aria-hidden="true"><div><svg><use href="#icon-check"/></svg><span>待办清单</span><small>REMINDERS</small></div><div><svg><use href="#icon-code"/></svg><span>项目分析</span><small>INSIGHTS</small></div><div><svg><use href="#icon-grid"/></svg><span>任务管理</span><small>WORKFLOW</small></div><div><svg><use href="#icon-play"/></svg><span>独立舞台</span><small>PREVIEW</small></div></div>
+            </article>
         </div>
     </section>
 
@@ -127,7 +163,7 @@
                 <h2 class="section-title">界面演示</h2>
                 <p class="section-subtitle">与实际应用相同的界面 UI，直接上手体验</p>
             </div>
-            <p class="demo-hint">💡 以下演示可以交互：在 SOLO 中发送指令、点击侧栏舞台缩略图弹出独立舞台；在待办清单中添加、勾选、双击重命名、设置提醒</p>
+            <p class="demo-hint">以下演示可以交互：在 SOLO 中发送指令、点击侧栏舞台缩略图弹出独立舞台；在待办清单中添加、勾选、双击重命名、设置提醒</p>
 
             <div class="demo-grid">
                 <!-- ============ NeoWarp SOLO 演示（对齐实际 AI 助手 / SOLO 窗口） ============ -->
@@ -320,12 +356,17 @@
     </section>
 
     <!-- CTA -->
-    <section class="cta-band" data-animate>
-        <h2 class="section-title">准备好了吗？</h2>
-        <p>免费开源，支持 Windows、macOS 与 Linux，离线可用。</p>
-        <div class="cta-actions">
-            <a href="download.html" class="btn btn-primary btn-large">下载 NeoWarp</a>
-            <a href="wiki.html" class="btn btn-secondary btn-large">阅读 Wiki</a>
+    <section class="home-cta" data-animate>
+        <div class="home-cta-panel">
+            <div class="home-cta-orbit" aria-hidden="true"><i></i><i></i><i></i></div>
+            <div class="home-eyebrow">YOUR NEXT PROJECT STARTS HERE</div>
+            <h2>下一个作品，<br><span>从这里开始。</span></h2>
+            <p>免费开源，支持 Windows、macOS 与 Linux，离线也能完整创作。</p>
+            <div class="cta-actions">
+                <a href="download.html" class="btn btn-primary btn-large">下载 NeoWarp<svg class="home-button-icon"><use href="#icon-arrow"/></svg></a>
+                <a href="wiki.html" class="btn home-btn-ghost btn-large">阅读 Wiki</a>
+            </div>
+            <div class="home-cta-meta"><span>v2.2.0</span><i></i><span>GPL-3.0</span><i></i><span>TurboWarp inside</span></div>
         </div>
     </section>
 
@@ -352,6 +393,7 @@
 
     <script type="module" src="js/nav.js"></script>
     <script type="module" src="js/main.js"></script>
+    <script type="module" src="js/home.js"></script>
     <script type="module" src="js/solo-demo.js"></script>
     <script type="module" src="js/todo-demo.js"></script>
 </body>
