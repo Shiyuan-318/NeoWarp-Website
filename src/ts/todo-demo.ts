@@ -1,132 +1,166 @@
 /**
- * todo-demo.ts —— 待办清单界面演示（液态玻璃风格，功能可交互）
- * 支持新增、勾选完成、删除、筛选、进度统计、到点提醒（模拟系统通知）
+ * todo-demo.ts —— 待办清单界面演示（对齐实际 todo-list 窗口：iOS 浅色风格）
+ * 新增、勾选、双击重命名、提醒设置（预设时长 + 移除）、清除已完成、到点提醒 Toast
  */
-
-type TodoFilter = 'all' | 'active' | 'done';
 
 interface TodoItem {
     id: number;
     text: string;
     done: boolean;
-    /** 提醒时间（HH:MM），可为空 */
-    remind?: string;
+    /** 提醒（相对分钟数），undefined 表示未设置 */
+    remindMin?: number;
+    createdAt: number;
 }
 
 let nextId = 1;
 
 const SEED: TodoItem[] = [
-    { id: nextId++, text: '给 Scratch 项目「飞机大战」添加计分板变量', done: false, remind: '20:30' },
-    { id: nextId++, text: '用 AI 助手优化克隆体性能', done: false },
-    { id: nextId++, text: '导出游戏打包为 HTML 分享给同学', done: true },
-    { id: nextId++, text: '整理 NeoWarp 扩展模板代码', done: true, remind: '18:00' }
+    { id: nextId++, text: '给 Scratch 项目「飞机大战」添加计分板变量', done: false, remindMin: 30, createdAt: Date.now() - 86400000 },
+    { id: nextId++, text: '用 AI 助手优化克隆体性能', done: false, createdAt: Date.now() - 43200000 },
+    { id: nextId++, text: '导出游戏打包为 HTML 分享给同学', done: true, createdAt: Date.now() - 172800000 },
+    { id: nextId++, text: '整理 NeoWarp 扩展模板代码', done: true, createdAt: Date.now() - 259200000 }
 ];
+
+const BELL_SVG = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"></path><path d="M13.73 21a2 2 0 0 1-3.46 0"></path></svg>';
+const PEN_SVG = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 3a2.828 2.828 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5L17 3z"></path></svg>';
+const TRASH_SVG = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="3 6 5 6 21 6"></polyline><path d="M19 6l-1 14a2 2 0 01-2 2H8a2 2 0 01-2-2L5 6"></path><path d="M10 11v6"></path><path d="M14 11v6"></path><path d="M9 6V4a1 1 0 011-1h4a1 1 0 011 1v2"></path></svg>';
+
+function formatReminder(min: number): string {
+    if (min < 60) return '⏰ ' + min + '分钟后';
+    if (min < 1440) return '⏰ ' + (min / 60) + '小时后';
+    return '⏰ 明天';
+}
 
 function initTodoDemo(): void {
     const root = document.getElementById('todoDemo') as HTMLElement | null;
     if (!root) return;
     const rootEl: HTMLElement = root;
 
-    const list = root.querySelector<HTMLElement>('.todo-list') as HTMLElement;
-    const input = root.querySelector<HTMLInputElement>('.todo-input') as HTMLInputElement;
-    const timeInput = root.querySelector<HTMLInputElement>('.todo-time-input') as HTMLInputElement;
-    const addBtn = root.querySelector<HTMLButtonElement>('.todo-add-btn') as HTMLButtonElement;
-    const fill = root.querySelector<HTMLElement>('.todo-progress-fill') as HTMLElement;
-    const progressText = root.querySelector<HTMLElement>('.todo-progress-text') as HTMLElement;
-    const toast = root.querySelector<HTMLElement>('.notify-toast') as HTMLElement;
+    const list = root.querySelector<HTMLElement>('#tdList') as HTMLElement;
+    const input = root.querySelector<HTMLInputElement>('#tdInput') as HTMLInputElement;
+    const addBtn = root.querySelector<HTMLButtonElement>('#tdAddBtn') as HTMLButtonElement;
+    const emptyEl = root.querySelector<HTMLElement>('#tdEmpty') as HTMLElement;
+    const clearBar = root.querySelector<HTMLElement>('#tdClearBar') as HTMLElement;
+    const clearBtn = root.querySelector<HTMLButtonElement>('#tdClearDone') as HTMLButtonElement;
+    const totalEl = root.querySelector<HTMLElement>('#tdTotal') as HTMLElement;
+    const doneEl = root.querySelector<HTMLElement>('#tdDone') as HTMLElement;
+    const fill = root.querySelector<HTMLElement>('#tdProgressFill') as HTMLElement;
+    const toast = root.querySelector<HTMLElement>('#tdToast') as HTMLElement;
+    const overlay = root.querySelector<HTMLElement>('#tdReminderOverlay') as HTMLElement;
 
     let items: TodoItem[] = SEED.map((t) => ({ ...t }));
-    let filter: TodoFilter = 'all';
     let toastTimer = 0;
+    let reminderTarget: number | null = null;
+    let selectedPreset = 0;
+    let editingId: number | null = null;
 
-    /* 顶部日期 */
-    const dateEl = root.querySelector<HTMLElement>('#todoDate');
-    if (dateEl) {
-        const now = new Date();
-        const week = ['日', '一', '二', '三', '四', '五', '六'][now.getDay()];
-        dateEl.textContent =
-            now.getMonth() + 1 + '月' + now.getDate() + '日 · 周' + week;
+    /* ---------- Toast ---------- */
+    function showToast(text: string): void {
+        toast.textContent = text;
+        toast.classList.add('show');
+        window.clearTimeout(toastTimer);
+        toastTimer = window.setTimeout(() => toast.classList.remove('show'), 3200);
+    }
+
+    /* ---------- 提醒时间格式化 ---------- */
+    function formatTime(ts: number): string {
+        const d = new Date(ts);
+        return d.getMonth() + 1 + '月' + d.getDate() + '日 ' +
+            String(d.getHours()).padStart(2, '0') + ':' + String(d.getMinutes()).padStart(2, '0');
     }
 
     /* ---------- 渲染 ---------- */
-    function visible(): TodoItem[] {
-        if (filter === 'active') return items.filter((t) => !t.done);
-        if (filter === 'done') return items.filter((t) => t.done);
-        return items;
-    }
-
     function render(): void {
         list.innerHTML = '';
-        const list0 = visible();
+        const done = items.filter((t) => t.done).length;
 
-        if (!list0.length) {
-            const empty = document.createElement('div');
-            empty.className = 'todo-empty';
-            empty.innerHTML =
-                '<span class="empty-icon">' + (filter === 'done' ? '🎉' : '🗒️') + '</span>' +
-                '<span>' + (filter === 'done' ? '全部完成，太棒了！' : '暂无待办事项') + '</span>';
-            list.appendChild(empty);
-        }
+        totalEl.textContent = String(items.length);
+        doneEl.textContent = String(done);
+        fill.style.width = (items.length ? Math.round((done / items.length) * 100) : 0) + '%';
 
-        list0.forEach((t) => {
+        emptyEl.style.display = items.length ? 'none' : 'flex';
+        clearBar.style.display = done ? 'flex' : 'none';
+
+        items.forEach((t) => {
             const item = document.createElement('div');
-            item.className = 'todo-item' + (t.done ? ' done' : '');
+            item.className = 'td-item' + (t.done ? ' completed' : '');
             item.dataset.id = String(t.id);
 
-            const check = document.createElement('button');
-            check.className = 'todo-check';
-            check.textContent = '✓';
-            check.title = '标记为' + (t.done ? '未完成' : '已完成');
-            check.addEventListener('click', () => toggle(t.id));
+            const checkbox = document.createElement('div');
+            checkbox.className = 'td-checkbox' + (t.done ? ' checked' : '');
+            checkbox.title = '标记为' + (t.done ? '未完成' : '已完成');
+            checkbox.addEventListener('click', () => toggle(t.id));
+            item.appendChild(checkbox);
 
-            const text = document.createElement('span');
-            text.className = 'todo-text';
-            text.textContent = t.text;
+            if (editingId === t.id) {
+                const edit = document.createElement('input');
+                edit.className = 'td-edit-input';
+                edit.type = 'text';
+                edit.value = t.text;
+                edit.maxLength = 200;
+                edit.addEventListener('keydown', (e) => {
+                    if (e.key === 'Enter') finishEdit(t.id, edit.value.trim());
+                    else if (e.key === 'Escape') { editingId = null; render(); }
+                });
+                edit.addEventListener('blur', () => finishEdit(t.id, edit.value.trim()));
+                item.appendChild(edit);
+                window.setTimeout(() => edit.focus(), 30);
+            } else {
+                const text = document.createElement('span');
+                text.className = 'td-text';
+                text.textContent = t.text;
+                text.title = '创建于 ' + formatTime(t.createdAt) + '（双击重命名）';
+                text.addEventListener('dblclick', () => { editingId = t.id; render(); });
+                item.appendChild(text);
 
-            item.appendChild(check);
-            item.appendChild(text);
-
-            if (t.remind) {
-                const remind = document.createElement('span');
-                remind.className = 'todo-remind';
-                remind.innerHTML = '⏰ ' + t.remind;
-                item.appendChild(remind);
+                if (t.remindMin !== undefined) {
+                    const ind = document.createElement('span');
+                    ind.className = 'td-reminder-indicator';
+                    ind.textContent = formatReminder(t.remindMin);
+                    item.appendChild(ind);
+                }
             }
 
-            const del = document.createElement('button');
-            del.className = 'todo-del';
-            del.textContent = '✕';
-            del.title = '删除';
-            del.addEventListener('click', () => remove(t.id));
-            item.appendChild(del);
+            const actions = document.createElement('div');
+            actions.className = 'td-actions';
 
+            const reminderBtn = document.createElement('button');
+            reminderBtn.className = 'td-action-btn' + (t.remindMin !== undefined ? ' has-reminder' : '');
+            reminderBtn.title = t.remindMin !== undefined ? '修改提醒' : '设置提醒';
+            reminderBtn.innerHTML = BELL_SVG;
+            reminderBtn.addEventListener('click', (e) => {
+                e.stopPropagation();
+                openReminder(t.id);
+            });
+            actions.appendChild(reminderBtn);
+
+            if (!t.done) {
+                const editBtn = document.createElement('button');
+                editBtn.className = 'td-action-btn';
+                editBtn.title = '重命名';
+                editBtn.innerHTML = PEN_SVG;
+                editBtn.addEventListener('click', () => { editingId = t.id; render(); });
+                actions.appendChild(editBtn);
+            }
+
+            const delBtn = document.createElement('button');
+            delBtn.className = 'td-action-btn danger';
+            delBtn.title = '删除';
+            delBtn.innerHTML = TRASH_SVG;
+            delBtn.addEventListener('click', () => remove(t.id));
+            actions.appendChild(delBtn);
+
+            item.appendChild(actions);
             list.appendChild(item);
         });
-
-        updateProgress();
-    }
-
-    function updateProgress(): void {
-        const total = items.length;
-        const done = items.filter((t) => t.done).length;
-        const pct = total ? Math.round((done / total) * 100) : 0;
-        fill.style.width = pct + '%';
-        progressText.textContent = done + ' / ' + total + ' 已完成 · ' + pct + '%';
     }
 
     /* ---------- 操作 ---------- */
     function add(): void {
         const text = input.value.trim();
         if (!text) return;
-        items.unshift({
-            id: nextId++,
-            text: text,
-            done: false,
-            remind: timeInput.value || undefined
-        });
+        items.unshift({ id: nextId++, text: text, done: false, createdAt: Date.now() });
         input.value = '';
-        timeInput.value = '';
-        if (filter === 'done') setFilter('all');
         render();
     }
 
@@ -144,55 +178,95 @@ function initTodoDemo(): void {
             window.setTimeout(() => {
                 items = items.filter((t) => t.id !== id);
                 render();
-            }, 280);
+            }, 240);
         } else {
             items = items.filter((t) => t.id !== id);
             render();
         }
     }
 
-    function setFilter(f: TodoFilter): void {
-        filter = f;
-        rootEl.querySelectorAll<HTMLButtonElement>('.todo-filter').forEach((btn) => {
-            btn.classList.toggle('active', btn.dataset.filter === f);
-        });
+    function finishEdit(id: number, text: string): void {
+        if (editingId !== id) return;
+        editingId = null;
+        const item = items.find((t) => t.id === id);
+        if (item && text) item.text = text;
         render();
     }
 
-    rootEl.querySelectorAll<HTMLButtonElement>('.todo-filter').forEach((btn) => {
-        btn.addEventListener('click', () => setFilter(btn.dataset.filter as TodoFilter));
+    /* ---------- 提醒对话框 ---------- */
+    function openReminder(id: number): void {
+        reminderTarget = id;
+        selectedPreset = 0;
+        overlay.classList.add('open');
+        const item = items.find((t) => t.id === id);
+        const removeBtn = rootEl.querySelector<HTMLButtonElement>('#tdReminderRemove') as HTMLButtonElement;
+        removeBtn.style.display = item && item.remindMin !== undefined ? 'block' : 'none';
+        markPreset(null);
+    }
+
+    function markPreset(min: number | null): void {
+        overlay.querySelectorAll<HTMLButtonElement>('.td-preset').forEach((b) => {
+            b.classList.toggle('selected', min !== null && Number(b.dataset.min) === min);
+        });
+    }
+
+    overlay.querySelectorAll<HTMLButtonElement>('.td-preset').forEach((b) => {
+        b.addEventListener('click', () => {
+            selectedPreset = Number(b.dataset.min);
+            markPreset(selectedPreset);
+        });
     });
 
+    rootEl.querySelector<HTMLButtonElement>('#tdReminderCancel')?.addEventListener('click', () => {
+        overlay.classList.remove('open');
+        reminderTarget = null;
+    });
+
+    rootEl.querySelector<HTMLButtonElement>('#tdReminderRemove')?.addEventListener('click', () => {
+        const item = items.find((t) => t.id === reminderTarget);
+        if (item) item.remindMin = undefined;
+        overlay.classList.remove('open');
+        reminderTarget = null;
+        render();
+        showToast('已移除提醒');
+    });
+
+    rootEl.querySelector<HTMLButtonElement>('#tdReminderConfirm')?.addEventListener('click', () => {
+        const item = items.find((t) => t.id === reminderTarget);
+        if (item && selectedPreset) {
+            item.remindMin = selectedPreset;
+            showToast('已设置提醒：' + formatReminder(selectedPreset));
+            // 演示：10 秒后触发一次"到点提醒"
+            window.setTimeout(() => {
+                showToast('⏰ 待办提醒：「' + item.text.slice(0, 16) + '…」时间到啦');
+            }, 10000);
+        }
+        overlay.classList.remove('open');
+        reminderTarget = null;
+        render();
+    });
+
+    /* ---------- 绑定 ---------- */
     addBtn.addEventListener('click', add);
     input.addEventListener('keydown', (e) => {
         if (e.key === 'Enter') add();
     });
-
-    /* ---------- 到点提醒（模拟系统通知） ---------- */
-    function showToast(title: string, body: string): void {
-        toast.querySelector('.notify-title')!.textContent = title;
-        toast.querySelector('.notify-body')!.textContent = body;
-        toast.classList.add('show');
-        window.clearTimeout(toastTimer);
-        toastTimer = window.setTimeout(() => toast.classList.remove('show'), 3800);
-    }
-
-    // 演示：设置提醒时间并添加待办后，模拟"到点系统通知"
-    addBtn.addEventListener('click', () => {
-        if (timeInput.value) {
-            const text = input.value.trim() || '新待办';
-            window.setTimeout(() => {
-                showToast('NeoWarp 待办提醒', '「' + text + '」到时间啦，别忘了完成它！');
-            }, 2500);
-        }
+    clearBtn.addEventListener('click', () => {
+        const doneNodes = list.querySelectorAll('.td-item.completed');
+        doneNodes.forEach((n) => n.classList.add('removing'));
+        window.setTimeout(() => {
+            items = items.filter((t) => !t.done);
+            render();
+            showToast('已清除全部已完成项');
+        }, 260);
     });
 
-    // 页面加载 8 秒后来一条演示提醒（即使不手动添加也能看到效果）
-    window.setTimeout(() => {
-        showToast('NeoWarp 待办提醒', '「给 Scratch 项目「飞机大战」添加计分板变量」还有 30 分钟到期');
-    }, 8000);
-
     render();
+
+    // 页面加载 8 秒后演示一条"到点系统通知"
+    window.setTimeout(() => {
+        showToast('⏰ 待办提醒：「给 Scratch 项目「飞机大战」添加计…」还有 30 分钟到期');
+    }, 8000);
 }
 
 initTodoDemo();

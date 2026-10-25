@@ -127,51 +127,99 @@
                 <h2 class="section-title">界面演示</h2>
                 <p class="section-subtitle">与实际应用相同的界面 UI，直接上手体验</p>
             </div>
-            <p class="demo-hint">💡 以下演示可以交互：在 SOLO 中发送指令、控制独立舞台；在待办清单中添加、勾选与筛选任务</p>
+            <p class="demo-hint">💡 以下演示可以交互：在 SOLO 中发送指令、点击侧栏舞台缩略图弹出独立舞台；在待办清单中添加、勾选、双击重命名、设置提醒</p>
 
             <div class="demo-grid">
-                <!-- ============ NeoWarp SOLO 演示 ============ -->
+                <!-- ============ NeoWarp SOLO 演示（对齐实际 AI 助手 / SOLO 窗口） ============ -->
                 <div class="solo-demo-wrap">
-                    <div class="app-window" id="soloDemo">
-                        <div class="app-titlebar">
+                    <div class="app-window solo-light" id="soloDemo">
+                        <div class="app-titlebar solo-titlebar">
                             <div class="traffic-lights"><span class="tl-close"></span><span class="tl-min"></span><span class="tl-max"></span></div>
                             <span class="app-title">NeoWarp SOLO</span>
                         </div>
-                        <div class="app-body">
-                            <!-- 侧栏 -->
-                            <aside class="solo-sidebar">
-                                <div class="solo-project-card">
-                                    <div class="solo-project-icon">📦</div>
-                                    <div>
-                                        <div class="solo-project-name">game.sb3</div>
-                                        <div class="solo-project-meta">2 个角色 · 已加载</div>
+                        <div class="solo-body">
+                            <!-- 悬浮玻璃侧栏 -->
+                            <aside class="nso-sidebar">
+                                <div class="nso-sidebar-header">
+                                    <span class="nso-sidebar-title">Chats</span>
+                                    <button class="nso-new-chat" type="button" title="New chat">
+                                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg>
+                                    </button>
+                                </div>
+                                <!-- 待办联动步骤卡片 -->
+                                <div class="nso-sidebar-todo" id="soloSidebarTodo"></div>
+                                <div class="nso-chat-list">
+                                    <div class="nso-chat-item active">空格跳跃功能</div>
+                                    <div class="nso-chat-item">金币克隆生成</div>
+                                    <div class="nso-chat-item">背景音乐循环</div>
+                                </div>
+                                <!-- SOLO：舞台缩略图，点击弹出舞台窗口 -->
+                                <div class="nso-stage-preview" id="soloStagePreview" role="button" tabindex="0" title="点击弹出舞台窗口">
+                                    <div class="nso-stage-preview-body">
+                                        <div class="stage-cat mini">
+                                            <div class="cat-ear left"></div>
+                                            <div class="cat-head"><div class="cat-eye left"></div><div class="cat-eye right"></div></div>
+                                            <div class="cat-body"></div>
+                                        </div>
+                                    </div>
+                                    <div class="nso-stage-preview-label">
+                                        <svg class="stage-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="16" rx="2"></rect><path d="M3 9h18"></path></svg>
+                                        <span>舞台</span>
+                                        <span class="nso-stage-live" id="soloStageLive" style="display:none;"><i></i>LIVE</span>
                                     </div>
                                 </div>
-                                <button class="solo-new-session">＋ 新建会话</button>
-                                <div class="solo-session-label">历史会话</div>
-                                <div class="solo-session-item active"><span class="solo-session-dot"></span>空格跳跃功能</div>
-                                <div class="solo-session-item"><span class="solo-session-dot"></span>金币克隆生成</div>
-                                <div class="solo-session-item"><span class="solo-session-dot"></span>背景音乐循环</div>
                             </aside>
-                            <!-- 主聊天区 -->
-                            <div class="solo-main">
-                                <div class="solo-chat"></div>
-                                <div class="solo-inputbar">
-                                    <div class="solo-model-row">
-                                        <select class="solo-model-select" title="模型">
-                                            <option>DeepSeek-V3.2</option>
-                                            <option>智谱 GLM-5</option>
-                                            <option>Kimi</option>
-                                            <option>通义千问 Max</option>
-                                            <option>Ollama 本地模型</option>
-                                        </select>
-                                        <button class="solo-stage-toggle" type="button">▷ 打开独立舞台</button>
-                                        <span class="solo-attach">📎 附件</span>
-                                    </div>
-                                    <div class="solo-input-row">
-                                        <textarea class="solo-input" rows="1" placeholder="描述你想对项目做出的修改…（Enter 发送）"></textarea>
-                                        <button class="solo-send" type="button" title="发送">↑</button>
-                                    </div>
+
+                            <!-- 悬浮顶栏 -->
+                            <div class="nso-topbar">
+                                <img src="assets/Logo.png" alt="" class="nso-logo">
+                                <span class="nso-appname">NeoWarp SOLO</span>
+                                <span class="nso-topbar-actions">
+                                    <button class="nso-icon-btn" type="button" title="手机编程">
+                                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 007.54.54l3-3a5 5 0 00-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 00-7.54-.54l-3 3a5 5 0 007.07 7.07l1.71-1.71"></path></svg>
+                                    </button>
+                                    <button class="nso-icon-btn" type="button" title="Clear chat">
+                                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="3 6 5 6 21 6"></polyline><path d="M19 6l-1 14a2 2 0 01-2 2H8a2 2 0 01-2-2L5 6"></path><path d="M10 11v6"></path><path d="M14 11v6"></path><path d="M9 6V4a1 1 0 011-1h4a1 1 0 011 1v2"></path></svg>
+                                    </button>
+                                </span>
+                            </div>
+
+                            <!-- 聊天区 -->
+                            <div class="nso-chat" id="soloChat">
+                                <div class="nso-welcome">
+                                    <div class="nso-welcome-title">AI Programming Assistant</div>
+                                    <div class="nso-welcome-sub">配置好 API 即可开始<br>支持项目代码上下文、流式输出、思维链</div>
+                                    <div class="nso-welcome-tags"><span>.sb3 项目</span><span>积木脚本</span><span>流式输出</span></div>
+                                </div>
+                            </div>
+
+                            <!-- 底部输入坞 -->
+                            <div class="nso-dock">
+                                <div class="nso-project-bar">
+                                    <button class="nso-project-chip" type="button">
+                                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 7a2 2 0 0 1 2-2h4l2 3h8a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V7z"></path></svg>
+                                        <span class="nso-project-name">game.sb3</span>
+                                    </button>
+                                    <button class="nso-save-btn" type="button" title="把当前工程保存回源文件">
+                                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"></path><polyline points="17 21 17 13 7 13 7 21"></polyline><polyline points="7 3 7 8 15 8"></polyline></svg>
+                                        <span>保存</span>
+                                    </button>
+                                </div>
+                                <div class="nso-input-wrapper">
+                                    <span class="nso-left-actions">
+                                        <button class="nso-action-btn" type="button" title="添加附件">
+                                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg>
+                                        </button>
+                                        <button class="nso-action-btn" type="button" title="添加文件">
+                                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21.44 11.05l-9.19 9.19a6 6 0 0 1-8.49-8.49l9.19-9.19a4 4 0 0 1 5.66 5.66l-9.2 9.19a2 2 0 0 1-2.83-2.83l8.49-8.48"></path></svg>
+                                        </button>
+                                    </span>
+                                    <textarea class="nso-input" id="soloInput" rows="1" placeholder="Message..."></textarea>
+                                    <span class="nso-right-actions">
+                                        <button class="nso-send" id="soloSendBtn" type="button" aria-label="Send" disabled>
+                                            <svg viewBox="0 0 24 24" fill="currentColor"><path d="M2.01 21L23 12 2.01 3 2 10l15 2-15 2z"></path></svg>
+                                        </button>
+                                    </span>
                                 </div>
                             </div>
                         </div>
@@ -183,13 +231,10 @@
                             <span>独立舞台 · 2x</span>
                             <button class="solo-stage-close" type="button" title="关闭">✕</button>
                         </div>
-                        <div class="solo-stage-screen">
+                        <div class="solo-stage-screen" id="soloStageScreen">
                             <div class="stage-cat">
                                 <div class="cat-ear left"></div>
-                                <div class="cat-head">
-                                    <div class="cat-eye left"></div>
-                                    <div class="cat-eye right"></div>
-                                </div>
+                                <div class="cat-head"><div class="cat-eye left"></div><div class="cat-eye right"></div></div>
                                 <div class="cat-body"></div>
                             </div>
                         </div>
@@ -211,42 +256,63 @@
                     <div class="solo-window-note"><span class="note-dot"></span>SOLO 演示运行中 · 无传统编辑器界面</div>
                 </div>
 
-                <!-- ============ 待办清单演示 ============ -->
-                <div class="app-window todo-window" id="todoDemo">
-                    <div class="app-titlebar">
+                <!-- ============ 待办清单演示（对齐实际 todo-list 窗口） ============ -->
+                <div class="app-window solo-light" id="todoDemo">
+                    <div class="app-titlebar todo-titlebar">
                         <div class="traffic-lights"><span class="tl-close"></span><span class="tl-min"></span><span class="tl-max"></span></div>
                         <span class="app-title">待办清单</span>
                     </div>
-                    <div class="todo-body">
-                        <!-- 模拟系统通知 Toast -->
-                        <div class="notify-toast">
-                            <div class="notify-icon">⏰</div>
-                            <div>
-                                <div class="notify-title"></div>
-                                <div class="notify-body"></div>
+                    <div class="td-body">
+                        <div class="td-header">
+                            <div class="td-header-left">
+                                <div class="td-icon-badge">
+                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M9 11l3 3L22 4"></path><path d="M21 12v7a2 2 0 01-2 2H5a2 2 0 01-2-2V5a2 2 0 012-2h11"></path></svg>
+                                </div>
+                                <span class="td-title">待办清单</span>
                             </div>
                         </div>
-                        <div class="todo-content">
-                            <div class="todo-head">
-                                <span class="todo-title">待办清单</span>
-                                <span class="todo-date" id="todoDate"></span>
-                            </div>
-                            <div class="todo-progress">
-                                <div class="todo-progress-bar"><div class="todo-progress-fill"></div></div>
-                                <span class="todo-progress-text"></span>
-                            </div>
-                            <div class="todo-add">
-                                <input type="text" class="todo-input" placeholder="添加新的待办事项…">
-                                <input type="time" class="todo-time-input" title="提醒时间">
-                                <button class="todo-add-btn" type="button" title="添加">＋</button>
-                            </div>
-                            <div class="todo-filters">
-                                <button class="todo-filter active" data-filter="all" type="button">全部</button>
-                                <button class="todo-filter" data-filter="active" type="button">待完成</button>
-                                <button class="todo-filter" data-filter="done" type="button">已完成</button>
-                            </div>
-                            <div class="todo-list"></div>
+                        <div class="td-stats">
+                            <div class="td-stat"><span>共</span><span class="td-stat-value" id="tdTotal">0</span><span>项</span></div>
+                            <div class="td-stat"><span>已完成</span><span class="td-stat-value accent" id="tdDone">0</span><span>项</span></div>
+                            <div class="td-progress-track"><div class="td-progress-fill" id="tdProgressFill"></div></div>
                         </div>
+                        <div class="td-main">
+                            <div class="td-add-bar">
+                                <input class="td-add-input" id="tdInput" type="text" placeholder="输入新待办事项..." maxlength="200" autocomplete="off">
+                                <button class="td-add-btn" id="tdAddBtn" type="button">添加</button>
+                            </div>
+                            <div class="td-list" id="tdList"></div>
+                            <div class="td-empty" id="tdEmpty">
+                                <div class="td-empty-icon">
+                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="5" width="18" height="14" rx="2" ry="2"></rect><line x1="3" y1="10" x2="21" y2="10"></line></svg>
+                                </div>
+                                <div class="td-empty-text">暂无待办事项<br>在上方输入框添加新的任务吧</div>
+                            </div>
+                            <div class="td-clear-bar" id="tdClearBar" style="display:none;">
+                                <button class="td-clear-btn" id="tdClearDone" type="button">清除已完成项</button>
+                            </div>
+                        </div>
+                        <!-- 提醒设置对话框 -->
+                        <div class="td-reminder-overlay" id="tdReminderOverlay">
+                            <div class="td-reminder-dialog">
+                                <div class="td-reminder-title">设置提醒时间</div>
+                                <div class="td-reminder-content">
+                                    <div class="td-reminder-presets" id="tdPresets">
+                                        <button class="td-preset" data-min="10" type="button">10分钟</button>
+                                        <button class="td-preset" data-min="30" type="button">30分钟</button>
+                                        <button class="td-preset" data-min="60" type="button">1小时</button>
+                                        <button class="td-preset" data-min="120" type="button">2小时</button>
+                                        <button class="td-preset" data-min="1440" type="button">明天</button>
+                                    </div>
+                                    <div class="td-reminder-actions">
+                                        <button class="td-rbtn cancel" id="tdReminderCancel" type="button">取消</button>
+                                        <button class="td-rbtn remove" id="tdReminderRemove" type="button">移除提醒</button>
+                                        <button class="td-rbtn confirm" id="tdReminderConfirm" type="button">确定</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="td-toast" id="tdToast"></div>
                     </div>
                 </div>
             </div>
