@@ -2397,7 +2397,8 @@ img {
         bottom: calc(12px + env(safe-area-inset-bottom, 0px)) !important;
         top: auto !important;
         z-index: 900;
-        padding: 6px;
+        gap: 0;
+        padding: 4px;
         border-radius: 22px;
         background: rgba(28, 28, 30, 0.34);
         backdrop-filter: blur(24px) saturate(175%);
@@ -2455,7 +2456,12 @@ img {
         padding: 0.5rem 0.75rem;
     }
 
-    .wiki-toc.open { padding-bottom: 8px; }
+    .wiki-toc.open { padding-bottom: 8px; gap: 2px; }
+
+    /* 折叠态彻底压平：链接不占任何高度 */
+    .wiki-toc:not(.open) a { display: none; }
+    .wiki-toc .toc-title { padding: 8px 14px; }
+    .wiki-toc.open { padding-top: 6px; }
 
     /* 内容底部留出悬浮目录的空间 */
     .wiki-layout { padding-bottom: 140px; }
