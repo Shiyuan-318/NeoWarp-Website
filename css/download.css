@@ -61,48 +61,65 @@
 
 /* --------------------------------------------------------------------------
    阶梯式 3D 平台卡片
-   --p 由脚本根据滚动位置更新：0 = 未进入，0.5 = 居中，1 = 已越过中心
+   使用入场动画替代持续滚动变换，保证卡片始终清晰可读
    -------------------------------------------------------------------------- */
 
 .stair-section {
     padding-top: 16px;
-    padding-bottom: 72px;
+    padding-bottom: 96px;
 }
 
 .stair-deck {
     position: relative;
-    perspective: 1500px;
-    perspective-origin: 50% 0%;
+    perspective: 1200px;
+    perspective-origin: 50% 20%;
     display: grid;
-    gap: 42px;
+    gap: 44px;
+    margin-bottom: 64px;
 }
 
 .stair-card {
-    --p: 0.5;
+    --tx: 0px;
     --ry: 0deg;
+    --rx: 0deg;
     position: relative;
     display: block;
-    width: min(760px, 100%);
-    padding: 28px 30px 30px;
+    width: min(720px, 100%);
+    padding: 30px 32px 32px;
     border-radius: 28px;
-    background: linear-gradient(180deg, #101013 0%, #08080a 100%);
-    border: 1px solid rgba(255, 255, 255, 0.08);
-    box-shadow: 0 30px 80px rgba(0, 0, 0, 0.55);
+    background: linear-gradient(180deg, #121216 0%, #0b0b0e 100%);
+    border: 1px solid rgba(255, 255, 255, 0.16);
+    box-shadow: 0 24px 60px rgba(0, 0, 0, 0.55), inset 0 1px 0 rgba(255, 255, 255, 0.06);
     transform:
-        translate3d(
-            0,
-            calc((0.5 - var(--p)) * 60px),
-            calc((var(--p) - 0.5) * 54px)
-        )
-        rotateX(calc((0.5 - var(--p)) * 22deg))
-        rotateY(var(--ry));
+        translateX(var(--tx))
+        rotateY(var(--ry))
+        rotateX(var(--rx));
     transform-style: preserve-3d;
     transform-origin: 50% 50%;
-    opacity: clamp(0, calc(var(--p) * 2.2), 1);
-    transition: border-color 0.25s ease, filter 0.25s ease, background-color 0.25s ease, opacity 0.25s ease;
+    transition: transform 0.8s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.5s ease, border-color 0.25s ease, filter 0.25s ease;
     will-change: transform, opacity;
     outline: none;
     backface-visibility: hidden;
+}
+
+.stair-card[data-animate] {
+    opacity: 0;
+    transform:
+        translateX(var(--tx))
+        translateY(48px)
+        rotateX(18deg)
+        rotateY(var(--ry))
+        scale(0.98);
+}
+
+.stair-card[data-animate].animated {
+    opacity: 1;
+    transform:
+        translateX(var(--tx))
+        translateY(0)
+        rotateX(var(--rx))
+        rotateY(var(--ry))
+        scale(1);
 }
 
 .stair-card::after {
@@ -110,22 +127,26 @@
     position: absolute;
     inset: 0;
     border-radius: inherit;
-    background: linear-gradient(180deg, rgba(255, 255, 255, 0.055), rgba(255, 255, 255, 0) 45%);
+    background: linear-gradient(180deg, rgba(255, 255, 255, 0.06), rgba(255, 255, 255, 0) 45%);
     pointer-events: none;
 }
 
 .stair-card:nth-child(1) {
-    --ry: -7deg;
+    --tx: 0px;
+    --ry: -6deg;
+    --rx: 2deg;
 }
 
 .stair-card:nth-child(2) {
-    margin-left: 8%;
+    --tx: 56px;
     --ry: 0deg;
+    --rx: 0deg;
 }
 
 .stair-card:nth-child(3) {
-    margin-left: 16%;
-    --ry: 7deg;
+    --tx: 112px;
+    --ry: 6deg;
+    --rx: -2deg;
 }
 
 .stair-card:hover {
@@ -142,7 +163,7 @@
     position: absolute;
     top: 24px;
     right: 26px;
-    color: rgba(255, 255, 255, 0.26);
+    color: rgba(255, 255, 255, 0.34);
     font-family: "SF Mono", Consolas, monospace;
     font-size: 0.78rem;
     letter-spacing: 0.2em;
@@ -191,7 +212,7 @@
 
 .head-text p {
     margin: 3px 0 0;
-    color: var(--color-text-secondary);
+    color: #c7c7cc;
     font-size: 0.9rem;
 }
 
@@ -213,16 +234,17 @@
 }
 
 .platform-file .file-name {
-    color: #d8d8dc;
+    color: #e5e5ea;
     font-size: 0.78rem;
 }
 
 .platform-file .file-desc {
-    color: #6e6e73;
+    color: #9a9aa0;
 }
 
 .platform-note {
     margin-top: 18px;
+    color: #c7c7cc;
 }
 
 .card-cta {
@@ -252,8 +274,9 @@
     .stair-card:nth-child(2),
     .stair-card:nth-child(3) {
         width: 100%;
-        margin-left: 0;
+        --tx: 0px;
         --ry: 0deg;
+        --rx: 0deg;
     }
 }
 
