@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://e.np.sy1.top/sitemap.xml
