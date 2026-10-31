@@ -6,10 +6,10 @@
     <title>下载 - NeoWarp</title>
     <meta name="description" content="下载 NeoWarp —— 支持 Windows、macOS 与 Linux 的全功能 Scratch 编辑器。">
     <link rel="icon" type="image/png" href="assets/Logo.png">
-    <link rel="stylesheet" href="css/style.css?v=20261025c">
-    <link rel="stylesheet" href="css/download.css?v=20261025c">
+    <link rel="stylesheet" href="css/style.css?v=20261031a">
+    <link rel="stylesheet" href="css/download.css?v=20261031a">
 </head>
-<body>
+<body class="download-page">
     <nav class="nav">
         <div class="nav-container">
             <a href="index.html" class="nav-logo"><img src="assets/Logo.png" alt="NeoWarp Logo" class="nav-logo-img"><span>NeoWarp</span></a>
@@ -28,34 +28,47 @@
         </div>
     </nav>
 
+    <canvas id="downloadBg" class="download-bg" aria-hidden="true"></canvas>
+    <div class="download-aurora" aria-hidden="true">
+        <span class="aurora-blob blob-blue"></span>
+        <span class="aurora-blob blob-orange"></span>
+        <span class="aurora-blob blob-violet"></span>
+    </div>
+
     <main>
         <section class="page-hero download-hero">
             <div class="hero-bg-grid" aria-hidden="true"></div>
             <div class="hero-content" data-animate>
                 <p class="version-pill">
+                    <span class="pill-dot" aria-hidden="true"></span>
                     <span class="version-num">v2.2.0</span>
                     <span class="version-sep" aria-hidden="true"></span>
                     <span>2026-10-22</span>
                     <span class="version-sep" aria-hidden="true"></span>
                     <span>GPL-3.0</span>
                 </p>
-                <h1 class="wiki-hero-title">下载 NeoWarp</h1>
+                <h1 class="download-title">下载 <span class="grad-text">NeoWarp</span></h1>
                 <p class="page-hero-sub">选择与系统匹配的安装包，支持 Windows、macOS 与 Linux，并可离线使用。</p>
                 <div class="hero-actions">
                     <a class="btn btn-primary" href="#platforms">选择你的系统</a>
                     <a class="btn btn-secondary" href="https://github.com/Shiyuan-318/NeoWarp/releases" target="_blank" rel="noopener">前往 Releases 页</a>
                 </div>
+                <a class="scroll-hint" href="#platforms" aria-label="向下滚动查看平台下载">
+                    <span class="scroll-mouse" aria-hidden="true"></span>
+                    <span>SCROLL</span>
+                </a>
             </div>
         </section>
 
         <section class="download-section stair-section" id="platforms">
             <div class="section-header" data-animate>
+                <p class="section-kicker">/ 01 · Platforms</p>
                 <h2 class="section-title">平台下载</h2>
                 <p class="section-subtitle">点击对应平台卡片，前往 Releases 页面获取安装包。</p>
             </div>
 
             <div class="stair-deck">
-                <a class="stair-card" data-animate data-step="01" data-platform="windows" href="https://github.com/Shiyuan-318/NeoWarp/releases" target="_blank" rel="noopener" aria-label="前往 GitHub Releases 页面下载 Windows 版">
+                <a class="stair-card accent-blue" data-animate data-step="01" data-platform="windows" href="https://github.com/Shiyuan-318/NeoWarp/releases" target="_blank" rel="noopener" aria-label="前往 GitHub Releases 页面下载 Windows 版">
                     <span class="step-index" aria-hidden="true">01</span>
                     <div class="card-head">
                         <span class="os-icon" aria-hidden="true">
@@ -86,7 +99,7 @@
                     </span>
                 </a>
 
-                <a class="stair-card" data-animate data-step="02" data-platform="macos" href="https://github.com/Shiyuan-318/NeoWarp/releases" target="_blank" rel="noopener" aria-label="前往 GitHub Releases 页面下载 macOS 版">
+                <a class="stair-card accent-violet" data-animate data-step="02" data-platform="macos" href="https://github.com/Shiyuan-318/NeoWarp/releases" target="_blank" rel="noopener" aria-label="前往 GitHub Releases 页面下载 macOS 版">
                     <span class="step-index" aria-hidden="true">02</span>
                     <div class="card-head">
                         <span class="os-icon" aria-hidden="true">
@@ -113,7 +126,7 @@
                     </span>
                 </a>
 
-                <a class="stair-card" data-animate data-step="03" data-platform="linux" href="https://github.com/Shiyuan-318/NeoWarp/releases" target="_blank" rel="noopener" aria-label="前往 GitHub Releases 页面下载 Linux 版">
+                <a class="stair-card accent-orange" data-animate data-step="03" data-platform="linux" href="https://github.com/Shiyuan-318/NeoWarp/releases" target="_blank" rel="noopener" aria-label="前往 GitHub Releases 页面下载 Linux 版">
                     <span class="step-index" aria-hidden="true">03</span>
                     <div class="card-head">
                         <span class="os-icon" aria-hidden="true">
@@ -158,6 +171,7 @@
 
         <section class="download-section format-section" id="formats">
             <div class="section-header" data-animate>
+                <p class="section-kicker">/ 02 · Formats</p>
                 <h2 class="section-title">支持的文件格式</h2>
                 <p class="section-subtitle">原生支持打开 / 关联以下格式</p>
             </div>
@@ -170,13 +184,13 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <tr><td>.np1</td><td>NeoWarp 项目</td><td>未压缩，默认保存格式</td></tr>
-                    <tr><td>.npnp</td><td>加密项目</td><td>AES-256-GCM + PBKDF2 密码加密</td></tr>
-                    <tr><td>.viewsb3</td><td>只读项目</td><td>加密，仅供查看，适合分享展示</td></tr>
-                    <tr><td>.sb3</td><td>Scratch 3</td><td>Scratch 3 Project</td></tr>
-                    <tr><td>.sb2</td><td>Scratch 2</td><td>Scratch 2 Project</td></tr>
-                    <tr><td>.sb</td><td>Scratch 1</td><td>Scratch 1 Project</td></tr>
-                    <tr><td>.js</td><td>扩展</td><td>NeoWarp 扩展（由扩展编辑器打开）</td></tr>
+                    <tr><td>.np1</td><td><span class="fmt-chip">NeoWarp 项目</span></td><td>未压缩，默认保存格式</td></tr>
+                    <tr><td>.npnp</td><td><span class="fmt-chip">加密项目</span></td><td>AES-256-GCM + PBKDF2 密码加密</td></tr>
+                    <tr><td>.viewsb3</td><td><span class="fmt-chip">只读项目</span></td><td>加密，仅供查看，适合分享展示</td></tr>
+                    <tr><td>.sb3</td><td><span class="fmt-chip">Scratch 3</span></td><td>Scratch 3 Project</td></tr>
+                    <tr><td>.sb2</td><td><span class="fmt-chip">Scratch 2</span></td><td>Scratch 2 Project</td></tr>
+                    <tr><td>.sb</td><td><span class="fmt-chip">Scratch 1</span></td><td>Scratch 1 Project</td></tr>
+                    <tr><td>.js</td><td><span class="fmt-chip">扩展</span></td><td>NeoWarp 扩展（由扩展编辑器打开）</td></tr>
                 </tbody>
             </table>
         </section>
@@ -201,8 +215,8 @@
         </div>
     </footer>
 
-    <script type="module" src="js/nav.js?v=20261025c"></script>
-    <script type="module" src="js/main.js?v=20261025c"></script>
-    <script type="module" src="js/download.js?v=20261025c"></script>
+    <script type="module" src="js/nav.js?v=20261031a"></script>
+    <script type="module" src="js/main.js?v=20261031a"></script>
+    <script type="module" src="js/download.js?v=20261031a"></script>
 </body>
 </html>

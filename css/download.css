@@ -1,41 +1,149 @@
 /* ==========================================================================
-   下载页局部样式（背景保持纯黑，视觉以黑白灰为主）
+   下载页专属视觉
+   参考 uunn.cn：深空粒子 + 极光渐变 + 玻璃拟态 + 3D 交互
+   导航栏样式不在此文件覆盖，保持全站一致
    ========================================================================== */
 
+.download-page {
+    background: #000;
+    overflow-x: hidden;
+}
+
+/* --------------------------------------------------------------------------
+   背景层：WebGL 粒子画布 + 极光渐变
+   -------------------------------------------------------------------------- */
+
+.download-bg {
+    position: fixed;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 0;
+    pointer-events: none;
+    opacity: 0;
+    transition: opacity 1.4s ease 0.2s;
+}
+
+.download-bg.webgl-ready {
+    opacity: 1;
+}
+
+.download-bg.webgl-unavailable {
+    display: none;
+}
+
+.download-aurora {
+    position: fixed;
+    inset: 0;
+    z-index: 0;
+    pointer-events: none;
+    overflow: hidden;
+}
+
+.aurora-blob {
+    position: absolute;
+    border-radius: 50%;
+    filter: blur(110px);
+    will-change: transform;
+}
+
+.blob-blue {
+    width: 58vw;
+    height: 58vw;
+    left: -14vw;
+    top: -20vw;
+    background: radial-gradient(circle, rgba(10, 132, 255, 0.26) 0%, transparent 65%);
+    animation: aurora-drift 18s ease-in-out infinite alternate;
+}
+
+.blob-orange {
+    width: 46vw;
+    height: 46vw;
+    right: -12vw;
+    top: 24vh;
+    background: radial-gradient(circle, rgba(255, 159, 10, 0.15) 0%, transparent 65%);
+    animation: aurora-drift 22s -8s ease-in-out infinite alternate-reverse;
+}
+
+.blob-violet {
+    width: 42vw;
+    height: 42vw;
+    left: 32vw;
+    bottom: -24vw;
+    background: radial-gradient(circle, rgba(118, 99, 255, 0.13) 0%, transparent 65%);
+    animation: aurora-drift 26s -14s ease-in-out infinite alternate;
+}
+
+@keyframes aurora-drift {
+    from { transform: translate3d(0, 0, 0) scale(1); }
+    to { transform: translate3d(4vw, 4vh, 0) scale(1.14); }
+}
+
+/* 内容浮于背景之上（仅下载页生效） */
+
+.download-page main,
+.download-page .footer {
+    position: relative;
+    z-index: 1;
+}
+
+/* --------------------------------------------------------------------------
+   Hero：大标题 + 渐变文字 + 滚动提示
+   -------------------------------------------------------------------------- */
+
 .page-hero.download-hero {
-    padding: 150px 24px 80px;
+    padding: 190px 24px 120px;
     text-align: center;
 }
 
 .download-hero .hero-bg-grid {
     background-image:
-        linear-gradient(rgba(255, 255, 255, 0.045) 1px, transparent 1px),
-        linear-gradient(90deg, rgba(255, 255, 255, 0.045) 1px, transparent 1px);
+        linear-gradient(rgba(255, 255, 255, 0.05) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255, 255, 255, 0.05) 1px, transparent 1px);
     background-size: 64px 64px;
-    mask-image: radial-gradient(64% 62% at 50% 32%, #000 0%, transparent 74%);
-    -webkit-mask-image: radial-gradient(64% 62% at 50% 32%, #000 0%, transparent 74%);
-    opacity: 0.7;
+    mask-image: radial-gradient(62% 60% at 50% 36%, #000 0%, transparent 76%);
+    -webkit-mask-image: radial-gradient(62% 60% at 50% 36%, #000 0%, transparent 76%);
+    opacity: 0.75;
 }
 
-.hero-content {
+.download-hero .hero-content {
     position: relative;
     z-index: 2;
-    max-width: 760px;
+    max-width: 860px;
     margin: 0 auto;
 }
+
+/* 版本胶囊：玻璃 + 呼吸灯 */
 
 .version-pill {
     display: inline-flex;
     align-items: center;
     gap: 10px;
-    margin-bottom: 24px;
-    padding: 8px 15px;
+    margin-bottom: 28px;
+    padding: 9px 18px;
     border-radius: 980px;
-    background: rgba(255, 255, 255, 0.06);
-    border: 1px solid rgba(255, 255, 255, 0.08);
+    background: rgba(10, 132, 255, 0.08);
+    border: 1px solid rgba(10, 132, 255, 0.26);
+    box-shadow: 0 0 28px rgba(10, 132, 255, 0.14), inset 0 1px 0 rgba(255, 255, 255, 0.08);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
     color: var(--color-text-secondary);
     font-size: 0.8125rem;
     line-height: 1;
+}
+
+.pill-dot {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: #30d158;
+    box-shadow: 0 0 10px #30d158;
+    animation: pill-pulse 2.2s ease-in-out infinite;
+}
+
+@keyframes pill-pulse {
+    0%, 100% { opacity: 1; transform: scale(1); }
+    50% { opacity: 0.45; transform: scale(0.78); }
 }
 
 .version-num {
@@ -50,123 +158,309 @@
     background: rgba(255, 255, 255, 0.28);
 }
 
+/* 超大渐变标题 */
+
+.download-title {
+    position: relative;
+    z-index: 2;
+    font-size: clamp(3rem, 8.5vw, 5.5rem);
+    font-weight: 800;
+    letter-spacing: -0.045em;
+    line-height: 1.06;
+    text-shadow: 0 12px 48px rgba(0, 0, 0, 0.55);
+}
+
+.grad-text {
+    background: linear-gradient(94deg, #5eb1ff 0%, #8f7bff 46%, #ffb340 100%);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+}
+
+.download-hero .page-hero-sub {
+    margin-top: 1.1rem;
+    font-size: 1.1875rem;
+}
+
+/* 按钮：主按钮加辉光，次按钮改玻璃 */
+
+.download-hero .btn-primary {
+    box-shadow: 0 8px 32px rgba(10, 132, 255, 0.45), inset 0 1px 0 rgba(255, 255, 255, 0.18);
+}
+
+.download-hero .btn-primary:hover {
+    box-shadow: 0 12px 44px rgba(10, 132, 255, 0.6), inset 0 1px 0 rgba(255, 255, 255, 0.18);
+}
+
+.download-hero .btn-secondary {
+    background: rgba(255, 255, 255, 0.06);
+    border: 1px solid rgba(255, 255, 255, 0.14);
+    color: var(--color-text);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+}
+
+.download-hero .btn-secondary:hover {
+    background: rgba(255, 255, 255, 0.1);
+    border-color: rgba(255, 255, 255, 0.24);
+}
+
 .hero-actions {
     display: flex;
     align-items: center;
     justify-content: center;
-    gap: 12px;
-    margin-top: 32px;
+    gap: 14px;
+    margin-top: 38px;
     flex-wrap: wrap;
 }
 
+/* 滚动提示（鼠标造型 + 滚轮动画） */
+
+.scroll-hint {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+    width: fit-content;
+    margin: 72px auto 0;
+    color: rgba(255, 255, 255, 0.42);
+    font-size: 0.72rem;
+    letter-spacing: 0.28em;
+    text-indent: 0.28em;
+    transition: color 0.3s ease;
+}
+
+.scroll-hint:hover {
+    color: rgba(255, 255, 255, 0.75);
+}
+
+.scroll-mouse {
+    width: 26px;
+    height: 42px;
+    border: 1.5px solid rgba(255, 255, 255, 0.3);
+    border-radius: 14px;
+    display: flex;
+    justify-content: center;
+    padding-top: 7px;
+    box-sizing: border-box;
+}
+
+.scroll-mouse::after {
+    content: "";
+    width: 3px;
+    height: 8px;
+    border-radius: 2px;
+    background: #5eb1ff;
+    box-shadow: 0 0 8px rgba(94, 177, 255, 0.8);
+    animation: scroll-wheel 1.8s cubic-bezier(0.4, 0, 0.4, 1) infinite;
+}
+
+@keyframes scroll-wheel {
+    0% { transform: translateY(0); opacity: 1; }
+    70% { transform: translateY(12px); opacity: 0; }
+    100% { transform: translateY(0); opacity: 0; }
+}
+
 /* --------------------------------------------------------------------------
-   阶梯式 3D 平台卡片
-   使用入场动画替代持续滚动变换，保证卡片始终清晰可读
+   区块标题：编辑风 kicker 标签
+   -------------------------------------------------------------------------- */
+
+.section-kicker {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 14px;
+    font-family: "SF Mono", Consolas, monospace;
+    font-size: 0.72rem;
+    letter-spacing: 0.32em;
+    text-transform: uppercase;
+    color: rgba(255, 255, 255, 0.4);
+}
+
+.section-kicker::before {
+    content: "";
+    width: 26px;
+    height: 1px;
+    background: linear-gradient(90deg, #0a84ff, #ffb340);
+}
+
+.download-section .section-title {
+    font-size: clamp(1.9rem, 3.8vw, 2.6rem);
+    letter-spacing: -0.035em;
+}
+
+/* --------------------------------------------------------------------------
+   阶梯式玻璃平台卡片：3D 倾斜 + 聚光灯 + 平台强调色
    -------------------------------------------------------------------------- */
 
 .stair-section {
-    padding-top: 16px;
-    padding-bottom: 96px;
+    padding-top: 24px;
+    padding-bottom: 110px;
 }
 
 .stair-deck {
     position: relative;
-    perspective: 1200px;
-    perspective-origin: 50% 20%;
+    perspective: 1400px;
+    perspective-origin: 50% 18%;
     display: grid;
-    gap: 44px;
-    margin-bottom: 64px;
+    gap: 48px;
+    margin-bottom: 72px;
 }
 
 .stair-card {
+    /* 布局 / 倾斜变量 */
     --tx: 0px;
-    --ry: 0deg;
-    --rx: 0deg;
+    --base-rx: 0deg;
+    --base-ry: 0deg;
+    --tilt-rx: 0deg;
+    --tilt-ry: 0deg;
+    --lift: 0px;
+    /* 强调色（默认蓝，按平台覆盖） */
+    --accent: #409cff;
+    --accent-soft: rgba(64, 156, 255, 0.13);
+    --accent-border: rgba(64, 156, 255, 0.45);
+    --accent-glow: rgba(10, 132, 255, 0.2);
+    --glow-x: 50%;
+    --glow-y: 50%;
     position: relative;
     display: block;
     width: min(720px, 100%);
-    padding: 30px 32px 32px;
-    border-radius: 28px;
-    background: linear-gradient(180deg, #121216 0%, #0b0b0e 100%);
-    border: 1px solid rgba(255, 255, 255, 0.16);
-    box-shadow: 0 24px 60px rgba(0, 0, 0, 0.55), inset 0 1px 0 rgba(255, 255, 255, 0.06);
+    padding: 32px 34px 34px;
+    border-radius: 26px;
+    background:
+        linear-gradient(90deg, transparent, var(--accent-line, rgba(255, 255, 255, 0)) 50%, transparent) top / 100% 1px no-repeat,
+        linear-gradient(180deg, rgba(26, 26, 34, 0.72) 0%, rgba(10, 10, 15, 0.66) 100%);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border: 1px solid rgba(255, 255, 255, 0.12);
+    box-shadow: 0 24px 64px rgba(0, 0, 0, 0.52), inset 0 1px 0 rgba(255, 255, 255, 0.07);
     transform:
         translateX(var(--tx))
-        rotateY(var(--ry))
-        rotateX(var(--rx));
+        translateY(var(--lift))
+        rotateX(calc(var(--base-rx) + var(--tilt-rx)))
+        rotateY(calc(var(--base-ry) + var(--tilt-ry)));
     transform-style: preserve-3d;
-    transform-origin: 50% 50%;
-    transition: transform 0.8s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.5s ease, border-color 0.25s ease, filter 0.25s ease;
+    transition:
+        transform 0.85s cubic-bezier(0.16, 1, 0.3, 1),
+        opacity 0.6s ease,
+        border-color 0.35s ease,
+        box-shadow 0.4s ease;
     will-change: transform, opacity;
     outline: none;
     backface-visibility: hidden;
+}
+
+/* 入场结束后切换为快速倾斜过渡 */
+.stair-card.tilt-ready {
+    transition:
+        transform 0.3s ease-out,
+        opacity 0.6s ease,
+        border-color 0.35s ease,
+        box-shadow 0.4s ease;
 }
 
 .stair-card[data-animate] {
     opacity: 0;
     transform:
         translateX(var(--tx))
-        translateY(48px)
-        rotateX(18deg)
-        rotateY(var(--ry))
-        scale(0.98);
+        translateY(64px)
+        rotateX(calc(var(--base-rx) + 16deg))
+        rotateY(var(--base-ry))
+        scale(0.96);
 }
 
 .stair-card[data-animate].animated {
     opacity: 1;
     transform:
         translateX(var(--tx))
-        translateY(0)
-        rotateX(var(--rx))
-        rotateY(var(--ry))
+        translateY(var(--lift))
+        rotateX(calc(var(--base-rx) + var(--tilt-rx)))
+        rotateY(calc(var(--base-ry) + var(--tilt-ry)))
         scale(1);
 }
 
+/* 鼠标聚光灯 */
+.stair-card::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    border-radius: inherit;
+    background: radial-gradient(540px circle at var(--glow-x) var(--glow-y), var(--accent-soft), transparent 48%);
+    opacity: 0;
+    transition: opacity 0.4s ease;
+    pointer-events: none;
+}
+
+.stair-card:hover::before {
+    opacity: 1;
+}
+
+/* 顶部高光 */
 .stair-card::after {
     content: "";
     position: absolute;
     inset: 0;
     border-radius: inherit;
-    background: linear-gradient(180deg, rgba(255, 255, 255, 0.06), rgba(255, 255, 255, 0) 45%);
+    background: linear-gradient(180deg, rgba(255, 255, 255, 0.07), rgba(255, 255, 255, 0) 42%);
     pointer-events: none;
 }
 
-.stair-card:nth-child(1) {
-    --tx: 0px;
-    --ry: -6deg;
-    --rx: 2deg;
+.stair-card > * {
+    position: relative;
+    z-index: 1;
 }
 
-.stair-card:nth-child(2) {
-    --tx: 56px;
-    --ry: 0deg;
-    --rx: 0deg;
+/* 阶梯偏移 */
+.stair-card:nth-child(1) { --tx: 0px; --base-ry: -7deg; --base-rx: 2deg; }
+.stair-card:nth-child(2) { --tx: 56px; --base-ry: 0deg; --base-rx: 0deg; }
+.stair-card:nth-child(3) { --tx: 112px; --base-ry: 7deg; --base-rx: -2deg; }
+
+/* 平台强调色 */
+.stair-card.accent-blue {
+    --accent: #409cff;
+    --accent-soft: rgba(64, 156, 255, 0.13);
+    --accent-border: rgba(64, 156, 255, 0.5);
+    --accent-glow: rgba(10, 132, 255, 0.22);
 }
 
-.stair-card:nth-child(3) {
-    --tx: 112px;
-    --ry: 6deg;
-    --rx: -2deg;
+.stair-card.accent-violet {
+    --accent: #b79bff;
+    --accent-soft: rgba(160, 123, 255, 0.13);
+    --accent-border: rgba(160, 123, 255, 0.5);
+    --accent-glow: rgba(143, 123, 255, 0.2);
+}
+
+.stair-card.accent-orange {
+    --accent: #ffb340;
+    --accent-soft: rgba(255, 179, 64, 0.12);
+    --accent-border: rgba(255, 179, 64, 0.5);
+    --accent-glow: rgba(255, 159, 10, 0.2);
 }
 
 .stair-card:hover {
-    border-color: rgba(255, 255, 255, 0.18);
-    filter: brightness(1.08);
+    --lift: -8px;
+    --accent-line: var(--accent);
+    border-color: var(--accent-border);
+    box-shadow:
+        0 36px 90px rgba(0, 0, 0, 0.62),
+        0 10px 44px var(--accent-glow),
+        inset 0 1px 0 rgba(255, 255, 255, 0.09);
 }
 
 .stair-card:focus-visible {
-    outline: 2px solid #f5f5f7;
+    outline: 2px solid var(--accent);
     outline-offset: 4px;
 }
 
 .step-index {
     position: absolute;
-    top: 24px;
-    right: 26px;
-    color: rgba(255, 255, 255, 0.34);
+    top: 26px;
+    right: 28px;
+    color: rgba(255, 255, 255, 0.32);
     font-family: "SF Mono", Consolas, monospace;
     font-size: 0.78rem;
     letter-spacing: 0.2em;
+    z-index: 1;
 }
 
 .card-head {
@@ -178,19 +472,25 @@
 
 .os-icon {
     flex: 0 0 auto;
-    width: 54px;
-    height: 54px;
+    width: 56px;
+    height: 56px;
     display: grid;
     place-items: center;
     border-radius: 18px;
-    background: rgba(255, 255, 255, 0.06);
-    border: 1px solid rgba(255, 255, 255, 0.08);
-    color: #f5f5f7;
+    background: var(--accent-soft);
+    border: 1px solid var(--accent-border);
+    color: var(--accent);
+    box-shadow: 0 0 26px var(--accent-glow);
+    transition: transform 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.stair-card:hover .os-icon {
+    transform: scale(1.06) rotate(-3deg);
 }
 
 .os-icon svg {
-    width: 24px;
-    height: 24px;
+    width: 25px;
+    height: 25px;
 }
 
 .head-text {
@@ -205,9 +505,9 @@
 
 .head-title-row h3 {
     margin: 0;
-    font-size: 1.3rem;
-    font-weight: 650;
-    letter-spacing: -0.04em;
+    font-size: 1.35rem;
+    font-weight: 700;
+    letter-spacing: -0.03em;
 }
 
 .head-text p {
@@ -221,9 +521,9 @@
     align-items: center;
     padding: 4px 10px;
     border-radius: 999px;
-    background: rgba(255, 255, 255, 0.07);
-    border: 1px solid rgba(255, 255, 255, 0.13);
-    color: var(--color-text-secondary);
+    background: var(--accent-soft);
+    border: 1px solid var(--accent-border);
+    color: var(--accent);
     font-size: 0.7rem;
     font-weight: 600;
     white-space: nowrap;
@@ -233,13 +533,27 @@
     margin-top: 22px;
 }
 
+.platform-file {
+    border-color: rgba(255, 255, 255, 0.08);
+    transition: border-color 0.3s ease, background 0.3s ease;
+}
+
+.stair-card:hover .platform-file {
+    border-color: rgba(255, 255, 255, 0.13);
+}
+
 .platform-file .file-name {
     color: #e5e5ea;
     font-size: 0.78rem;
 }
 
 .platform-file .file-desc {
-    color: #9a9aa0;
+    padding: 2px 9px;
+    border-radius: 7px;
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.07);
+    color: #a9a9b0;
+    font-size: 0.68rem;
 }
 
 .platform-note {
@@ -251,23 +565,91 @@
     display: inline-flex;
     align-items: center;
     gap: 8px;
-    margin-top: 20px;
+    margin-top: 22px;
     color: var(--color-text);
     font-size: 0.92rem;
     font-weight: 600;
+    transition: color 0.3s ease;
+}
+
+.stair-card:hover .card-cta {
+    color: var(--accent);
 }
 
 .card-cta svg {
     width: 16px;
     height: 16px;
-    transition: transform 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+    transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 .stair-card:hover .card-cta svg {
-    transform: translate(3px, -3px);
+    transform: translate(4px, -4px);
 }
 
-/* 响应式 */
+/* --------------------------------------------------------------------------
+   下载说明：玻璃便签
+   -------------------------------------------------------------------------- */
+
+.download-note {
+    max-width: 760px;
+    margin: 0 auto;
+    padding: 18px 26px;
+    border-radius: 16px;
+    background: rgba(255, 255, 255, 0.04);
+    border: 1px solid rgba(255, 255, 255, 0.09);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    font-size: 0.85rem;
+    text-align: center;
+    line-height: 1.75;
+}
+
+/* --------------------------------------------------------------------------
+   文件格式：玻璃表格
+   -------------------------------------------------------------------------- */
+
+.format-section {
+    padding-bottom: 110px;
+}
+
+.format-section .format-table {
+    background: linear-gradient(180deg, rgba(26, 26, 34, 0.7) 0%, rgba(10, 10, 15, 0.6) 100%);
+    backdrop-filter: blur(18px);
+    -webkit-backdrop-filter: blur(18px);
+    border: 1px solid rgba(255, 255, 255, 0.11);
+    border-radius: 20px;
+    box-shadow: 0 24px 64px rgba(0, 0, 0, 0.48), inset 0 1px 0 rgba(255, 255, 255, 0.06);
+    overflow: hidden;
+}
+
+.format-section .format-table th {
+    background: rgba(255, 255, 255, 0.05);
+    letter-spacing: 0.06em;
+    font-size: 0.78rem;
+}
+
+.format-section .format-table tbody tr {
+    transition: background 0.25s ease;
+}
+
+.format-section .format-table tbody tr:hover {
+    background: rgba(10, 132, 255, 0.06);
+}
+
+.fmt-chip {
+    display: inline-block;
+    padding: 3px 11px;
+    border-radius: 980px;
+    background: rgba(255, 255, 255, 0.06);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    color: #d5d5da;
+    font-size: 0.72rem;
+    white-space: nowrap;
+}
+
+/* --------------------------------------------------------------------------
+   响应式
+   -------------------------------------------------------------------------- */
 
 @media (max-width: 900px) {
     .stair-card,
@@ -275,14 +657,14 @@
     .stair-card:nth-child(3) {
         width: 100%;
         --tx: 0px;
-        --ry: 0deg;
-        --rx: 0deg;
+        --base-ry: 0deg;
+        --base-rx: 0deg;
     }
 }
 
 @media (max-width: 640px) {
     .page-hero.download-hero {
-        padding: 128px 24px 64px;
+        padding: 150px 24px 96px;
     }
 
     .hero-actions {
@@ -294,9 +676,13 @@
         width: 100%;
     }
 
+    .scroll-hint {
+        margin-top: 56px;
+    }
+
     .stair-card {
         padding: 24px;
-        border-radius: 24px;
+        border-radius: 22px;
     }
 
     .step-index {
@@ -315,7 +701,21 @@
     }
 }
 
+/* --------------------------------------------------------------------------
+   减少动态效果偏好
+   -------------------------------------------------------------------------- */
+
 @media (prefers-reduced-motion: reduce) {
+    .aurora-blob,
+    .pill-dot,
+    .scroll-mouse::after {
+        animation: none;
+    }
+
+    .scroll-hint {
+        display: none;
+    }
+
     .stair-card {
         transform: none !important;
         opacity: 1 !important;
