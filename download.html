@@ -6,8 +6,8 @@
     <title>下载 - NeoWarp</title>
     <meta name="description" content="下载 NeoWarp —— 支持 Windows、macOS 与 Linux 的全功能 Scratch 编辑器。">
     <link rel="icon" type="image/png" href="assets/Logo.png">
-    <link rel="stylesheet" href="css/style.css?v=20261031a">
-    <link rel="stylesheet" href="css/download.css?v=20261031a">
+    <link rel="stylesheet" href="css/style.css?v=20261031b">
+    <link rel="stylesheet" href="css/download.css?v=20261031b">
 </head>
 <body class="download-page">
     <nav class="nav">
@@ -28,153 +28,107 @@
         </div>
     </nav>
 
-    <canvas id="downloadBg" class="download-bg" aria-hidden="true"></canvas>
-    <div class="download-aurora" aria-hidden="true">
-        <span class="aurora-blob blob-blue"></span>
-        <span class="aurora-blob blob-orange"></span>
-        <span class="aurora-blob blob-violet"></span>
-    </div>
+    <canvas id="fxCanvas" class="fx-canvas" aria-hidden="true"></canvas>
 
     <main>
-        <section class="page-hero download-hero">
-            <div class="hero-bg-grid" aria-hidden="true"></div>
-            <div class="hero-content" data-animate>
-                <p class="version-pill">
-                    <span class="pill-dot" aria-hidden="true"></span>
-                    <span class="version-num">v2.2.0</span>
-                    <span class="version-sep" aria-hidden="true"></span>
-                    <span>2026-10-22</span>
-                    <span class="version-sep" aria-hidden="true"></span>
-                    <span>GPL-3.0</span>
-                </p>
-                <h1 class="download-title">下载 <span class="grad-text">NeoWarp</span></h1>
-                <p class="page-hero-sub">选择与系统匹配的安装包，支持 Windows、macOS 与 Linux，并可离线使用。</p>
-                <div class="hero-actions">
-                    <a class="btn btn-primary" href="#platforms">选择你的系统</a>
-                    <a class="btn btn-secondary" href="https://github.com/Shiyuan-318/NeoWarp/releases" target="_blank" rel="noopener">前往 Releases 页</a>
+        <!-- Hero：编辑风超大排版 -->
+        <section class="dl-hero">
+            <div class="dl-hero-inner">
+                <div class="dl-meta">
+                    <span>NEOWARP<sup>®</sup> DESKTOP</span>
+                    <span>V2.2.0 — 2026.10.22 — GPL-3.0</span>
                 </div>
-                <a class="scroll-hint" href="#platforms" aria-label="向下滚动查看平台下载">
-                    <span class="scroll-mouse" aria-hidden="true"></span>
-                    <span>SCROLL</span>
+                <h1 class="dl-title">
+                    <span class="dl-line"><span class="dl-line-inner">下载</span></span>
+                    <span class="dl-line"><span class="dl-line-inner">NeoWarp<sup>®</sup></span></span>
+                </h1>
+                <div class="dl-hero-foot">
+                    <p class="dl-sub">支持 Windows、macOS 与 Linux 的全功能 Scratch 编辑器<br>选择与你系统匹配的安装包，下载即可离线使用</p>
+                    <div class="dl-actions">
+                        <a class="dl-btn dl-btn-solid" href="#platforms">选择你的系统</a>
+                        <a class="dl-btn dl-btn-line" href="https://github.com/Shiyuan-318/NeoWarp/releases" target="_blank" rel="noopener">Releases 页<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7 17 17 7m0 0H9.5M17 7v7.5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" fill="none"/></svg></a>
+                    </div>
+                </div>
+                <a class="dl-scroll" href="#platforms" aria-label="向下滚动查看平台下载">
+                    <span class="dl-scroll-text">SCROLL</span>
+                    <span class="dl-scroll-line" aria-hidden="true"></span>
                 </a>
+            </div>
+            <div class="dl-marquee" aria-hidden="true">
+                <div class="dl-marquee-track">
+                    <span>NEOWARP DESKTOP<i>·</i>WINDOWS<i>·</i>MACOS<i>·</i>LINUX<i>·</i>OFFLINE READY<i>·</i>OPEN SOURCE<i>·</i></span>
+                    <span>NEOWARP DESKTOP<i>·</i>WINDOWS<i>·</i>MACOS<i>·</i>LINUX<i>·</i>OFFLINE READY<i>·</i>OPEN SOURCE<i>·</i></span>
+                </div>
             </div>
         </section>
 
-        <section class="download-section stair-section" id="platforms">
-            <div class="section-header" data-animate>
-                <p class="section-kicker">/ 01 · Platforms</p>
-                <h2 class="section-title">平台下载</h2>
-                <p class="section-subtitle">点击对应平台卡片，前往 Releases 页面获取安装包。</p>
-            </div>
+        <!-- 平台下载：编号行 -->
+        <section class="dl-section" id="platforms">
+            <header class="dl-head" data-animate>
+                <span class="dl-index">/ 01</span>
+                <h2>平台下载<em>PLATFORMS</em></h2>
+                <p>点击对应平台行，前往 Releases 页面获取安装包</p>
+            </header>
 
-            <div class="stair-deck">
-                <a class="stair-card accent-blue" data-animate data-step="01" data-platform="windows" href="https://github.com/Shiyuan-318/NeoWarp/releases" target="_blank" rel="noopener" aria-label="前往 GitHub Releases 页面下载 Windows 版">
-                    <span class="step-index" aria-hidden="true">01</span>
-                    <div class="card-head">
-                        <span class="os-icon" aria-hidden="true">
-                            <svg viewBox="0 0 24 24" fill="none"><path d="M3.6 5.82 10.4 4.8v6.84H3.6V5.82Zm8.2-1.19L20.4 3.6v8.04h-8.6V4.63ZM3.6 12.96h6.8v6.84l-6.8-1.02v-5.82Zm8.2 0h8.6v8.04l-8.6-1.32v-6.72Z" fill="currentColor"/></svg>
-                        </span>
-                        <div class="head-text">
-                            <div class="head-title-row">
-                                <h3>Windows</h3>
-                                <span class="current-badge" data-current hidden>当前系统</span>
-                            </div>
-                            <p>Windows 10 / 11 · x64</p>
-                        </div>
-                    </div>
-                    <ul class="platform-files">
-                        <li class="platform-file">
-                            <span class="file-name">NeoWarp-Setup-x.y.z-x64.exe</span>
-                            <span class="file-desc">安装版</span>
-                        </li>
-                        <li class="platform-file">
-                            <span class="file-name">NeoWarp Portable x.y.z x64.exe</span>
-                            <span class="file-desc">便携版</span>
-                        </li>
-                    </ul>
-                    <p class="platform-note">安装版支持关联 .sb3 / .np1 文件；便携版解压即用，适合免安装场景。</p>
-                    <span class="card-cta">
-                        <span>前往 Releases 页</span>
-                        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7 17 17 7m0 0H9.5M17 7v7.5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" fill="none"/></svg>
+            <div class="dl-rows">
+                <a class="dl-row" data-platform="windows" data-animate href="https://github.com/Shiyuan-318/NeoWarp/releases" target="_blank" rel="noopener" aria-label="前往 GitHub Releases 页面下载 Windows 版">
+                    <span class="dl-row-index">01</span>
+                    <span class="dl-row-main">
+                        <span class="dl-row-title">Windows<span class="dl-badge" data-current hidden>当前系统</span></span>
+                        <span class="dl-row-sub">Windows 10 / 11 · x64</span>
+                        <span class="dl-row-note">安装版支持关联 .sb3 / .np1 文件；便携版解压即用，适合免安装场景</span>
                     </span>
+                    <span class="dl-row-files">
+                        <span class="dl-file"><span class="dl-file-name">NeoWarp-Setup-x.y.z-x64.exe</span><span class="dl-file-tag">安装版</span></span>
+                        <span class="dl-file"><span class="dl-file-name">NeoWarp Portable x.y.z x64.exe</span><span class="dl-file-tag">便携版</span></span>
+                    </span>
+                    <span class="dl-row-arrow" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M7 17 17 7m0 0H9.5M17 7v7.5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" fill="none"/></svg></span>
                 </a>
 
-                <a class="stair-card accent-violet" data-animate data-step="02" data-platform="macos" href="https://github.com/Shiyuan-318/NeoWarp/releases" target="_blank" rel="noopener" aria-label="前往 GitHub Releases 页面下载 macOS 版">
-                    <span class="step-index" aria-hidden="true">02</span>
-                    <div class="card-head">
-                        <span class="os-icon" aria-hidden="true">
-                            <svg viewBox="0 0 24 24" fill="none"><path d="M16.36 12.71c.03 3.09 2.7 4.12 2.74 4.14-.02.07-.43 1.47-1.42 2.91-.86 1.25-1.75 2.5-3.15 2.52-1.38.03-1.82-.81-3.4-.81-1.57 0-2.07.79-3.37.84-1.35.05-2.37-1.36-3.23-2.6C2.79 17.31 1.5 12.9 3.3 10.02c.89-1.43 2.48-2.34 4.2-2.37 1.32-.02 2.57.89 3.37.89.81 0 2.32-1.1 3.91-.94.67.03 2.54.27 3.74 2.03-.1.06-2.24 1.31-2.16 3.08ZM13.79 5.99c.72-.87 1.2-2.08 1.07-3.29-1.03.04-2.29.69-3.03 1.56-.66.77-1.25 2-1.09 3.18 1.15.09 2.33-.58 3.05-1.45Z" fill="currentColor"/></svg>
-                        </span>
-                        <div class="head-text">
-                            <div class="head-title-row">
-                                <h3>macOS</h3>
-                                <span class="current-badge" data-current hidden>当前系统</span>
-                            </div>
-                            <p>macOS 12+ · Universal</p>
-                        </div>
-                    </div>
-                    <ul class="platform-files">
-                        <li class="platform-file">
-                            <span class="file-name">NeoWarp-Setup-x.y.z.dmg</span>
-                            <span class="file-desc">Universal</span>
-                        </li>
-                    </ul>
-                    <p class="platform-note">同一安装包同时支持 Apple Silicon 与 Intel 芯片，完整支持深色模式。</p>
-                    <span class="card-cta">
-                        <span>前往 Releases 页</span>
-                        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7 17 17 7m0 0H9.5M17 7v7.5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" fill="none"/></svg>
+                <a class="dl-row" data-platform="macos" data-animate href="https://github.com/Shiyuan-318/NeoWarp/releases" target="_blank" rel="noopener" aria-label="前往 GitHub Releases 页面下载 macOS 版">
+                    <span class="dl-row-index">02</span>
+                    <span class="dl-row-main">
+                        <span class="dl-row-title">macOS<span class="dl-badge" data-current hidden>当前系统</span></span>
+                        <span class="dl-row-sub">macOS 12+ · Universal</span>
+                        <span class="dl-row-note">同一安装包同时支持 Apple Silicon 与 Intel 芯片，完整支持深色模式</span>
                     </span>
+                    <span class="dl-row-files">
+                        <span class="dl-file"><span class="dl-file-name">NeoWarp-Setup-x.y.z.dmg</span><span class="dl-file-tag">Universal</span></span>
+                    </span>
+                    <span class="dl-row-arrow" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M7 17 17 7m0 0H9.5M17 7v7.5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" fill="none"/></svg></span>
                 </a>
 
-                <a class="stair-card accent-orange" data-animate data-step="03" data-platform="linux" href="https://github.com/Shiyuan-318/NeoWarp/releases" target="_blank" rel="noopener" aria-label="前往 GitHub Releases 页面下载 Linux 版">
-                    <span class="step-index" aria-hidden="true">03</span>
-                    <div class="card-head">
-                        <span class="os-icon" aria-hidden="true">
-                            <svg viewBox="0 0 24 24" fill="none"><path d="M4.5 5.25A1.75 1.75 0 0 1 6.25 3.5h11.5a1.75 1.75 0 0 1 1.75 1.75v13.5a1.75 1.75 0 0 1-1.75 1.75H6.25a1.75 1.75 0 0 1-1.75-1.75V5.25Zm2.1.75v2.2h2.2V6h-2.2Zm4.35 0v2.2h6.45V6h-6.45ZM6.6 10.35v2.2h2.2v-2.2H6.6Zm4.35 0v2.2h6.45v-2.2h-6.45Zm-4.35 4.35v2.2h2.2v-2.2H6.6Zm4.35 0v2.2h6.45v-2.2h-6.45Z" fill="currentColor"/></svg>
-                        </span>
-                        <div class="head-text">
-                            <div class="head-title-row">
-                                <h3>Linux</h3>
-                                <span class="current-badge" data-current hidden>当前系统</span>
-                            </div>
-                            <p>Debian / AppImage / tar.gz</p>
-                        </div>
-                    </div>
-                    <ul class="platform-files">
-                        <li class="platform-file">
-                            <span class="file-name">NeoWarp-linux-x64-x.y.z.deb</span>
-                            <span class="file-desc">Debian 系</span>
-                        </li>
-                        <li class="platform-file">
-                            <span class="file-name">NeoWarp-linux-x64-x.y.z.AppImage</span>
-                            <span class="file-desc">通用</span>
-                        </li>
-                        <li class="platform-file">
-                            <span class="file-name">NeoWarp-linux-x64-x.y.z.tar.gz</span>
-                            <span class="file-desc">压缩包</span>
-                        </li>
-                    </ul>
-                    <p class="platform-note">提供 deb 包、AppImage 与 tar.gz 三种形式，覆盖主流发行版。</p>
-                    <span class="card-cta">
-                        <span>前往 Releases 页</span>
-                        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7 17 17 7m0 0H9.5M17 7v7.5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" fill="none"/></svg>
+                <a class="dl-row" data-platform="linux" data-animate href="https://github.com/Shiyuan-318/NeoWarp/releases" target="_blank" rel="noopener" aria-label="前往 GitHub Releases 页面下载 Linux 版">
+                    <span class="dl-row-index">03</span>
+                    <span class="dl-row-main">
+                        <span class="dl-row-title">Linux<span class="dl-badge" data-current hidden>当前系统</span></span>
+                        <span class="dl-row-sub">Debian / AppImage / tar.gz</span>
+                        <span class="dl-row-note">提供 deb 包、AppImage 与 tar.gz 三种形式，覆盖主流发行版</span>
                     </span>
+                    <span class="dl-row-files">
+                        <span class="dl-file"><span class="dl-file-name">NeoWarp-linux-x64-x.y.z.deb</span><span class="dl-file-tag">Debian 系</span></span>
+                        <span class="dl-file"><span class="dl-file-name">NeoWarp-linux-x64-x.y.z.AppImage</span><span class="dl-file-tag">通用</span></span>
+                        <span class="dl-file"><span class="dl-file-name">NeoWarp-linux-x64-x.y.z.tar.gz</span><span class="dl-file-tag">压缩包</span></span>
+                    </span>
+                    <span class="dl-row-arrow" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M7 17 17 7m0 0H9.5M17 7v7.5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" fill="none"/></svg></span>
                 </a>
             </div>
 
-            <p class="download-note" data-animate>
+            <p class="dl-footnote" data-animate>
                 由于本项目是个人二次开发作品，发布渠道与签名策略可能与上游 TurboWarp 不同，请以实际发布的
-                <a href="https://github.com/Shiyuan-318/NeoWarp/releases" target="_blank" rel="noopener">Releases</a> 为准。<br>
+                <a href="https://github.com/Shiyuan-318/NeoWarp/releases" target="_blank" rel="noopener">Releases</a> 为准。
                 历史版本与更新日志同样可在 Releases 页面获取。
             </p>
         </section>
 
-        <section class="download-section format-section" id="formats">
-            <div class="section-header" data-animate>
-                <p class="section-kicker">/ 02 · Formats</p>
-                <h2 class="section-title">支持的文件格式</h2>
-                <p class="section-subtitle">原生支持打开 / 关联以下格式</p>
-            </div>
+        <!-- 文件格式：发丝线列表 -->
+        <section class="dl-section" id="formats">
+            <header class="dl-head" data-animate>
+                <span class="dl-index">/ 02</span>
+                <h2>支持的文件格式<em>FORMATS</em></h2>
+                <p>原生支持打开 / 关联以下格式</p>
+            </header>
+
             <table class="format-table" data-animate>
                 <thead>
                     <tr>
@@ -184,13 +138,13 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <tr><td>.np1</td><td><span class="fmt-chip">NeoWarp 项目</span></td><td>未压缩，默认保存格式</td></tr>
-                    <tr><td>.npnp</td><td><span class="fmt-chip">加密项目</span></td><td>AES-256-GCM + PBKDF2 密码加密</td></tr>
-                    <tr><td>.viewsb3</td><td><span class="fmt-chip">只读项目</span></td><td>加密，仅供查看，适合分享展示</td></tr>
-                    <tr><td>.sb3</td><td><span class="fmt-chip">Scratch 3</span></td><td>Scratch 3 Project</td></tr>
-                    <tr><td>.sb2</td><td><span class="fmt-chip">Scratch 2</span></td><td>Scratch 2 Project</td></tr>
-                    <tr><td>.sb</td><td><span class="fmt-chip">Scratch 1</span></td><td>Scratch 1 Project</td></tr>
-                    <tr><td>.js</td><td><span class="fmt-chip">扩展</span></td><td>NeoWarp 扩展（由扩展编辑器打开）</td></tr>
+                    <tr><td>.np1</td><td>NeoWarp 项目</td><td>未压缩，默认保存格式</td></tr>
+                    <tr><td>.npnp</td><td>加密项目</td><td>AES-256-GCM + PBKDF2 密码加密</td></tr>
+                    <tr><td>.viewsb3</td><td>只读项目</td><td>加密，仅供查看，适合分享展示</td></tr>
+                    <tr><td>.sb3</td><td>Scratch 3</td><td>Scratch 3 Project</td></tr>
+                    <tr><td>.sb2</td><td>Scratch 2</td><td>Scratch 2 Project</td></tr>
+                    <tr><td>.sb</td><td>Scratch 1</td><td>Scratch 1 Project</td></tr>
+                    <tr><td>.js</td><td>扩展</td><td>NeoWarp 扩展（由扩展编辑器打开）</td></tr>
                 </tbody>
             </table>
         </section>
@@ -215,8 +169,8 @@
         </div>
     </footer>
 
-    <script type="module" src="js/nav.js?v=20261031a"></script>
-    <script type="module" src="js/main.js?v=20261031a"></script>
-    <script type="module" src="js/download.js?v=20261031a"></script>
+    <script type="module" src="js/nav.js?v=20261031b"></script>
+    <script type="module" src="js/main.js?v=20261031b"></script>
+    <script type="module" src="js/download.js?v=20261031b"></script>
 </body>
 </html>
