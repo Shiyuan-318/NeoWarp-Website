@@ -20,7 +20,7 @@ const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').match
     if (isMobile) return;
 
     let platform = "";
-    const dataPlatform = (navigator.userAgentData && navigator.userAgentData.platform || "").toLowerCase();
+    const dataPlatform = ((navigator.userAgentData && navigator.userAgentData.platform) || "").toLowerCase();
     if (dataPlatform) {
         if (dataPlatform.includes("mac")) platform = "macos";
         else if (dataPlatform.includes("win")) platform = "windows";
@@ -74,7 +74,7 @@ const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').match
         return COLORS[0].c;
     };
 
-    const spawn = (scatter) => ({
+    const spawn = () => ({
         x: Math.random() * width,
         y: Math.random() * height,
         vx: 0,
@@ -83,13 +83,12 @@ const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').match
         size: 0.7 + Math.random() * 0.9,
         alpha: 0.28 + Math.random() * 0.4,
         color: pickColor(),
-        /* 入场时从四周向场内汇聚 */
-        gather: scatter ? 0 : 1
+        gather: 0
     });
 
     const rebuild = () => {
         const count = Math.min(1300, Math.floor((width * height) / 1200));
-        particles = Array.from({ length: count }, () => spawn(true));
+        particles = Array.from({ length: count }, spawn);
         /* 取少量粒子做邻近连线，避免画面杂乱 */
         linkSeed = particles.slice(0, Math.min(90, Math.floor(count / 8)));
     };
@@ -107,8 +106,6 @@ const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').match
     };
     window.addEventListener('resize', resize, { passive: true });
     resize();
-    /* 重建后全部重新入场汇聚 */
-    particles.forEach((p) => { p.gather = 0; });
 
     /* 鼠标交互：排斥 + 切向涡旋 */
     const mouse = { x: -9999, y: -9999, active: false };
